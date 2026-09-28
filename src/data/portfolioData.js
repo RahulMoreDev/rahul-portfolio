@@ -11,7 +11,7 @@ export const personalInfo = {
 
 I enjoy learning new technologies, solving programming problems and turning ideas into practical applications.`,
   email: "rahulmore.engineer@gmail.com",
-  github: "https://github.com/rahulmore",
+  github: "https://github.com/RahulMoreDev",
   linkedin: "https://www.linkedin.com/in/rahulmore",
   resumeUrl: "/Rahul-More-Resume.pdf",
   location: "Maharashtra, India",
@@ -131,7 +131,7 @@ export const projects = [
     ],
     accentGradient: "from-blue-600/30 to-indigo-600/30",
     previewType: "crm",
-    github: "https://github.com/rahulmore/crm-application",
+    github: "https://github.com/RahulMoreDev/crm-application",
     liveDemo: "https://crm-rahulmore.vercel.app"
   },
   {
@@ -154,7 +154,7 @@ export const projects = [
     ],
     accentGradient: "from-emerald-600/30 to-teal-600/30",
     previewType: "journal",
-    github: "https://github.com/rahulmore/journal-management-system",
+    github: "https://github.com/RahulMoreDev/journal-management-system",
     liveDemo: "https://journal-api-demo.up.railway.app"
   },
   {
@@ -177,7 +177,7 @@ export const projects = [
     ],
     accentGradient: "from-purple-600/30 to-indigo-600/30",
     previewType: "student",
-    github: "https://github.com/rahulmore/student-management-system",
+    github: "https://github.com/RahulMoreDev/student-management-system",
     liveDemo: "https://student-mgmt-rahul.vercel.app"
   },
   {
@@ -200,7 +200,7 @@ export const projects = [
     ],
     accentGradient: "from-amber-600/30 to-orange-600/30",
     previewType: "bank",
-    github: "https://github.com/rahulmore/bank-management-system",
+    github: "https://github.com/RahulMoreDev/bank-management-system",
     liveDemo: "https://bank-system-rahul.vercel.app"
   }
 ];
