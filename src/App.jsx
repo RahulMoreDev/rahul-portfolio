@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './sections/Hero';
 import About from './sections/About';
@@ -10,8 +10,11 @@ import Projects from './sections/Projects';
 import Education from './sections/Education';
 import Contact from './sections/Contact';
 import Footer from './components/Footer';
+import ResumeModal from './components/ResumeModal';
 
 export default function App() {
+  const [resumeModalOpen, setResumeModalOpen] = useState(false);
+
   return (
     <div className="min-h-screen bg-slate-950 dark:bg-slate-950 light:bg-slate-50 text-slate-100 dark:text-slate-100 light:text-slate-900 transition-colors duration-300 font-sans selection:bg-indigo-500 selection:text-white">
       {/* Background Decorative Mesh Gradients */}
@@ -22,11 +25,11 @@ export default function App() {
       </div>
 
       {/* Main Layout Navigation */}
-      <Navbar />
+      <Navbar onOpenResume={() => setResumeModalOpen(true)} />
 
       {/* Page Content Sections */}
       <main>
-        <Hero />
+        <Hero onOpenResume={() => setResumeModalOpen(true)} />
         <About />
         <Services />
         <Skills />
@@ -38,7 +41,13 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <Footer />
+      <Footer onOpenResume={() => setResumeModalOpen(true)} />
+
+      {/* In-app Resume Modal */}
+      <ResumeModal
+        isOpen={resumeModalOpen}
+        onClose={() => setResumeModalOpen(false)}
+      />
     </div>
   );
 }

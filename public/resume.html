@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rahul More - Software Developer Resume</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0f172a;
+      --accent: #2563eb;
+      --text: #1e293b;
+      --muted: #475569;
+      --border: #e2e8f0;
+      --bg: #ffffff;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+      color: var(--text);
+      background: #f8fafc;
+      padding: 24px;
+      line-height: 1.45;
+    }
+
+    .toolbar {
+      max-width: 820px;
+      margin: 0 auto 20px auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #ffffff;
+      padding: 12px 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      border: 1px solid var(--border);
+    }
+
+    .toolbar-title {
+      font-weight: 700;
+      color: var(--primary);
+      font-size: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--accent);
+      color: #ffffff;
+      border: none;
+    }
+
+    .btn-primary:hover {
+      background: #1d4ed8;
+    }
+
+    .btn-outline {
+      background: #ffffff;
+      color: var(--muted);
+      border: 1px solid var(--border);
+    }
+
+    .btn-outline:hover {
+      background: #f1f5f9;
+      color: var(--primary);
+    }
+
+    .resume-page {
+      max-width: 820px;
+      margin: 0 auto;
+      background: #ffffff;
+      padding: 44px 50px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+      border: 1px solid var(--border);
+    }
+
+    /* Resume Header */
+    .header {
+      text-align: center;
+      border-bottom: 2px solid var(--accent);
+      padding-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    .name {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--primary);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+
+    .title {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--accent);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .contact-info {
+      font-size: 11px;
+      color: var(--muted);
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 14px;
+    }
+
+    .contact-info a {
+      color: var(--muted);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    .contact-info a:hover {
+      color: var(--accent);
+    }
+
+    /* Section Styling */
+    .section {
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.6px;
+      color: var(--primary);
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 4px;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .summary-text {
+      font-size: 11.5px;
+      color: var(--text);
+      line-height: 1.55;
+    }
+
+    /* Skills Grid */
+    .skills-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 11.5px;
+    }
+
+    .skills-table td {
+      padding: 3px 0;
+      vertical-align: top;
+    }
+
+    .skill-category {
+      font-weight: 700;
+      color: var(--primary);
+      width: 140px;
+    }
+
+    .skill-items {
+      color: var(--text);
+    }
+
+    /* Experience & Projects */
+    .item-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 3px;
+      font-size: 12px;
+    }
+
+    .item-title {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .item-subtitle {
+      font-size: 11px;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    .item-date {
+      font-size: 11px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    .bullets {
+      list-style-type: none;
+      padding-left: 0;
+      margin-top: 3px;
+      margin-bottom: 8px;
+    }
+
+    .bullets li {
+      position: relative;
+      padding-left: 14px;
+      font-size: 11px;
+      line-height: 1.45;
+      color: var(--text);
+      margin-bottom: 3px;
+    }
+
+    .bullets li::before {
+      content: "•";
+      position: absolute;
+      left: 2px;
+      color: var(--accent);
+      font-weight: bold;
+    }
+
+    /* Education */
+    .edu-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 4px;
+      font-size: 11.5px;
+    }
+
+    .edu-title {
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .edu-meta {
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .edu-grade {
+      font-weight: 700;
+      color: #059669;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        padding: 0;
+        background: #ffffff;
+      }
+      .toolbar {
+        display: none !important;
+      }
+      .resume-page {
+        box-shadow: none !important;
+        border: none !important;
+        padding: 24px 28px !important;
+        max-width: 100% !important;
+        border-radius: 0 !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Action Toolbar -->
+  <div class="toolbar">
+    <span class="toolbar-title">📄 Rahul More — Professional Developer Resume</span>
+    <div style="display: flex; gap: 10px;">
+      <a href="/" class="btn btn-outline">← Back to Portfolio</a>
+      <button onclick="window.print()" class="btn btn-primary">🖨️ Print / Save as PDF</button>
+    </div>
+  </div>
+
+  <!-- Main Resume Sheet -->
+  <main class="resume-page" id="resume">
+    <!-- Header -->
+    <header class="header">
+      <h1 class="name">Rahul More</h1>
+      <p class="title">Software Developer | Full Stack & REST API Engineer</p>
+      <div class="contact-info">
+        <span>📧 <a href="mailto:rahulmore.engineer@gmail.com">rahulmore.engineer@gmail.com</a></span>
+        <span>📍 Maharashtra, India</span>
+        <span>🌐 <a href="https://rahul-portfolio-eta-flax.vercel.app" target="_blank">rahul-portfolio-eta-flax.vercel.app</a></span>
+        <span>💻 <a href="https://github.com/RahulMoreDev" target="_blank">github.com/RahulMoreDev</a></span>
+        <span>🔗 <a href="https://www.linkedin.com/in/rahulmore" target="_blank">linkedin.com/in/rahulmore</a></span>
+      </div>
+    </header>
+
+    <!-- Professional Summary -->
+    <section class="section">
+      <h2 class="section-title">Professional Summary</h2>
+      <p class="summary-text">
+        Computer Engineering graduate and Software Developer with hands-on experience building full-stack web applications, secure RESTful APIs, and scalable backend services. Proficient across frontend and backend development with <strong>React.js, Java, Spring Boot, Node.js, and MySQL</strong>. Experienced in designing normalized relational schemas, writing clean and maintainable code adhering to OOP principles, and collaborating in agile development workflows.
+      </p>
+    </section>
+
+    <!-- Technical Skills -->
+    <section class="section">
+      <h2 class="section-title">Technical Skills</h2>
+      <table class="skills-table">
+        <tr>
+          <td class="skill-category">Frontend:</td>
+          <td class="skill-items">React.js, JavaScript (ES6+), HTML5, CSS3, Tailwind CSS, Responsive Design</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Backend & APIs:</td>
+          <td class="skill-items">Java, Spring Boot, Node.js, Express.js, REST APIs, Hibernate/JPA</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Databases:</td>
+          <td class="skill-items">MySQL, MongoDB, SQL Schema Design, Relational Data Modeling</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Tools & Environments:</td>
+          <td class="skill-items">Git, GitHub, Postman, IntelliJ IDEA, VS Code, Maven, Agile/Scrum</td>
+        </tr>
+        <tr>
+          <td class="skill-category">Core Competencies:</td>
+          <td class="skill-items">Object-Oriented Programming (OOP), Data Structures & Algorithms, API Testing</td>
+        </tr>
+      </table>
+    </section>
+
+    <!-- Work Experience -->
+    <section class="section">
+      <h2 class="section-title">Work Experience</h2>
+      <div class="item-header">
+        <div>
+          <span class="item-title">Software Developer / IT Engineer</span> &nbsp;|&nbsp;
+          <span class="item-subtitle">Raveblue</span>
+        </div>
+        <span class="item-date">Professional Experience</span>
+      </div>
+      <ul class="bullets">
+        <li>Engineered responsive, modular frontend components and user interfaces using React.js and modern JavaScript standards.</li>
+        <li>Developed and integrated secure RESTful API endpoints utilizing Spring Boot and Node.js for client-server communication.</li>
+        <li>Designed, normalized, and optimized relational database schemas in MySQL, writing efficient queries and ensuring transactional ACID safety.</li>
+        <li>Collaborated in agile development sprints, participated in code reviews, and debugged production software flows.</li>
+      </ul>
+    </section>
+
+    <!-- Key Projects -->
+    <section class="section">
+      <h2 class="section-title">Featured Projects</h2>
+
+      <div style="margin-bottom: 8px;">
+        <div class="item-header">
+          <div>
+            <span class="item-title">CRM Application</span> &nbsp;|&nbsp;
+            <span class="item-subtitle">React.js, Node.js, Express, REST APIs, MySQL</span>
+          </div>
+          <span class="item-date">Full Stack</span>
+        </div>
+        <ul class="bullets">
+          <li>Architected a web-based Customer Relationship Management platform featuring dynamic lead tracking, pipeline automation, and analytics dashboards.</li>
+          <li>Constructed full RESTful CRUD endpoints with token-based access and connected a responsive frontend interface with real-time state management.</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <div class="item-header">
+          <div>
+            <span class="item-title">Journal Management System</span> &nbsp;|&nbsp;
+            <span class="item-subtitle">Spring Boot, REST APIs, MySQL, Postman</span>
+          </div>
+          <span class="item-date">Backend & APIs</span>
+        </div>
+        <ul class="bullets">
+          <li>Built a multi-tiered backend service using Controller-Service-Repository architecture for structured journal recording and retrieval.</li>
+          <li>Implemented relational persistence via Spring Data JPA and validated 100% of API endpoints using comprehensive Postman test suites.</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <div class="item-header">
+          <div>
+            <span class="item-title">Student Management System</span> &nbsp;|&nbsp;
+            <span class="item-subtitle">Java, Hibernate ORM, MySQL</span>
+          </div>
+          <span class="item-date">Java Systems</span>
+        </div>
+        <ul class="bullets">
+          <li>Developed an administrative application streamlining student registration, course allocations, fee tracking, and academic records.</li>
+          <li>Utilized Hibernate ORM for efficient Object-Relational Mapping, query performance, and relational integrity.</li>
+        </ul>
+      </div>
+
+      <div style="margin-bottom: 8px;">
+        <div class="item-header">
+          <div>
+            <span class="item-title">Bank Management System</span> &nbsp;|&nbsp;
+            <span class="item-subtitle">Java, OOP Principles, SQL</span>
+          </div>
+          <span class="item-date">Java Systems</span>
+        </div>
+        <ul class="bullets">
+          <li>Architected a secure banking platform applying core OOP principles (inheritance, encapsulation, polymorphism, abstraction).</li>
+          <li>Executed transactional modules for account opening, balance verification, deposit, and withdrawal with SQL transaction safety.</li>
+        </ul>
+      </div>
+    </section>
+
+    <!-- Education -->
+    <section class="section">
+      <h2 class="section-title">Education</h2>
+      
+      <div class="edu-row">
+        <span><strong class="edu-title">Bachelor of Engineering in Computer Engineering</strong> — Sant Gadge Baba Amravati University</span>
+        <span class="edu-meta"><span class="edu-grade">CGPA: 8.0 / 10.0</span> &nbsp;|&nbsp; 2022 – 2025</span>
+      </div>
+
+      <div class="edu-row">
+        <span><strong class="edu-title">Diploma in Engineering (Computer / IT)</strong> — Government Polytechnic Hingoli</span>
+        <span class="edu-meta"><span class="edu-grade">Percentage: 70.0%</span> &nbsp;|&nbsp; 2020 – 2021</span>
+      </div>
+
+      <div class="edu-row">
+        <span><strong class="edu-title">Higher Secondary Certificate (HSC - Science)</strong> — Chhatrapati Sambhaji Gurukul, Parbhani</span>
+        <span class="edu-meta"><span class="edu-grade">Percentage: 54.30%</span> &nbsp;|&nbsp; 2018 – 2019</span>
+      </div>
+
+      <div class="edu-row">
+        <span><strong class="edu-title">Secondary School Certificate (SSC)</strong> — Maharashtra State Board</span>
+        <span class="edu-meta"><span class="edu-grade">Percentage: 74.80%</span> &nbsp;|&nbsp; 2016 – 2017</span>
+      </div>
+    </section>
+  </main>
+
+</body>
+</html>

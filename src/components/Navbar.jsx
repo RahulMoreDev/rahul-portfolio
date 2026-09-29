@@ -75,16 +75,14 @@ export default function Navbar() {
           <div className="hidden sm:flex items-center gap-3">
             <ThemeToggle />
 
-            <a
-              href={personalInfo.resumeUrl}
-              download
-              target="_blank"
-              rel="noreferrer"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-600/25 transition-all duration-200 hover:shadow-indigo-600/40 hover:-translate-y-0.5"
+            <button
+              onClick={onOpenResume}
+              type="button"
+              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-600/25 transition-all duration-200 hover:shadow-indigo-600/40 hover:-translate-y-0.5 cursor-pointer"
             >
               <FileText className="w-4 h-4" />
               <span>Resume</span>
-            </a>
+            </button>
           </div>
 
           {/* Mobile Menu & Theme Buttons */}
