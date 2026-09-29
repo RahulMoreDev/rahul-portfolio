@@ -3,7 +3,7 @@ import { Menu, X, FileText, ChevronRight, Code } from 'lucide-react';
 import ThemeToggle from './ThemeToggle';
 import { personalInfo } from '../data/portfolioData';
 
-export default function Navbar() {
+export default function Navbar({ onOpenResume }) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
 
