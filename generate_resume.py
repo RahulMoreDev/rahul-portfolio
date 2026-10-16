@@ -112,7 +112,7 @@ def create_resume(output_path):
     elements.append(Spacer(1, 4))
     
     contact_line1 = "Email: rahulmore.engineer@gmail.com &nbsp;|&nbsp; Location: Maharashtra, India"
-    contact_line2 = "Portfolio: rahul-portfolio-eta-flax.vercel.app &nbsp;|&nbsp; GitHub: github.com/RahulMoreDev &nbsp;|&nbsp; LinkedIn: linkedin.com/in/rahulmore"
+    contact_line2 = "Portfolio: rahulmore.vercel.app &nbsp;|&nbsp; GitHub: github.com/RahulMoreDev &nbsp;|&nbsp; LinkedIn: linkedin.com/in/rahulmore"
     elements.append(Paragraph(contact_line1, contact_style))
     elements.append(Paragraph(contact_line2, contact_style))
     elements.append(Spacer(1, 6))
