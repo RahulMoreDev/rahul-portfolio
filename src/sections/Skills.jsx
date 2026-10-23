@@ -1,115 +1,110 @@
-import React from 'react';
-import { 
-  Code, 
-  Server, 
-  Database, 
-  Wrench, 
-  BrainCircuit, 
-  Layers, 
-  Check, 
-  Sparkles,
-  Terminal
-} from 'lucide-react';
-import { skills } from '../data/portfolioData';
+import { useEffect, useRef } from 'react';
+import { skills, techStackHighlights } from '../data/portfolioData';
 
-export default function Skills() {
-  const categories = [
-    {
-      id: 'frontend',
-      title: 'Frontend Development',
-      icon: Code,
-      color: 'from-blue-500/20 to-cyan-500/20 border-cyan-500/30 text-cyan-400',
-      items: skills.frontend
-    },
-    {
-      id: 'backend',
-      title: 'Backend Development',
-      icon: Server,
-      color: 'from-emerald-500/20 to-teal-500/20 border-emerald-500/30 text-emerald-400',
-      items: skills.backend
-    },
-    {
-      id: 'database',
-      title: 'Database & ORM',
-      icon: Database,
-      color: 'from-purple-500/20 to-indigo-500/20 border-purple-500/30 text-purple-400',
-      items: skills.database
-    },
-    {
-      id: 'tools',
-      title: 'Tools & Environments',
-      icon: Wrench,
-      color: 'from-amber-500/20 to-orange-500/20 border-amber-500/30 text-amber-400',
-      items: skills.tools
-    },
-    {
-      id: 'other',
-      title: 'CS Fundamentals & Testing',
-      icon: BrainCircuit,
-      color: 'from-rose-500/20 to-pink-500/20 border-rose-500/30 text-rose-400',
-      items: skills.other
-    }
-  ];
+const LEVEL_MAP = { Advanced: 90, Intermediate: 65, Beginner: 40 };
+
+const CATEGORIES = [
+  { key: 'frontend', label: 'Frontend', icon: '🖥', color: '#6366f1' },
+  { key: 'backend',  label: 'Backend',  icon: '⚙️', color: '#06b6d4' },
+  { key: 'database', label: 'Database', icon: '🗄', color: '#a855f7' },
+  { key: 'tools',    label: 'Tools',    icon: '🛠', color: '#f59e0b' },
+];
+
+function SkillBar({ name, level, color }) {
+  const barRef = useRef(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && barRef.current) {
+        barRef.current.style.width = LEVEL_MAP[level] + '%';
+      }
+    }, { threshold: 0.3 });
+    if (barRef.current) observer.observe(barRef.current.parentElement);
+    return () => observer.disconnect();
+  }, [level]);
 
   return (
-    <section id="skills" className="py-20 bg-slate-900/40 dark:bg-slate-900/40 light:bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
+    <div style={{ marginBottom: 14 }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+        <span style={{ fontWeight: 500, fontSize: '0.875rem', color: 'var(--text-primary)' }}>{name}</span>
+        <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>{level}</span>
+      </div>
+      <div className="skill-bar-track">
+        <div ref={barRef} className="skill-bar-fill" style={{
+          background: `linear-gradient(90deg, ${color}, ${color}bb)`,
+        }} />
+      </div>
+    </div>
+  );
+}
+
+export default function Skills() {
+  return (
+    <section id="skills" style={{ padding: '120px 24px', background: 'var(--bg-primary)', position: 'relative' }}>
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
         {/* Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 dark:text-indigo-400 light:text-indigo-600 border border-indigo-500/20 mb-3">
-            <Layers className="w-3.5 h-3.5" /> Technical Expertise
+        <div className="reveal" style={{ textAlign: 'center', marginBottom: 72 }}>
+          <div className="section-label" style={{ margin: '0 auto 16px' }}>
+            <span className="dot" />
+            Skills & Expertise
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white dark:text-white light:text-slate-900">
-            Skills & Core Competencies
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+            fontWeight: 800, letterSpacing: '-0.02em',
+            color: 'var(--text-primary)',
+          }}>
+            My Tech <span className="gradient-text-static">Arsenal</span>
           </h2>
-          <p className="mt-3 text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base">
-            Categorized technical skills gained through engineering coursework, hands-on projects, and practical development.
+          <p style={{ color: 'var(--text-secondary)', marginTop: 16, maxWidth: 500, margin: '16px auto 0' }}>
+            Technologies I work with to build modern, scalable applications
           </p>
         </div>
 
-        {/* Skill Category Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {categories.map((category) => {
-            const Icon = category.icon;
-            return (
-              <div
-                key={category.id}
-                className="glass-panel p-6 rounded-2xl flex flex-col justify-between hover:border-indigo-500/40 transition-all duration-300 shadow-sm"
-              >
-                <div>
-                  <div className="flex items-center gap-3 mb-5">
-                    <div className={`w-10 h-10 rounded-xl bg-gradient-to-br ${category.color} border flex items-center justify-center`}>
-                      <Icon className="w-5 h-5" />
-                    </div>
-                    <h3 className="font-bold text-base sm:text-lg text-white dark:text-white light:text-slate-900">
-                      {category.title}
-                    </h3>
-                  </div>
-
-                  {/* Skills Badges */}
-                  <div className="flex flex-wrap gap-2">
-                    {category.items.map((skill) => (
-                      <div
-                        key={skill.name}
-                        className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 hover:bg-slate-700/80 dark:hover:bg-slate-700/80 light:hover:bg-slate-200 border border-slate-700/60 dark:border-slate-700/60 light:border-slate-300 text-xs font-mono text-slate-200 dark:text-slate-200 light:text-slate-800 transition-colors"
-                      >
-                        <Check className="w-3 h-3 text-indigo-400" />
-                        <span>{skill.name}</span>
-                      </div>
-                    ))}
-                  </div>
+        {/* Skill Cards Grid */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(260px, 1fr))',
+          gap: 24,
+          marginBottom: 64,
+        }}>
+          {CATEGORIES.map((cat, i) => (
+            <div key={cat.key} className={`glass-card reveal delay-${i + 1}`} style={{ padding: 28 }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: 10, marginBottom: 24 }}>
+                <div style={{
+                  width: 40, height: 40, borderRadius: 10,
+                  background: `${cat.color}18`,
+                  border: `1px solid ${cat.color}40`,
+                  display: 'flex', alignItems: 'center', justifyContent: 'center',
+                  fontSize: 18,
+                }}>
+                  {cat.icon}
                 </div>
-
-                <div className="pt-4 mt-6 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 flex justify-between items-center text-[11px] font-mono text-slate-500 dark:text-slate-500 light:text-slate-400">
-                  <span>{category.items.length} Technologies</span>
-                  <span className="text-emerald-400">Production Ready</span>
-                </div>
+                <h3 style={{ fontWeight: 700, fontSize: '1rem', color: 'var(--text-primary)' }}>
+                  {cat.label}
+                </h3>
               </div>
-            );
-          })}
+              {skills[cat.key].map(skill => (
+                <SkillBar key={skill.name} {...skill} color={cat.color} />
+              ))}
+            </div>
+          ))}
         </div>
 
+        {/* Tech badges */}
+        <div className="reveal" style={{ textAlign: 'center' }}>
+          <p style={{ color: 'var(--text-muted)', fontSize: '0.8rem', letterSpacing: '0.1em', textTransform: 'uppercase', marginBottom: 24 }}>
+            Core Technologies
+          </p>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 12, justifyContent: 'center' }}>
+            {techStackHighlights.map((t, i) => (
+              <div key={t.name} className={`tech-badge reveal delay-${(i % 6) + 1}`}
+                style={{ fontSize: '0.875rem', padding: '8px 16px' }}>
+                <span style={{ fontWeight: 600 }}>{t.name}</span>
+                <span style={{ color: 'var(--text-muted)', fontSize: '0.72rem' }}>· {t.category}</span>
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
     </section>
   );

@@ -1,184 +1,194 @@
-import React, { useState } from 'react';
-import { 
-  FolderGit2, 
-  ExternalLink, 
-  Github, 
-  Eye, 
-  Code2, 
-  Sparkles,
-  ArrowUpRight,
-  Filter
-} from 'lucide-react';
+import { useState } from 'react';
 import { projects } from '../data/portfolioData';
-import ProjectModal from '../components/ProjectModal';
-import ProjectMockup from '../components/ProjectMockup';
+
+const FILTERS = ['All', 'Full Stack', 'Backend & APIs', 'Java Systems'];
 
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [active, setActive] = useState('All');
 
-  const categories = ['All', 'Full Stack', 'Backend & APIs', 'Java Systems'];
-
-  const filteredProjects = activeCategory === 'All'
+  const filtered = active === 'All'
     ? projects
-    : projects.filter((p) => p.category === activeCategory);
+    : projects.filter(p => p.category === active);
 
   return (
-    <section id="projects" className="py-20 bg-slate-900/40 dark:bg-slate-900/40 light:bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-12">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 dark:text-indigo-400 light:text-indigo-600 border border-indigo-500/20 mb-3">
-            <FolderGit2 className="w-3.5 h-3.5" /> Featured Engineering
+    <section id="projects" style={{
+      padding: '120px 24px',
+      background: 'var(--bg-secondary)',
+      position: 'relative',
+    }}>
+      {/* Orb */}
+      <div style={{
+        position: 'absolute', width: 500, height: 500, borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(99,102,241,0.06), transparent)',
+        top: '-100px', right: '-100px', filter: 'blur(80px)', pointerEvents: 'none',
+      }} />
+
+      <div style={{ maxWidth: 1200, margin: '0 auto', position: 'relative', zIndex: 1 }}>
+        {/* Header */}
+        <div className="reveal" style={{ textAlign: 'center', marginBottom: 56 }}>
+          <div className="section-label" style={{ margin: '0 auto 16px' }}>
+            <span className="dot" />
+            Projects
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white dark:text-white light:text-slate-900">
-            Featured Projects & Systems
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800,
+            letterSpacing: '-0.02em', color: 'var(--text-primary)',
+          }}>
+            What I've <span className="gradient-text-static">Built</span>
           </h2>
-          <p className="mt-3 text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base">
-            Explore live interactive mockups, API architectures, and source code implementations.
+          <p style={{ color: 'var(--text-secondary)', marginTop: 16, maxWidth: 480, margin: '16px auto 0' }}>
+            Real-world projects demonstrating full-stack, backend, and system development skills
           </p>
         </div>
 
-        {/* Category Filters */}
-        <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-          {categories.map((category) => (
-            <button
-              key={category}
-              onClick={() => setActiveCategory(category)}
-              className={`px-4 py-2 rounded-xl text-xs sm:text-sm font-medium transition-all duration-200 cursor-pointer ${
-                activeCategory === category
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/25 font-semibold'
-                  : 'glass-panel text-slate-400 dark:text-slate-400 light:text-slate-700 hover:text-white hover:border-slate-700'
-              }`}
-            >
-              {category}
+        {/* Filters */}
+        <div className="reveal" style={{
+          display: 'flex', gap: 10, justifyContent: 'center',
+          flexWrap: 'wrap', marginBottom: 48,
+        }}>
+          {FILTERS.map(f => (
+            <button key={f} onClick={() => setActive(f)} style={{
+              padding: '8px 20px', borderRadius: 999, cursor: 'pointer',
+              border: `1px solid ${active === f ? 'rgba(99,102,241,0.5)' : 'rgba(255,255,255,0.08)'}`,
+              background: active === f ? 'rgba(99,102,241,0.15)' : 'rgba(255,255,255,0.03)',
+              color: active === f ? '#a5b4fc' : 'var(--text-secondary)',
+              fontWeight: active === f ? 600 : 400,
+              fontSize: '0.875rem',
+              transition: 'all 0.25s',
+            }}>
+              {f}
             </button>
           ))}
         </div>
 
-        {/* Projects Grid with Attractive Mockups */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {filteredProjects.map((project) => (
-            <div
-              key={project.id}
-              className="glass-panel rounded-2xl p-6 sm:p-7 flex flex-col justify-between hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1.5 shadow-xl"
-            >
-              <div>
-                {/* Visual UI / Architecture Mockup */}
-                <div className="mb-5">
-                  <ProjectMockup type={project.previewType} />
-                </div>
-
-                {/* Top Title & Links */}
-                <div className="flex items-start justify-between gap-4 mb-2">
-                  <div>
-                    <span className="text-[11px] font-mono text-indigo-400 font-semibold uppercase tracking-wider block mb-1">
-                      {project.category}
-                    </span>
-                    <h3 className="text-xl sm:text-2xl font-bold text-white dark:text-white light:text-slate-900 group-hover:text-indigo-400 transition-colors">
-                      {project.title}
-                    </h3>
-                  </div>
-
-                  <div className="flex items-center gap-1.5 shrink-0">
-                    <a
-                      href={project.github}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${project.title} GitHub repository`}
-                      className="p-2 rounded-lg bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-200 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white hover:bg-slate-700 transition-colors"
-                      title="View GitHub Repository"
-                    >
-                      <Github className="w-4 h-4" />
-                    </a>
-
-                    <a
-                      href={project.liveDemo}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`${project.title} Live Demo`}
-                      className="p-2 rounded-lg bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-200 text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white hover:bg-slate-700 transition-colors"
-                      title="Launch Live Demo"
-                    >
-                      <ExternalLink className="w-4 h-4" />
-                    </a>
-                  </div>
-                </div>
-
-                {/* Project Description */}
-                <p className="text-sm text-slate-300 dark:text-slate-300 light:text-slate-600 leading-relaxed mb-5">
-                  {project.description}
-                </p>
-
-                {/* Architecture Metric Pills */}
-                {project.metrics && (
-                  <div className="grid grid-cols-3 gap-2 mb-5 p-2.5 rounded-xl bg-slate-950/60 border border-slate-800/80 text-[11px] text-center font-mono">
-                    {project.metrics.map((metric, mIdx) => (
-                      <div key={mIdx}>
-                        <p className="text-[10px] text-slate-500">{metric.label}</p>
-                        <p className="text-xs font-semibold text-slate-200 mt-0.5">{metric.value}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Technology Badges */}
-                <div className="flex flex-wrap gap-1.5 mb-6">
-                  {project.technologies.map((tech) => (
-                    <span
-                      key={tech}
-                      className="text-xs font-mono px-2.5 py-1 rounded-md bg-slate-800/90 dark:bg-slate-800/90 light:bg-slate-100 text-indigo-300 dark:text-indigo-300 light:text-indigo-700 border border-slate-700/60 dark:border-slate-700/60 light:border-slate-300"
-                    >
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              {/* Bottom Buttons: View Details, GitHub, Live Demo */}
-              <div className="pt-4 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200 flex flex-wrap items-center gap-2.5">
-                <button
-                  onClick={() => setSelectedProject(project)}
-                  className="flex-1 inline-flex items-center justify-center gap-1.5 px-4 py-2.5 rounded-xl text-xs sm:text-sm font-semibold bg-indigo-600 hover:bg-indigo-500 text-white shadow-md shadow-indigo-600/20 transition-all cursor-pointer hover:shadow-indigo-600/40"
-                >
-                  <Eye className="w-4 h-4" />
-                  <span>View Details</span>
-                </button>
-
-                <a
-                  href={project.github}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-slate-800 dark:bg-slate-800 light:bg-slate-100 hover:bg-slate-700 text-slate-200 dark:text-slate-200 light:text-slate-800 border border-slate-700 transition-colors"
-                >
-                  <Github className="w-3.5 h-3.5" />
-                  <span>GitHub</span>
-                </a>
-
-                <a
-                  href={project.liveDemo}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="inline-flex items-center justify-center gap-1.5 px-3.5 py-2.5 rounded-xl text-xs sm:text-sm font-medium bg-slate-800 dark:bg-slate-800 light:bg-slate-100 hover:bg-slate-700 text-slate-200 dark:text-slate-200 light:text-slate-800 border border-slate-700 transition-colors"
-                >
-                  <ExternalLink className="w-3.5 h-3.5" />
-                  <span>Demo</span>
-                </a>
-              </div>
-            </div>
+        {/* Project cards */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+          gap: 24,
+        }}>
+          {filtered.map((proj, i) => (
+            <ProjectCard key={proj.id} project={proj} delay={i} />
           ))}
         </div>
-
       </div>
-
-      {/* Details Modal */}
-      {selectedProject && (
-        <ProjectModal
-          project={selectedProject}
-          onClose={() => setSelectedProject(null)}
-        />
-      )}
     </section>
   );
+}
+
+function ProjectCard({ project, delay }) {
+  const [hovered, setHovered] = useState(false);
+
+  return (
+    <div
+      className={`glass-card project-card reveal delay-${delay + 1}`}
+      onMouseEnter={() => setHovered(true)}
+      onMouseLeave={() => setHovered(false)}
+      style={{ padding: 28, display: 'flex', flexDirection: 'column', gap: 16 }}
+    >
+      {/* Top bar */}
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <span style={{
+          padding: '4px 12px', borderRadius: 999,
+          background: 'rgba(99,102,241,0.12)', border: '1px solid rgba(99,102,241,0.25)',
+          color: '#a5b4fc', fontSize: '0.72rem', fontWeight: 600,
+        }}>{project.category}</span>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <a href={project.github} target="_blank" rel="noopener noreferrer" style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: 'rgba(255,255,255,0.05)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'var(--text-secondary)', textDecoration: 'none', fontSize: 14,
+            transition: 'all 0.2s',
+          }} title="GitHub">⌥</a>
+          <a href={project.liveDemo} target="_blank" rel="noopener noreferrer" style={{
+            width: 32, height: 32, borderRadius: 8,
+            background: 'rgba(255,255,255,0.05)',
+            border: '1px solid rgba(255,255,255,0.08)',
+            display: 'flex', alignItems: 'center', justifyContent: 'center',
+            color: 'var(--text-secondary)', textDecoration: 'none', fontSize: 14,
+            transition: 'all 0.2s',
+          }} title="Live Demo">↗</a>
+        </div>
+      </div>
+
+      {/* Gradient preview */}
+      <div style={{
+        height: 120, borderRadius: 12,
+        background: `linear-gradient(135deg, ${getGradient(project.id)})`,
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontSize: 36, position: 'relative', overflow: 'hidden',
+      }}>
+        {getIcon(project.id)}
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'linear-gradient(to bottom, transparent 40%, rgba(3,7,18,0.8))',
+        }} />
+      </div>
+
+      {/* Title & desc */}
+      <div>
+        <h3 style={{
+          fontWeight: 700, fontSize: '1.1rem',
+          color: 'var(--text-primary)', marginBottom: 8,
+        }}>{project.title}</h3>
+        <p style={{
+          color: 'var(--text-secondary)', fontSize: '0.875rem', lineHeight: 1.65,
+        }}>{project.description}</p>
+      </div>
+
+      {/* Features */}
+      <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 6 }}>
+        {project.features.slice(0, 3).map((f, i) => (
+          <li key={i} style={{
+            display: 'flex', gap: 8, alignItems: 'flex-start',
+            fontSize: '0.8rem', color: 'var(--text-muted)',
+          }}>
+            <span style={{ color: '#6366f1', flexShrink: 0, marginTop: 1 }}>▸</span>
+            {f}
+          </li>
+        ))}
+      </ul>
+
+      {/* Tech pills */}
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+        {project.technologies.map(t => (
+          <span key={t} className="tech-badge" style={{ padding: '3px 10px', fontSize: '0.72rem' }}>{t}</span>
+        ))}
+      </div>
+
+      {/* Footer buttons */}
+      <div style={{ display: 'flex', gap: 10, marginTop: 'auto', paddingTop: 4 }}>
+        <a href={project.github} target="_blank" rel="noopener noreferrer"
+          className="btn-outline" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', padding: '8px 0', fontSize: '0.82rem' }}>
+          GitHub
+        </a>
+        <a href={project.liveDemo} target="_blank" rel="noopener noreferrer"
+          className="btn-primary" style={{ flex: 1, textDecoration: 'none', textAlign: 'center', padding: '8px 0', fontSize: '0.82rem' }}>
+          Live Demo ↗
+        </a>
+      </div>
+    </div>
+  );
+}
+
+function getGradient(id) {
+  const g = {
+    'crm-app': 'rgba(99,102,241,0.3), rgba(6,182,212,0.15)',
+    'journal-mgmt': 'rgba(16,185,129,0.3), rgba(6,182,212,0.15)',
+    'student-mgmt': 'rgba(168,85,247,0.3), rgba(99,102,241,0.15)',
+    'bank-mgmt': 'rgba(245,158,11,0.3), rgba(239,68,68,0.15)',
+  };
+  return g[id] || 'rgba(99,102,241,0.2), rgba(6,182,212,0.1)';
+}
+
+function getIcon(id) {
+  const icons = {
+    'crm-app': '🤝',
+    'journal-mgmt': '📔',
+    'student-mgmt': '🎓',
+    'bank-mgmt': '🏦',
+  };
+  return icons[id] || '💻';
 }

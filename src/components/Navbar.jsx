@@ -1,138 +1,180 @@
-import React, { useState, useEffect } from 'react';
-import { Menu, X, FileText, ChevronRight, Code } from 'lucide-react';
-import ThemeToggle from './ThemeToggle';
-import { personalInfo } from '../data/portfolioData';
+import { useState } from 'react';
 
 export default function Navbar({ onOpenResume }) {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 20);
-    };
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
-    { name: 'Home', href: '#home' },
-    { name: 'About', href: '#about' },
-    { name: 'Services', href: '#services' },
-    { name: 'Skills', href: '#skills' },
-    { name: 'Experience', href: '#experience' },
-    { name: 'Projects', href: '#projects' },
-    { name: 'Education', href: '#education' },
-    { name: 'Contact', href: '#contact' },
+    { href: '#home', label: 'Home' },
+    { href: '#about', label: 'About' },
+    { href: '#skills', label: 'Skills' },
+    { href: '#projects', label: 'Projects' },
+    { href: '#experience', label: 'Experience' },
+    { href: '#education', label: 'Education' },
+    { href: '#contact', label: 'Contact' },
   ];
 
-  const handleLinkClick = () => {
-    setMobileMenuOpen(false);
-  };
-
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-40 transition-all duration-300 ${
-        scrolled
-          ? 'glass-nav py-3.5 shadow-lg shadow-black/5 dark:shadow-black/20'
-          : 'bg-transparent py-5'
-      }`}
-    >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between">
-          {/* Logo / Brand */}
-          <a
-            href="#home"
-            className="flex items-center gap-2.5 group focus:outline-none"
+    <nav style={{
+      position: 'fixed', top: 0, left: 0, right: 0, zIndex: 500,
+      height: 64,
+      display: 'flex', alignItems: 'center',
+    }} className="glass-nav">
+      <div style={{
+        maxWidth: 1200, width: '100%', margin: '0 auto',
+        padding: '0 24px', display: 'flex', alignItems: 'center', justifyContent: 'space-between',
+      }}>
+        {/* Logo with Professional Photo */}
+        <a href="#home" style={{ textDecoration: 'none', display: 'flex', alignItems: 'center', gap: 12 }}>
+          <div style={{
+            position: 'relative',
+            width: 42,
+            height: 42,
+            borderRadius: '50%',
+            padding: '2px',
+            background: 'linear-gradient(135deg, #6366f1, #06b6d4, #a855f7)',
+            boxShadow: '0 0 16px rgba(99, 102, 241, 0.5)',
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+            <img
+              src="/images/rahul-hero.jpg"
+              alt="Rahul More"
+              style={{
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                objectFit: 'cover',
+                objectPosition: 'center 15%',
+                display: 'block',
+              }}
+            />
+            {/* Live active dot */}
+            <span style={{
+              position: 'absolute',
+              bottom: 1,
+              right: 1,
+              width: 10,
+              height: 10,
+              borderRadius: '50%',
+              background: '#22c55e',
+              border: '2px solid #030712',
+              boxShadow: '0 0 6px #22c55e',
+            }} />
+          </div>
+          <div style={{ display: 'flex', flexDirection: 'column' }}>
+            <span style={{
+              fontWeight: 800,
+              fontSize: '1.02rem',
+              color: 'var(--text-primary)',
+              letterSpacing: '-0.02em',
+              lineHeight: 1.2,
+            }}>
+              Rahul<span className="gradient-text-static"> More</span>
+            </span>
+            <span style={{
+              fontSize: '0.68rem',
+              color: 'var(--text-muted)',
+              fontFamily: "'JetBrains Mono', monospace",
+              letterSpacing: '0.04em',
+            }}>
+              Software Dev
+            </span>
+          </div>
+        </a>
+
+        {/* Desktop Links */}
+        <div style={{ display: 'flex', gap: 6, alignItems: 'center' }} className="desktop-nav">
+          {navLinks.map(l => (
+            <a
+              key={l.href}
+              href={l.href}
+              style={{
+                padding: '6px 14px', borderRadius: 8,
+                textDecoration: 'none', color: 'var(--text-secondary)',
+                fontSize: '0.875rem', fontWeight: 500,
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={e => {
+                e.target.style.color = '#f8fafc';
+                e.target.style.background = 'rgba(255,255,255,0.06)';
+              }}
+              onMouseLeave={e => {
+                e.target.style.color = 'var(--text-secondary)';
+                e.target.style.background = 'transparent';
+              }}
+            >
+              {l.label}
+            </a>
+          ))}
+        </div>
+
+        {/* Right actions */}
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <button
+            onClick={onOpenResume}
+            className="btn-primary"
+            style={{ padding: '7px 18px', fontSize: '0.85rem' }}
           >
-            <div className="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-500/20 group-hover:scale-105 transition-transform duration-200">
-              <span className="font-mono text-base">RM</span>
-            </div>
-            <div className="flex flex-col">
-              <span className="font-bold text-base sm:text-lg tracking-tight text-slate-100 dark:text-slate-100 light:text-slate-900 group-hover:text-indigo-400 transition-colors">
-                Rahul More
-              </span>
-              <span className="text-[11px] font-mono text-indigo-400 dark:text-indigo-400 light:text-indigo-600 -mt-1">
-                Software Developer
-              </span>
-            </div>
-          </a>
-
-          {/* Desktop Navigation Links */}
-          <nav className="hidden lg:flex items-center space-x-1 xl:space-x-2">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                className="px-3 py-1.5 rounded-lg text-sm font-medium text-slate-300 dark:text-slate-300 light:text-slate-700 hover:text-white dark:hover:text-white light:hover:text-slate-900 hover:bg-slate-800/60 dark:hover:bg-slate-800/60 light:hover:bg-slate-200 transition-all"
-              >
-                {link.name}
-              </a>
-            ))}
-          </nav>
-
-          {/* Right Action Icons: Theme Toggle + Resume Button */}
-          <div className="hidden sm:flex items-center gap-3">
-            <ThemeToggle />
-
-            <button
-              onClick={onOpenResume}
-              type="button"
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-500 hover:to-indigo-500 text-white shadow-md shadow-indigo-600/25 transition-all duration-200 hover:shadow-indigo-600/40 hover:-translate-y-0.5 cursor-pointer"
-            >
-              <FileText className="w-4 h-4" />
-              <span>Resume</span>
-            </button>
-          </div>
-
-          {/* Mobile Menu & Theme Buttons */}
-          <div className="flex sm:hidden items-center gap-2">
-            <ThemeToggle />
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              type="button"
-              aria-label="Toggle Navigation Menu"
-              className="p-2 rounded-xl bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-100 text-slate-300 dark:text-slate-300 light:text-slate-800 hover:bg-slate-700 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-            >
-              {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
-          </div>
+            Resume
+          </button>
+          {/* Hamburger */}
+          <button
+            className="hamburger"
+            onClick={() => setMenuOpen(o => !o)}
+            style={{
+              display: 'none', background: 'none', border: 'none',
+              color: 'var(--text-primary)', cursor: 'pointer',
+              fontSize: 22, lineHeight: 1, padding: 4,
+            }}
+          >
+            {menuOpen ? '✕' : '☰'}
+          </button>
         </div>
       </div>
 
-      {/* Mobile Drawer Menu */}
-      {mobileMenuOpen && (
-        <div className="lg:hidden glass-nav border-b border-slate-800 dark:border-slate-800 light:border-slate-200 px-4 pt-3 pb-6 space-y-1 shadow-2xl">
-          <div className="flex flex-col space-y-1">
-            {navLinks.map((link) => (
-              <a
-                key={link.name}
-                href={link.href}
-                onClick={handleLinkClick}
-                className="flex items-center justify-between px-3 py-2.5 rounded-lg text-sm font-medium text-slate-200 dark:text-slate-200 light:text-slate-800 hover:bg-slate-800 dark:hover:bg-slate-800 light:hover:bg-slate-200 transition-colors"
-              >
-                <span>{link.name}</span>
-                <ChevronRight className="w-4 h-4 text-slate-500" />
-              </a>
-            ))}
-          </div>
-
-          <div className="pt-4 border-t border-slate-800/70 dark:border-slate-800/70 light:border-slate-300">
+      {/* Mobile Menu */}
+      {menuOpen && (
+        <div style={{
+          position: 'absolute', top: 64, left: 0, right: 0,
+          background: 'rgba(3,7,18,0.97)', backdropFilter: 'blur(24px)',
+          borderBottom: '1px solid rgba(255,255,255,0.08)',
+          padding: '16px 24px 24px',
+          display: 'flex', flexDirection: 'column', gap: 4,
+        }}>
+          {navLinks.map(l => (
             <a
-              href={personalInfo.resumeUrl}
-              download
-              target="_blank"
-              rel="noreferrer"
-              onClick={handleLinkClick}
-              className="w-full inline-flex items-center justify-center gap-2 px-4 py-2.5 rounded-xl text-sm font-semibold bg-gradient-to-r from-blue-600 to-indigo-600 text-white shadow-md shadow-indigo-600/20"
+              key={l.href}
+              href={l.href}
+              onClick={() => setMenuOpen(false)}
+              style={{
+                padding: '12px 16px', borderRadius: 10,
+                textDecoration: 'none', color: 'var(--text-secondary)',
+                fontSize: '1rem', fontWeight: 500,
+                transition: 'all 0.2s',
+                borderBottom: '1px solid rgba(255,255,255,0.04)',
+              }}
             >
-              <FileText className="w-4 h-4" />
-              <span>Download Resume</span>
+              {l.label}
             </a>
-          </div>
+          ))}
+          <button
+            onClick={() => { setMenuOpen(false); onOpenResume(); }}
+            className="btn-primary"
+            style={{ marginTop: 12, width: '100%', textAlign: 'center' }}
+          >
+            📄 View Resume
+          </button>
         </div>
       )}
-    </header>
+
+      <style>{`
+        @media (max-width: 820px) {
+          .desktop-nav { display: none !important; }
+          .hamburger { display: flex !important; }
+        }
+      `}</style>
+    </nav>
   );
 }

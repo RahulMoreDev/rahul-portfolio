@@ -1,87 +1,131 @@
-import React from 'react';
-import { GraduationCap, Layers, Network, BookOpen, CheckCircle, Code2, Award } from 'lucide-react';
 import { personalInfo } from '../data/portfolioData';
 
 export default function About() {
-  const highlightIcons = [
-    GraduationCap,
-    Layers,
-    Network,
-    BookOpen
-  ];
-
   return (
-    <section id="about" className="py-20 bg-slate-900/50 dark:bg-slate-900/50 light:bg-slate-50 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 dark:text-indigo-400 light:text-indigo-600 border border-indigo-500/20 mb-3">
-            <Code2 className="w-3.5 h-3.5" /> About Me
+    <section id="about" style={{
+      padding: '120px 24px',
+      background: 'var(--bg-secondary)',
+      position: 'relative',
+      overflow: 'hidden',
+    }}>
+      {/* Subtle orb */}
+      <div style={{
+        position: 'absolute', width: 400, height: 400,
+        borderRadius: '50%',
+        background: 'radial-gradient(circle, rgba(168,85,247,0.07), transparent)',
+        top: '10%', left: '-100px',
+        filter: 'blur(60px)', pointerEvents: 'none',
+      }} />
+
+      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
+        {/* Section header */}
+        <div className="reveal" style={{ textAlign: 'center', marginBottom: 72 }}>
+          <div className="section-label" style={{ margin: '0 auto 16px' }}>
+            <span className="dot" />
+            About Me
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white dark:text-white light:text-slate-900">
-            Passionate About Engineering Scalable Software
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 2.8rem)',
+            fontWeight: 800, letterSpacing: '-0.02em',
+            color: 'var(--text-primary)',
+          }}>
+            Who I <span className="gradient-text-static">Am</span>
           </h2>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-          
-          {/* Main About Text */}
-          <div className="lg:col-span-7 space-y-6">
-            <div className="glass-panel p-6 sm:p-8 rounded-2xl space-y-5 text-slate-300 dark:text-slate-300 light:text-slate-700 leading-relaxed text-base sm:text-lg">
-              <p>
-                I’m <strong className="text-white dark:text-white light:text-slate-900 font-semibold">Rahul More</strong>, a Computer Engineering graduate and software developer interested in building reliable and user-friendly web applications. I work with technologies across frontend and backend development, including React.js, Node.js, Java, Spring Boot, REST APIs and databases.
-              </p>
-              <p>
-                I enjoy learning new technologies, solving programming problems and turning ideas into practical applications.
-              </p>
-
-              <div className="pt-4 border-t border-slate-700/50 dark:border-slate-700/50 light:border-slate-200 grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
-                <div className="flex items-center gap-2 text-slate-300 dark:text-slate-300 light:text-slate-800">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span>Degree: B.E. Computer Engineering</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300 dark:text-slate-300 light:text-slate-800">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span>Focus: Full Stack & Backend APIs</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300 dark:text-slate-300 light:text-slate-800">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span>Clean Code & Design Patterns</span>
-                </div>
-                <div className="flex items-center gap-2 text-slate-300 dark:text-slate-300 light:text-slate-800">
-                  <CheckCircle className="w-4 h-4 text-emerald-400" />
-                  <span>Active Problem Solver</span>
-                </div>
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: '1fr 1fr',
+          gap: 60,
+          alignItems: 'center',
+        }} className="about-grid">
+          {/* Photo side */}
+          <div className="reveal-left" style={{ display: 'flex', justifyContent: 'center' }}>
+            <div style={{ position: 'relative', display: 'inline-block' }}>
+              <div style={{
+                position: 'absolute', inset: -2, borderRadius: 24,
+                background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
+                zIndex: 0,
+              }} />
+              <img
+                src="/images/rahul-about.jpg"
+                alt="Rahul More"
+                style={{
+                  width: 'clamp(240px, 22vw, 340px)',
+                  height: 'clamp(280px, 28vw, 420px)',
+                  objectFit: 'cover',
+                  objectPosition: 'top center',
+                  borderRadius: 22,
+                  display: 'block',
+                  position: 'relative',
+                  zIndex: 1,
+                }}
+              />
+              {/* Info card on photo */}
+              <div className="glass-card" style={{
+                position: 'absolute', bottom: -24, right: -30,
+                padding: '14px 20px', zIndex: 10,
+              }}>
+                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 4 }}>📍 Location</div>
+                <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Maharashtra, India</div>
+                <div style={{ fontSize: '0.72rem', color: '#a5b4fc', marginTop: 4 }}>Open to Remote 🌐</div>
               </div>
             </div>
           </div>
 
-          {/* 4 Cards / Highlight Statistics */}
-          <div className="lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 gap-4">
-            {personalInfo.stats.map((stat, index) => {
-              const IconComponent = highlightIcons[index % highlightIcons.length];
-              return (
-                <div
-                  key={stat.title}
-                  className="p-5 rounded-2xl glass-panel hover:border-indigo-500/50 transition-all duration-300 group hover:-translate-y-1"
-                >
-                  <div className="w-10 h-10 rounded-xl bg-indigo-500/10 text-indigo-400 dark:text-indigo-400 light:text-indigo-600 flex items-center justify-center mb-3 group-hover:scale-110 group-hover:bg-indigo-500/20 transition-all">
-                    <IconComponent className="w-5 h-5" />
-                  </div>
-                  <h3 className="font-bold text-sm sm:text-base text-white dark:text-white light:text-slate-900 mb-1">
-                    {stat.title}
-                  </h3>
-                  <p className="text-xs text-slate-400 dark:text-slate-400 light:text-slate-600 leading-normal">
-                    {stat.subtitle}
-                  </p>
-                </div>
-              );
-            })}
-          </div>
+          {/* Text side */}
+          <div className="reveal-right" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
+            <p style={{
+              color: 'var(--text-secondary)',
+              fontSize: 'clamp(0.95rem, 1.2vw, 1.05rem)',
+              lineHeight: 1.85,
+            }}>
+              {personalInfo.about}
+            </p>
 
+            {/* Info list */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+              {[
+                { label: '🎓 Degree', value: 'B.E. Computer Engineering' },
+                { label: '🏫 University', value: 'Sant Gadge Baba Amravati University' },
+                { label: '📊 CGPA', value: '8.0 / 10' },
+                { label: '💼 Company', value: 'Raveblue' },
+                { label: '📧 Email', value: personalInfo.email },
+              ].map(item => (
+                <div key={item.label} style={{
+                  display: 'flex', alignItems: 'center', gap: 16,
+                  padding: '12px 16px',
+                  background: 'rgba(255,255,255,0.03)',
+                  borderRadius: 10,
+                  border: '1px solid rgba(255,255,255,0.06)',
+                }}>
+                  <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', minWidth: 130 }}>{item.label}</span>
+                  <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>{item.value}</span>
+                </div>
+              ))}
+            </div>
+
+            {/* CTA */}
+            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
+              <a href={personalInfo.github} target="_blank" rel="noopener noreferrer"
+                className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                GitHub Profile
+              </a>
+              <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"
+                className="btn-outline" style={{ textDecoration: 'none', display: 'inline-block' }}>
+                LinkedIn
+              </a>
+            </div>
+          </div>
         </div>
       </div>
+
+      <style>{`
+        @media (max-width: 768px) {
+          .about-grid { grid-template-columns: 1fr !important; text-align: center; }
+          .about-grid > div:first-child { order: -1; }
+        }
+      `}</style>
     </section>
   );
 }

@@ -1,68 +1,72 @@
-import React from 'react';
-import { GraduationCap, Calendar, Award, Building, Sparkles, CheckCircle2 } from 'lucide-react';
 import { education } from '../data/portfolioData';
+
+const ICONS = ['🎓', '🏫', '📚', '🏫'];
+const COLORS = ['#6366f1', '#06b6d4', '#a855f7', '#f59e0b'];
 
 export default function Education() {
   return (
-    <section id="education" className="py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        
-        {/* Section Heading */}
-        <div className="text-center max-w-3xl mx-auto mb-16">
-          <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full text-xs font-semibold bg-indigo-500/10 text-indigo-400 dark:text-indigo-400 light:text-indigo-600 border border-indigo-500/20 mb-3">
-            <GraduationCap className="w-3.5 h-3.5" /> Academic Background
+    <section id="education" style={{ padding: '120px 24px', background: 'var(--bg-secondary)', position: 'relative' }}>
+      <div style={{ maxWidth: 1000, margin: '0 auto' }}>
+        {/* Header */}
+        <div className="reveal" style={{ textAlign: 'center', marginBottom: 72 }}>
+          <div className="section-label" style={{ margin: '0 auto 16px' }}>
+            <span className="dot" />
+            Education
           </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white dark:text-white light:text-slate-900">
-            Education & Qualifications
+          <h2 style={{
+            fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800,
+            letterSpacing: '-0.02em', color: 'var(--text-primary)',
+          }}>
+            Academic <span className="gradient-text-static">Journey</span>
           </h2>
-          <p className="mt-3 text-slate-400 dark:text-slate-400 light:text-slate-600 text-sm sm:text-base">
-            Academic milestones building core computer science foundation and engineering discipline.
-          </p>
         </div>
 
-        {/* Education Timeline */}
-        <div className="max-w-4xl mx-auto space-y-6">
-          {education.map((item, index) => (
-            <div
-              key={index}
-              className="relative pl-6 sm:pl-8 pb-6 last:pb-0 border-l-2 border-indigo-500/40 dark:border-indigo-500/40 light:border-indigo-300"
-            >
-              {/* Dot */}
-              <div className="absolute -left-[9px] top-1 w-4 h-4 rounded-full bg-indigo-600 border-4 border-slate-900 dark:border-slate-900 light:border-white shadow-sm"></div>
+        {/* Cards */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 20 }}>
+          {education.map((edu, i) => (
+            <div key={i} className={`glass-card reveal delay-${i + 1}`}
+              style={{ padding: 28, display: 'flex', gap: 20, alignItems: 'flex-start' }}>
 
-              {/* Card */}
-              <div className="glass-panel p-6 sm:p-7 rounded-2xl hover:border-indigo-500/40 transition-all duration-300 shadow-md">
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3">
+              {/* Icon */}
+              <div style={{
+                width: 52, height: 52, borderRadius: 14, flexShrink: 0,
+                background: `${COLORS[i]}18`,
+                border: `1px solid ${COLORS[i]}40`,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                fontSize: 22,
+              }}>
+                {ICONS[i]}
+              </div>
+
+              <div style={{ flex: 1 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between', flexWrap: 'wrap', gap: 8, marginBottom: 8 }}>
                   <div>
-                    <h3 className="text-xl sm:text-2xl font-bold text-white dark:text-white light:text-slate-900">
-                      {item.degree}
+                    <h3 style={{ fontWeight: 700, fontSize: '1.05rem', color: 'var(--text-primary)', marginBottom: 4 }}>
+                      {edu.degree}
                     </h3>
-                    <div className="flex items-center gap-2 text-indigo-400 dark:text-indigo-400 light:text-indigo-600 font-medium text-sm sm:text-base mt-1">
-                      <Building className="w-4 h-4" />
-                      <span>{item.institution}</span>
-                    </div>
+                    <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem' }}>{edu.institution}</p>
                   </div>
-
-                  <div className="flex flex-wrap sm:flex-col sm:items-end gap-2">
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-medium bg-slate-800/80 dark:bg-slate-800/80 light:bg-slate-200 text-slate-300 dark:text-slate-300 light:text-slate-800 border border-slate-700/60 dark:border-slate-700/60 light:border-slate-300">
-                      <Calendar className="w-3.5 h-3.5" />
-                      {item.period}
-                    </span>
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-mono font-semibold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
-                      <Award className="w-3.5 h-3.5" />
-                      {item.grade}
-                    </span>
+                  <div style={{ display: 'flex', gap: 8, alignItems: 'flex-start', flexWrap: 'wrap' }}>
+                    <span style={{
+                      padding: '4px 12px', borderRadius: 999, fontSize: '0.75rem', fontWeight: 600,
+                      background: `${COLORS[i]}15`, border: `1px solid ${COLORS[i]}35`,
+                      color: COLORS[i],
+                    }}>{edu.grade}</span>
+                    <span style={{
+                      padding: '4px 12px', borderRadius: 999, fontSize: '0.75rem',
+                      background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.08)',
+                      color: 'var(--text-muted)',
+                    }}>{edu.period}</span>
                   </div>
                 </div>
-
-                <p className="text-xs sm:text-sm text-slate-400 dark:text-slate-400 light:text-slate-600 leading-relaxed pt-2 border-t border-slate-800/80 dark:border-slate-800/80 light:border-slate-200">
-                  {item.highlight}
-                </p>
+                <p style={{
+                  color: 'var(--text-muted)', fontSize: '0.82rem', lineHeight: 1.65,
+                  marginTop: 8,
+                }}>{edu.highlight}</p>
               </div>
             </div>
           ))}
         </div>
-
       </div>
     </section>
   );
