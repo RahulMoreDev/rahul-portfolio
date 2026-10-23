@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { X, Printer, ExternalLink, Mail, MapPin, Globe, Github, Linkedin, Award, Briefcase, GraduationCap, Code } from 'lucide-react';
 
-export default function ResumeModal({ isOpen, onClose }) {
+export default function ResumeModal({ isOpen = true, onClose }) {
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') onClose();
@@ -16,7 +16,7 @@ export default function ResumeModal({ isOpen, onClose }) {
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  if (isOpen === false) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-6 bg-slate-950/85 backdrop-blur-md animate-fadeIn">

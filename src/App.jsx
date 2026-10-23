@@ -51,7 +51,7 @@ export default function App() {
 
       {/* Resume Modal */}
       {resumeOpen && (
-        <ResumeModal onClose={() => setResumeOpen(false)} />
+        <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
       )}
     </>
   );
