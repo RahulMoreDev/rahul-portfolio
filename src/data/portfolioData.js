@@ -12,7 +12,7 @@ export const personalInfo = {
 I enjoy learning new technologies, solving programming problems and turning ideas into practical applications.`,
   email: "rahulmore.engineer@gmail.com",
   github: "https://github.com/RahulMoreDev",
-  linkedin: "https://www.linkedin.com/in/rahul-more-3849a4377/",
+  linkedin: "https://www.linkedin.com/in/rahul-more-3849a4377",
   resumeUrl: "/Rahul-More-Resume.pdf",
   location: "Maharashtra, India",
   stats: [

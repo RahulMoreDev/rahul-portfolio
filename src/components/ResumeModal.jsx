@@ -76,7 +76,7 @@ export default function ResumeModal({ isOpen = true, onClose }) {
               <a href="https://github.com/RahulMoreDev" target="_blank" rel="noreferrer" className="flex items-center gap-1 text-blue-600 hover:underline">
                 <Github className="w-3.5 h-3.5" /> github.com/RahulMoreDev
               </a>
-              <a href="https://www.linkedin.com/in/rahul-more-3849a4377/" target="_blank" rel="noreferrer" className="flex items-center gap-1 text-blue-600 hover:underline">
+              <a href="https://www.linkedin.com/in/rahul-more-3849a4377" target="_blank" rel="noreferrer" className="flex items-center gap-1 text-blue-600 hover:underline">
                 <Linkedin className="w-3.5 h-3.5" /> linkedin.com/in/rahul-more-3849a4377
               </a>
             </div>
