@@ -15,7 +15,7 @@ export default function Contact() {
 
   const contactLinks = [
     { icon: '📧', label: 'Email', value: personalInfo.email, href: `mailto:${personalInfo.email}` },
-    { icon: '💼', label: 'LinkedIn', value: 'linkedin.com/in/rahulmore', href: personalInfo.linkedin },
+    { icon: '💼', label: 'LinkedIn', value: 'linkedin.com/in/rahul-more-3849a4377', href: personalInfo.linkedin },
     { icon: '⌥', label: 'GitHub', value: 'github.com/RahulMoreDev', href: personalInfo.github },
     { icon: '📍', label: 'Location', value: 'Maharashtra, India', href: null },
   ];
