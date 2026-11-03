@@ -7,14 +7,23 @@ export default function Contact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const mailto = `mailto:${personalInfo.email}?subject=${encodeURIComponent(form.subject || 'Cyber-Comms: ' + form.name)}&body=${encodeURIComponent(`[TRANSMISSION INITIATED]\n\nSender: ${form.name}\nEmail: ${form.email}\n\nPayload:\n${form.message}`)}`;
-    window.location.href = mailto;
+    const subject = encodeURIComponent(form.subject || `Cyber-Comms: ${form.name}`);
+    const body = encodeURIComponent(
+      `[TRANSMISSION INITIATED]\n\nSender: ${form.name}\nEmail: ${form.email}\n\nPayload:\n${form.message}`
+    );
+    const gmailUrl = `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}&su=${subject}&body=${body}`;
+    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
     setSent(true);
     setTimeout(() => setSent(false), 4000);
   };
 
   const commChannels = [
-    { label: 'DIRECT EMAIL', value: personalInfo.email, href: `mailto:${personalInfo.email}`, icon: '✉' },
+    {
+      label: 'DIRECT EMAIL',
+      value: personalInfo.email,
+      href: personalInfo.emailUrl || `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}`,
+      icon: '✉',
+    },
     { label: 'LINKEDIN TERMINAL', value: 'linkedin.com/in/rahul-more-3849a4377', href: personalInfo.linkedin, icon: '🔗' },
     { label: 'GITHUB VAULT', value: 'github.com/RahulMoreDev', href: personalInfo.github, icon: '⌥' },
     { label: 'GEO LOCATION', value: 'Maharashtra, India // IST [UTC+5:30]', href: null, icon: '📍' },

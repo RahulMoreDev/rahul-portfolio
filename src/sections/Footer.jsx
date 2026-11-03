@@ -59,7 +59,7 @@ export default function Footer() {
             {[
               { label: 'GITHUB', href: personalInfo.github },
               { label: 'LINKEDIN', href: personalInfo.linkedin },
-              { label: 'EMAIL', href: `mailto:${personalInfo.email}` },
+              { label: 'EMAIL', href: personalInfo.emailUrl || `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}` },
             ].map((link) => (
               <a
                 key={link.label}

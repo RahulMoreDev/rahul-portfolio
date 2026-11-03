@@ -7,10 +7,10 @@ const JARVIS_REPLIES = {
   projects: "Rahul's active deployment files include: CRM Application, Journal Management System, Student Management System, and Bank Management System.",
   experience: "Rahul currently engineers high-performance web applications and secure RESTful services at Raveblue.",
   education: "Credentials verified: Bachelor of Computer Engineering from Sant Gadge Baba Amravati University with 8.0 CGPA.",
-  hire: "Rahul is fully available for full-stack and backend roles. You may dispatch an encrypted transmission to rahulmore.engineer@gmail.com.",
-  contact: "Direct comms frequency: rahulmore.engineer@gmail.com | LinkedIn: linkedin.com/in/rahul-more-3849a4377",
+  hire: "Rahul is fully available for full-stack and backend roles. You may dispatch an encrypted transmission to rahulm3503@gmail.com.",
+  contact: "Direct comms frequency: rahulm3503@gmail.com | LinkedIn: linkedin.com/in/rahul-more-3849a4377",
   resume: "Resume protocols ready. You can trigger the 'VIEW RESUME' button in the navigation bar to inspect the ATS-standard dossier.",
-  default: "Command acknowledged. For custom inquiries or employment opportunities, direct transmission to rahulmore.engineer@gmail.com is advised.",
+  default: "Command acknowledged. For custom inquiries or employment opportunities, direct transmission to rahulm3503@gmail.com is advised.",
 };
 
 function getJarvisReply(text) {

@@ -52,10 +52,12 @@ export default function Footer() {
             </a>
 
             <a
-              href={`mailto:${personalInfo.email}`}
+              href={personalInfo.emailUrl || `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}`}
+              target="_blank"
+              rel="noreferrer"
               aria-label="Email Rahul More"
               className="p-2.5 rounded-xl bg-slate-900 dark:bg-slate-900 light:bg-slate-200 hover:bg-slate-800 text-indigo-400 hover:text-indigo-300 transition-colors border border-slate-800 dark:border-slate-800 light:border-slate-300"
-              title="Email"
+              title="Email Rahul More (Gmail)"
             >
               <Mail className="w-4 h-4" />
             </a>

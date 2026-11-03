@@ -10,7 +10,8 @@ export const personalInfo = {
   about: `I’m Rahul More, a Computer Engineering graduate and software developer interested in building reliable and user-friendly web applications. I work with technologies across frontend and backend development, including React.js, Node.js, Java, Spring Boot, REST APIs and databases.
 
 I enjoy learning new technologies, solving programming problems and turning ideas into practical applications.`,
-  email: "rahulmore.engineer@gmail.com",
+  email: "rahulm3503@gmail.com",
+  emailUrl: "https://mail.google.com/mail/?view=cm&fs=1&to=rahulm3503@gmail.com",
   github: "https://github.com/RahulMoreDev",
   linkedin: "https://www.linkedin.com/in/rahul-more-3849a4377",
   resumeUrl: "/Rahul-More-Resume.pdf",

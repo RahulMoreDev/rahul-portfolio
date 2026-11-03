@@ -208,7 +208,7 @@ export default function ResumeModal({ isOpen = true, onClose }) {
 
               {/* Contact Bar */}
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '14px', fontSize: '0.78rem', color: '#475569' }}>
-                <a href={`mailto:${personalInfo.email}`} style={{ color: '#2563eb', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500 }}>
+                <a href={personalInfo.emailUrl || `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}`} target="_blank" rel="noreferrer" style={{ color: '#2563eb', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500 }}>
                   <Mail size={13} /> {personalInfo.email}
                 </a>
                 <span style={{ color: '#cbd5e1' }}>•</span>
