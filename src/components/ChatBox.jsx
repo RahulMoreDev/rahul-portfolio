@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { playHudSound, speakJarvis } from '../utils/jarvisVoiceEngine';
 
 const JARVIS_GREETING = "J.A.R.V.I.S. Protocol active. Welcome to Rahul More's system core. How may I assist you, sir?";
 
@@ -30,22 +31,86 @@ export default function ChatBox() {
   const [messages, setMessages] = useState([{ type: 'bot', text: JARVIS_GREETING }]);
   const [input, setInput] = useState('');
   const [computing, setComputing] = useState(false);
+  const [voiceEnabled, setVoiceEnabled] = useState(true);
+  const [isListening, setIsListening] = useState(false);
   const bottomRef = useRef(null);
+  const recognitionRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages, computing]);
 
-  const send = () => {
-    const txt = input.trim();
+  // Speech recognition setup for chatbox mic
+  useEffect(() => {
+    const SpeechRecognition =
+      typeof window !== 'undefined'
+        ? window.SpeechRecognition || window.webkitSpeechRecognition
+        : null;
+
+    if (!SpeechRecognition) return;
+
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.lang = 'en-US';
+
+    rec.onstart = () => {
+      setIsListening(true);
+      playHudSound('activate');
+    };
+
+    rec.onresult = (e) => {
+      const speech = e.results[0][0].transcript;
+      setInput(speech);
+      sendQuery(speech);
+    };
+
+    rec.onerror = () => setIsListening(false);
+    rec.onend = () => setIsListening(false);
+
+    recognitionRef.current = rec;
+  }, []);
+
+  const toggleMic = () => {
+    if (!recognitionRef.current) return;
+    if (isListening) {
+      recognitionRef.current.stop();
+      setIsListening(false);
+    } else {
+      try {
+        recognitionRef.current.start();
+      } catch (err) {}
+    }
+  };
+
+  const sendQuery = (overrideText) => {
+    const txt = (overrideText !== undefined ? overrideText : input).trim();
     if (!txt) return;
     setMessages((m) => [...m, { type: 'user', text: txt }]);
     setInput('');
     setComputing(true);
+    playHudSound('beep');
+
     setTimeout(() => {
+      const reply = getJarvisReply(txt);
       setComputing(false);
-      setMessages((m) => [...m, { type: 'bot', text: getJarvisReply(txt) }]);
-    }, 800);
+      setMessages((m) => [...m, { type: 'bot', text: reply }]);
+      if (voiceEnabled) {
+        speakJarvis(reply);
+      }
+    }, 700);
+  };
+
+  const handleOpenToggle = () => {
+    const nextOpen = !open;
+    setOpen(nextOpen);
+    if (nextOpen) {
+      playHudSound('activate');
+      if (voiceEnabled && messages.length === 1) {
+        speakJarvis(JARVIS_GREETING);
+      }
+    } else {
+      playHudSound('deactivate');
+    }
   };
 
   return (
@@ -58,7 +123,7 @@ export default function ChatBox() {
             position: 'absolute',
             bottom: 70,
             right: 0,
-            width: 'min(360px, 92vw)',
+            width: 'min(380px, 92vw)',
             borderRadius: 8,
             overflow: 'hidden',
             boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.35)',
@@ -83,18 +148,35 @@ export default function ChatBox() {
                 J.A.R.V.I.S. // AI_ASSISTANT
               </span>
             </div>
-            <button
-              onClick={() => setOpen(false)}
-              style={{
-                background: 'none',
-                border: 'none',
-                color: 'var(--hud-cyan)',
-                fontSize: 16,
-                cursor: 'pointer',
-              }}
-            >
-              ✕
-            </button>
+
+            <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+              <button
+                onClick={() => setVoiceEnabled(!voiceEnabled)}
+                title={voiceEnabled ? 'Mute Voice' : 'Unmute Voice'}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: voiceEnabled ? 'var(--hud-cyan)' : 'var(--text-muted)',
+                  fontSize: 14,
+                  cursor: 'pointer',
+                }}
+              >
+                {voiceEnabled ? '🔊' : '🔇'}
+              </button>
+
+              <button
+                onClick={handleOpenToggle}
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  color: 'var(--hud-cyan)',
+                  fontSize: 16,
+                  cursor: 'pointer',
+                }}
+              >
+                ✕
+              </button>
+            </div>
           </div>
 
           {/* Messages Feed */}
@@ -156,7 +238,10 @@ export default function ChatBox() {
             {['Skills', 'Projects', 'Experience', 'Hire'].map((chip) => (
               <button
                 key={chip}
-                onClick={() => setInput(chip)}
+                onClick={() => {
+                  setInput(chip);
+                  sendQuery(chip);
+                }}
                 className="font-mono-hud"
                 style={{
                   padding: '3px 8px',
@@ -173,12 +258,13 @@ export default function ChatBox() {
             ))}
           </div>
 
-          {/* Input Box */}
+          {/* Input Box with Voice Mic Button */}
           <div
             style={{
               padding: '10px 12px',
               borderTop: '1px solid rgba(0, 229, 255, 0.15)',
               display: 'flex',
+              alignItems: 'center',
               gap: 8,
             }}
           >
@@ -186,13 +272,13 @@ export default function ChatBox() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyDown={(e) => e.key === 'Enter' && send()}
-              placeholder="Query J.A.R.V.I.S..."
+              onKeyDown={(e) => e.key === 'Enter' && sendQuery()}
+              placeholder={isListening ? 'Listening to voice...' : 'Query J.A.R.V.I.S...'}
               className="font-mono-hud"
               style={{
                 flex: 1,
                 background: 'rgba(0, 229, 255, 0.05)',
-                border: '1px solid rgba(0, 229, 255, 0.2)',
+                border: isListening ? '1px solid #00ffaa' : '1px solid rgba(0, 229, 255, 0.2)',
                 borderRadius: 4,
                 padding: '6px 10px',
                 color: '#ffffff',
@@ -200,8 +286,28 @@ export default function ChatBox() {
                 outline: 'none',
               }}
             />
+
+            {/* Mic Button */}
             <button
-              onClick={send}
+              onClick={toggleMic}
+              title={isListening ? 'Stop Listening' : 'Speak to J.A.R.V.I.S.'}
+              style={{
+                padding: '6px 10px',
+                background: isListening ? 'rgba(0, 255, 170, 0.2)' : 'rgba(0, 229, 255, 0.1)',
+                border: `1px solid ${isListening ? '#00ffaa' : 'rgba(0, 229, 255, 0.3)'}`,
+                color: isListening ? '#00ffaa' : 'var(--hud-cyan)',
+                borderRadius: 4,
+                cursor: 'pointer',
+                fontSize: '0.85rem',
+                animation: isListening ? 'pulseGreen 0.7s infinite' : 'none',
+              }}
+            >
+              🎙️
+            </button>
+
+            {/* Send Button */}
+            <button
+              onClick={() => sendQuery()}
               className="font-hud"
               style={{
                 padding: '6px 12px',
@@ -222,7 +328,7 @@ export default function ChatBox() {
 
       {/* Toggle Button */}
       <button
-        onClick={() => setOpen(!open)}
+        onClick={handleOpenToggle}
         className="hud-panel"
         style={{
           width: 54,

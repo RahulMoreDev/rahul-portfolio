@@ -153,7 +153,7 @@ export default function Hero({ onOpenResume }) {
             </span>
           </div>
 
-          {/* Cyber CTA Buttons */}
+          {/* Cyber CTA Buttons & Voice Command Trigger */}
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 6 }}>
             <a href="#projects" className="btn-hud-primary">
               <span>⬡</span>
@@ -168,6 +168,22 @@ export default function Hero({ onOpenResume }) {
             <button onClick={onOpenResume} className="btn-hud-secondary">
               <span>📄</span>
               <span>VIEW RESUME</span>
+            </button>
+
+            <button
+              onClick={() => {
+                window.dispatchEvent(new CustomEvent('jarvis-voice-trigger'));
+              }}
+              className="btn-hud-secondary"
+              style={{
+                borderColor: 'var(--hud-cyan)',
+                background: 'rgba(0, 229, 255, 0.08)',
+                boxShadow: '0 0 18px rgba(0, 229, 255, 0.25)',
+              }}
+              title="Activate J.A.R.V.I.S. Voice Command System"
+            >
+              <span>🎙️</span>
+              <span>VOICE PROTOCOL</span>
             </button>
           </div>
 

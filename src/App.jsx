@@ -5,6 +5,7 @@ import Navbar from './components/Navbar';
 import MouseGlow from './components/MouseGlow';
 import ParticleCanvas from './components/ParticleCanvas';
 import ChatBox from './components/ChatBox';
+import JarvisVoiceHUD from './components/JarvisVoiceHUD';
 import ResumeModal from './components/ResumeModal';
 
 // J.A.R.V.I.S. HUD Sections
@@ -49,7 +50,13 @@ export default function App() {
       {/* 7. Floating J.A.R.V.I.S. AI Core */}
       <ChatBox />
 
-      {/* 8. Full Document ATS-Standard Resume Modal */}
+      {/* 8. J.A.R.V.I.S. Authentic Voice Command HUD */}
+      <JarvisVoiceHUD
+        onOpenResume={() => setResumeOpen(true)}
+        onCloseResume={() => setResumeOpen(false)}
+      />
+
+      {/* 9. Full Document ATS-Standard Resume Modal */}
       {resumeOpen && (
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
       )}

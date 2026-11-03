@@ -141,8 +141,21 @@ export default function Navbar({ onOpenResume }) {
           ))}
         </div>
 
-        {/* Action Button: Access Resume */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+        {/* Action Button: Voice Command & Access Resume */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+          <button
+            onClick={() => window.dispatchEvent(new CustomEvent('jarvis-voice-trigger'))}
+            className="btn-hud-secondary hidden sm:inline-flex"
+            style={{
+              padding: '8px 14px',
+              fontSize: '0.75rem',
+            }}
+            title="Activate J.A.R.V.I.S. Voice Command System"
+          >
+            <span>🎙️</span>
+            <span>VOICE</span>
+          </button>
+
           <button
             onClick={onOpenResume}
             className="btn-hud-primary"
