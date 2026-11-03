@@ -1,501 +1,423 @@
-import { useState } from 'react';
-import Typewriter from '../components/Typewriter';
+import { useState, useEffect } from 'react';
 import { personalInfo } from '../data/portfolioData';
 
-// Rich details for tech stack popups
-const TECH_DETAILS = {
-  react: {
-    name: 'React.js & Tailwind CSS',
-    icon: '⚛️',
-    category: 'Frontend Architecture',
-    level: 'Advanced · 90%',
-    color: '#06b6d4',
-    bg: 'rgba(6, 182, 212, 0.15)',
-    description: 'Expertise in building component-driven single-page applications, custom hooks, responsive Tailwind layouts, and state management.',
-    project: 'CRM Application & Interactive Portfolios',
-  },
-  java: {
-    name: 'Java & Spring Boot',
-    icon: '☕',
-    category: 'Backend & Enterprise',
-    level: 'Advanced · 90%',
-    color: '#f59e0b',
-    bg: 'rgba(245, 158, 11, 0.15)',
-    description: 'Developing secure REST APIs, clean layered controller-service-repository patterns, and Spring Data JPA persistence.',
-    project: 'Journal Management System & Bank Management',
-  },
-  node: {
-    name: 'Node.js & REST APIs',
-    icon: '🚀',
-    category: 'API Engineering',
-    level: 'Intermediate · 85%',
-    color: '#22c55e',
-    bg: 'rgba(34, 197, 94, 0.15)',
-    description: 'Fast event-driven server backends, HTTP CRUD routing, JSON web tokens, and seamless database integration.',
-    project: 'CRM REST API Backend & Microservices',
-  },
-  database: {
-    name: 'MySQL & MongoDB',
-    icon: '🗄️',
-    category: 'Relational & NoSQL Data',
-    level: 'Advanced · 85%',
-    color: '#a855f7',
-    bg: 'rgba(168, 85, 247, 0.15)',
-    description: 'Schema modeling, relational table normalization, indexing, SQL queries, and MongoDB collection management.',
-    project: 'Student Management & CRM Database',
-  },
-  raveblue: {
-    name: 'Raveblue Experience',
-    icon: '💼',
-    category: 'Industry Work',
-    level: 'Current / Recent',
-    color: '#6366f1',
-    bg: 'rgba(99, 102, 241, 0.15)',
-    description: 'Engineering responsive user interfaces in React and robust RESTful APIs with Spring Boot and Node.js.',
-    project: 'Production software systems & agile sprints',
-  },
-};
+const TERMINAL_COMMANDS = [
+  'JARVIS > Rahul',
+  'JARVIS > Loading module [Full_Stack_Core]',
+  'JARVIS > Java & Spring Boot: STATUS_OPTIMAL',
+  'JARVIS > React.js & Node.js: PROTOCOLS_ARMED',
+  'JARVIS > REST API Pipelines: DEPLOYED',
+];
 
 export default function Hero({ onOpenResume }) {
-  const [activePopup, setActivePopup] = useState(null);
+  const [termText, setTermText] = useState('');
+  const [cmdIndex, setCmdIndex] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [charIndex, setCharIndex] = useState(0);
 
-  const togglePopup = (key) => {
-    setActivePopup(curr => (curr === key ? null : key));
-  };
+  // Terminal typewriter effect
+  useEffect(() => {
+    const currentCmd = TERMINAL_COMMANDS[cmdIndex];
+    let timeout;
+
+    if (!isDeleting && charIndex <= currentCmd.length) {
+      timeout = setTimeout(() => {
+        setTermText(currentCmd.slice(0, charIndex));
+        setCharIndex((c) => c + 1);
+      }, 70);
+    } else if (!isDeleting && charIndex > currentCmd.length) {
+      timeout = setTimeout(() => setIsDeleting(true), 2000);
+    } else if (isDeleting && charIndex >= 0) {
+      timeout = setTimeout(() => {
+        setTermText(currentCmd.slice(0, charIndex));
+        setCharIndex((c) => c - 1);
+      }, 35);
+    } else if (isDeleting && charIndex < 0) {
+      setIsDeleting(false);
+      setCharIndex(0);
+      setCmdIndex((i) => (i + 1) % TERMINAL_COMMANDS.length);
+    }
+
+    return () => clearTimeout(timeout);
+  }, [charIndex, isDeleting, cmdIndex]);
 
   return (
     <section
       id="home"
+      className="hero hud-grid-bg"
+      aria-label="Hero"
       style={{
         minHeight: '100vh',
         display: 'flex',
         alignItems: 'center',
         position: 'relative',
+        paddingTop: 100,
+        paddingBottom: 60,
         overflow: 'hidden',
-        paddingTop: 80,
-        paddingBottom: 40,
-        background: 'var(--bg-primary)',
       }}
     >
-      {/* Background grid */}
-      <div className="grid-bg" style={{ position: 'absolute', inset: 0, opacity: 0.4 }} />
-
-      {/* Ambient background orbs */}
-      <div className="orb orb-1" />
-      <div className="orb orb-2" />
-      <div className="orb orb-3" />
-
-      <div style={{
-        maxWidth: 1240,
-        margin: '0 auto',
-        padding: '40px 24px',
-        width: '100%',
-        position: 'relative',
-        zIndex: 1,
-        display: 'grid',
-        gridTemplateColumns: 'minmax(320px, 1.05fr) minmax(320px, 0.95fr)',
-        gap: '40px',
-        alignItems: 'center',
-      }}
+      <div
+        style={{
+          maxWidth: 1280,
+          margin: '0 auto',
+          padding: '0 28px',
+          width: '100%',
+          display: 'grid',
+          gridTemplateColumns: 'minmax(320px, 1.15fr) minmax(320px, 0.85fr)',
+          gap: 60,
+          alignItems: 'center',
+          position: 'relative',
+          zIndex: 2,
+        }}
         className="hero-grid"
       >
-        {/* ================= LEFT COLUMN: Text & CTAs ================= */}
+        {/* ================= LEFT: HUD Telemetry & Hero Heading ================= */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-          {/* Status badge */}
-          <div className="animate-fade-up" style={{ animationDelay: '0.1s', opacity: 0, animationFillMode: 'forwards' }}>
-            <div className="status-badge">
-              <span className="status-dot" />
-              Available for Full-Time & Freelance Roles
-            </div>
+          {/* System Online Badge */}
+          <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+            <span style={{ width: 20, height: 2, background: 'var(--hud-cyan)', boxShadow: '0 0 8px var(--hud-cyan)' }} />
+            <span
+              className="font-mono-hud"
+              style={{
+                fontSize: '0.75rem',
+                color: 'var(--hud-cyan)',
+                letterSpacing: '0.22em',
+                textTransform: 'uppercase',
+              }}
+            >
+              SYSTEM ONLINE — INITIATING
+            </span>
           </div>
 
-          {/* Heading */}
-          <div className="animate-fade-up" style={{ opacity: 0, animationFillMode: 'forwards', animationDelay: '0.2s' }}>
-            <div style={{
-              fontSize: 'clamp(0.85rem, 1.5vw, 1rem)',
-              color: 'var(--text-secondary)',
-              fontFamily: "'JetBrains Mono', monospace",
-              marginBottom: 10,
-              letterSpacing: '0.05em',
-            }}>
-              &gt; Hello, I'm
-            </div>
-            <h1 style={{
-              fontSize: 'clamp(2.7rem, 5.5vw, 4.4rem)',
-              fontWeight: 900,
-              lineHeight: 1.05,
-              color: 'var(--text-primary)',
-              letterSpacing: '-0.025em',
-              marginBottom: 12,
-            }}>
-              {personalInfo.name}
+          {/* Large Sci-Fi Name */}
+          <div>
+            <h1
+              className="font-hud"
+              style={{
+                fontSize: 'clamp(2.8rem, 6vw, 4.8rem)',
+                fontWeight: 900,
+                lineHeight: 1.05,
+                color: '#ffffff',
+                letterSpacing: '0.04em',
+                textTransform: 'uppercase',
+                textShadow: '0 0 35px rgba(0, 229, 255, 0.45)',
+                margin: 0,
+              }}
+            >
+              RAHUL<br />
+              MORE
             </h1>
-            <h2 style={{
-              fontSize: 'clamp(1.25rem, 2.5vw, 1.8rem)',
-              fontWeight: 600,
-              color: 'var(--text-secondary)',
-              marginBottom: 0,
-              minHeight: '2.2em',
-            }}>
-              <Typewriter />
-            </h2>
           </div>
 
-          {/* Tagline */}
-          <p className="animate-fade-up" style={{
-            opacity: 0,
-            animationFillMode: 'forwards',
-            animationDelay: '0.35s',
-            color: 'var(--text-secondary)',
-            fontSize: 'clamp(0.95rem, 1.25vw, 1.05rem)',
-            lineHeight: 1.75,
-            maxWidth: 530,
-          }}>
-            {personalInfo.tagline}
+          {/* Subtitle / Role Tag */}
+          <p
+            style={{
+              fontSize: 'clamp(1rem, 1.6vw, 1.25rem)',
+              color: 'var(--text-secondary)',
+              margin: 0,
+              fontWeight: 500,
+              letterSpacing: '0.02em',
+            }}
+          >
+            Full Stack Software Developer &nbsp;—&nbsp;{' '}
+            <span style={{ color: 'var(--hud-cyan)', fontWeight: 600 }}>Java • React • Spring Boot • Node.js</span>
           </p>
 
-          {/* Quick Metrics */}
-          <div className="animate-fade-up" style={{
-            opacity: 0,
-            animationFillMode: 'forwards',
-            animationDelay: '0.45s',
-            display: 'flex',
-            gap: 24,
-            flexWrap: 'wrap',
-          }}>
-            {[
-              { num: '4+', label: 'Projects Built' },
-              { num: '2+', label: 'Years Experience' },
-              { num: '8.0', label: 'B.E. CGPA' },
-              { num: '100%', label: 'Job Ready' },
-            ].map(s => (
-              <div key={s.label}>
-                <div style={{ fontSize: '1.75rem', fontWeight: 800, color: 'var(--text-primary)', lineHeight: 1 }}>
-                  <span className="gradient-text-static">{s.num}</span>
-                </div>
-                <div style={{ fontSize: '0.78rem', color: 'var(--text-muted)', marginTop: 4 }}>{s.label}</div>
-              </div>
-            ))}
+          {/* Interactive JARVIS Command Terminal Box */}
+          <div
+            className="hud-panel hud-corners"
+            style={{
+              padding: '14px 20px',
+              borderRadius: 6,
+              maxWidth: 540,
+              display: 'flex',
+              alignItems: 'center',
+              gap: 12,
+              background: 'rgba(6, 18, 36, 0.85)',
+              border: '1px solid rgba(0, 229, 255, 0.3)',
+              boxShadow: '0 0 20px rgba(0, 229, 255, 0.12), inset 0 0 15px rgba(0, 229, 255, 0.05)',
+            }}
+          >
+            <span style={{ color: 'var(--hud-cyan)', fontSize: '0.9rem' }}>⬡</span>
+            <span
+              className="font-mono-hud"
+              style={{
+                fontSize: '0.88rem',
+                color: 'var(--hud-cyan)',
+                letterSpacing: '0.05em',
+                flex: 1,
+              }}
+            >
+              {termText}
+              <span style={{ animation: 'pulseGreen 0.8s infinite', color: '#ffffff' }}>_</span>
+            </span>
           </div>
 
-          {/* CTA Buttons */}
-          <div className="animate-fade-up" style={{
-            opacity: 0,
-            animationFillMode: 'forwards',
-            animationDelay: '0.55s',
-            display: 'flex',
-            gap: 14,
-            flexWrap: 'wrap',
-            alignItems: 'center',
-          }}>
-            <a href="#projects" className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
-              View My Work →
+          {/* Cyber CTA Buttons */}
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 6 }}>
+            <a href="#projects" className="btn-hud-primary">
+              <span>⬡</span>
+              <span>ACCESS PROJECTS</span>
             </a>
-            <button onClick={onOpenResume} className="btn-outline">
-              📄 View Resume
+
+            <a href="#contact" className="btn-hud-secondary">
+              <span>⬡</span>
+              <span>CONTACT SYSTEM</span>
+            </a>
+
+            <button onClick={onOpenResume} className="btn-hud-secondary">
+              <span>📄</span>
+              <span>VIEW RESUME</span>
             </button>
-            <a href="#contact" className="btn-outline" style={{ textDecoration: 'none', display: 'inline-block' }}>
-              Contact Me
-            </a>
           </div>
 
-          {/* Interactive Tech Stack Dock */}
-          <div className="animate-fade-up" style={{
-            opacity: 0,
-            animationFillMode: 'forwards',
-            animationDelay: '0.65s',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: 10,
-            marginTop: 6,
-          }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-              <span style={{ fontSize: '0.75rem', color: 'var(--text-muted)', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600 }}>
-                ⚡ Click tech to explore:
-              </span>
+          {/* System Telemetry & Status Badges */}
+          <div
+            className="font-mono-hud"
+            style={{
+              display: 'flex',
+              flexWrap: 'wrap',
+              alignItems: 'center',
+              gap: 20,
+              fontSize: '0.74rem',
+              color: 'var(--text-muted)',
+              letterSpacing: '0.12em',
+              textTransform: 'uppercase',
+              marginTop: 10,
+              paddingTop: 16,
+              borderTop: '1px solid rgba(0, 229, 255, 0.1)',
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <span className="status-pip status-pip-cyan" />
+              <span>SYSTEM ACTIVE</span>
             </div>
 
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}>
-              {[
-                { key: 'react', label: 'React.js', icon: '⚛️' },
-                { key: 'java', label: 'Spring Boot & Java', icon: '☕' },
-                { key: 'node', label: 'Node.js & APIs', icon: '🚀' },
-                { key: 'database', label: 'MySQL & Mongo', icon: '🗄️' },
-              ].map(item => (
-                <button
-                  key={item.key}
-                  onClick={() => togglePopup(item.key)}
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    gap: 6,
-                    padding: '6px 14px',
-                    borderRadius: 999,
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    cursor: 'pointer',
-                    transition: 'all 0.25s',
-                    background: activePopup === item.key ? 'rgba(99, 102, 241, 0.25)' : 'rgba(255, 255, 255, 0.04)',
-                    border: activePopup === item.key ? '1px solid rgba(99, 102, 241, 0.6)' : '1px solid rgba(255, 255, 255, 0.08)',
-                    color: activePopup === item.key ? '#ffffff' : '#cbd5e1',
-                    boxShadow: activePopup === item.key ? '0 0 16px rgba(99, 102, 241, 0.3)' : 'none',
-                  }}
-                >
-                  <span>{item.icon}</span>
-                  <span>{item.label}</span>
-                </button>
-              ))}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <span className="status-pip status-pip-green" />
+              <span style={{ color: 'var(--hud-green)' }}>AVAILABLE FOR HIRE</span>
             </div>
 
-            {/* Expanded Tech Popup Details Box */}
-            {activePopup && TECH_DETAILS[activePopup] && (
-              <div
-                className="glass-card animate-fade-in"
-                style={{
-                  padding: '16px 20px',
-                  borderRadius: 14,
-                  border: `1px solid ${TECH_DETAILS[activePopup].color}50`,
-                  background: 'rgba(13, 17, 23, 0.95)',
-                  marginTop: 6,
-                  position: 'relative',
-                }}
-              >
-                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 8 }}>
-                  <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
-                    <span style={{ fontSize: '1.4rem' }}>{TECH_DETAILS[activePopup].icon}</span>
-                    <div>
-                      <h4 style={{ fontWeight: 700, fontSize: '0.95rem', color: '#f8fafc', margin: 0 }}>
-                        {TECH_DETAILS[activePopup].name}
-                      </h4>
-                      <span style={{ fontSize: '0.72rem', color: TECH_DETAILS[activePopup].color, fontWeight: 600 }}>
-                        {TECH_DETAILS[activePopup].category} · {TECH_DETAILS[activePopup].level}
-                      </span>
-                    </div>
-                  </div>
-                  <button
-                    onClick={() => setActivePopup(null)}
-                    style={{
-                      background: 'none',
-                      border: 'none',
-                      color: 'var(--text-muted)',
-                      cursor: 'pointer',
-                      fontSize: 16,
-                      lineHeight: 1,
-                    }}
-                  >
-                    ✕
-                  </button>
-                </div>
-                <p style={{ color: 'var(--text-secondary)', fontSize: '0.82rem', lineHeight: 1.6, margin: '6px 0 8px' }}>
-                  {TECH_DETAILS[activePopup].description}
-                </p>
-                <div style={{ fontSize: '0.75rem', color: 'var(--text-muted)' }}>
-                  🎯 Featured in: <span style={{ color: '#a5b4fc', fontWeight: 500 }}>{TECH_DETAILS[activePopup].project}</span>
-                </div>
-              </div>
-            )}
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7, color: 'var(--text-muted)' }}>
+              <span>SCROLL ▾</span>
+            </div>
           </div>
         </div>
 
-        {/* ================= RIGHT COLUMN: Professional Photo & Floating Tech Popups ================= */}
+        {/* ================= RIGHT: Interactive Rotating Arc Reactor HUD ================= */}
         <div
-          className="animate-fade-up hero-photo-container"
           style={{
             display: 'flex',
-            justifyContent: 'center',
             alignItems: 'center',
-            opacity: 0,
-            animationFillMode: 'forwards',
-            animationDelay: '0.3s',
+            justifyContent: 'center',
             position: 'relative',
-            padding: '40px 30px',
           }}
         >
-          <div style={{ position: 'relative', width: 'fit-content' }}>
-            {/* Ambient Background Aura */}
-            <div className="hero-photo-glow" />
-
-            {/* Floating Tech Popup 1: Top Right (React & Tailwind) */}
-            <div
-              className="tech-popup-card tech-popup-card-1"
-              style={{ top: -16, right: -30 }}
-              onClick={() => togglePopup('react')}
-              title="Click for details"
-            >
-              <div style={{
-                width: 38,
-                height: 38,
-                borderRadius: 10,
-                background: 'rgba(6, 182, 212, 0.15)',
-                border: '1px solid rgba(6, 182, 212, 0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-              }}>
-                ⚛️
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#f8fafc' }}>React & Tailwind</div>
-                <div style={{ fontSize: '0.7rem', color: '#06b6d4', fontWeight: 500 }}>Frontend UI · 90%</div>
-              </div>
-            </div>
-
-            {/* Floating Tech Popup 2: Top Left (Spring Boot & Java) */}
-            <div
-              className="tech-popup-card tech-popup-card-2"
-              style={{ top: 30, left: -45 }}
-              onClick={() => togglePopup('java')}
-              title="Click for details"
-            >
-              <div style={{
-                width: 38,
-                height: 38,
-                borderRadius: 10,
-                background: 'rgba(245, 158, 11, 0.15)',
-                border: '1px solid rgba(245, 158, 11, 0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-              }}>
-                ☕
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#f8fafc' }}>Java & Spring Boot</div>
-                <div style={{ fontSize: '0.7rem', color: '#f59e0b', fontWeight: 500 }}>REST API Services</div>
-              </div>
-            </div>
-
-            {/* Floating Tech Popup 3: Bottom Right (MySQL & MongoDB) */}
-            <div
-              className="tech-popup-card tech-popup-card-3"
-              style={{ bottom: 35, right: -40 }}
-              onClick={() => togglePopup('database')}
-              title="Click for details"
-            >
-              <div style={{
-                width: 38,
-                height: 38,
-                borderRadius: 10,
-                background: 'rgba(168, 85, 247, 0.15)',
-                border: '1px solid rgba(168, 85, 247, 0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-              }}>
-                🗄️
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#f8fafc' }}>MySQL & MongoDB</div>
-                <div style={{ fontSize: '0.7rem', color: '#c084fc', fontWeight: 500 }}>Schema & ORM JPA</div>
-              </div>
-            </div>
-
-            {/* Floating Tech Popup 4: Bottom Left (Raveblue Engineer) */}
-            <div
-              className="tech-popup-card tech-popup-card-4"
-              style={{ bottom: -20, left: -30 }}
-              onClick={() => togglePopup('raveblue')}
-              title="Click for details"
-            >
-              <div style={{
-                width: 38,
-                height: 38,
-                borderRadius: 10,
-                background: 'rgba(34, 197, 94, 0.15)',
-                border: '1px solid rgba(34, 197, 94, 0.4)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                fontSize: 20,
-              }}>
-                💼
-              </div>
-              <div style={{ textAlign: 'left' }}>
-                <div style={{ fontWeight: 700, fontSize: '0.85rem', color: '#f8fafc' }}>Software Developer</div>
-                <div style={{ fontSize: '0.7rem', color: '#86efac', fontWeight: 500 }}>@ Raveblue IT</div>
-              </div>
-            </div>
-
-            {/* Professional Framed Portrait Container */}
-            <div style={{
+          {/* Main Reactor Assembly Frame */}
+          <div
+            style={{
               position: 'relative',
-              borderRadius: 32,
-              padding: 4,
-              background: 'linear-gradient(135deg, rgba(99, 102, 241, 0.8), rgba(6, 182, 212, 0.8), rgba(168, 85, 247, 0.8))',
-              boxShadow: '0 24px 60px rgba(0, 0, 0, 0.7), 0 0 40px rgba(99, 102, 241, 0.3)',
-            }}>
-              <div style={{
+              width: 'min(420px, 85vw)',
+              height: 'min(420px, 85vw)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+            }}
+          >
+            {/* Ambient Cyan Aura */}
+            <div
+              className="pulse-reactor"
+              style={{
+                position: 'absolute',
+                width: '70%',
+                height: '70%',
+                borderRadius: '50%',
+                background: 'radial-gradient(circle, rgba(0, 229, 255, 0.35) 0%, transparent 70%)',
+                filter: 'blur(30px)',
+                pointerEvents: 'none',
+              }}
+            />
+
+            {/* Outermost Thin HUD Ring */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                borderRadius: '50%',
+                border: '1px solid rgba(0, 229, 255, 0.2)',
+              }}
+            />
+
+            {/* Rotating Outer Segment Ring */}
+            <div
+              className="spin-slow"
+              style={{
+                position: 'absolute',
+                inset: 15,
+                borderRadius: '50%',
+                border: '2px dashed rgba(0, 229, 255, 0.45)',
+              }}
+            />
+
+            {/* Rotating Mid Ring Counter-Clockwise */}
+            <div
+              className="spin-slow-reverse"
+              style={{
+                position: 'absolute',
+                inset: 45,
+                borderRadius: '50%',
+                border: '1px dotted rgba(0, 229, 255, 0.65)',
+              }}
+            />
+
+            {/* Inner Glowing Reactor Ring */}
+            <div
+              style={{
+                position: 'absolute',
+                inset: 75,
+                borderRadius: '50%',
+                border: '3px solid var(--hud-cyan)',
+                boxShadow: '0 0 35px rgba(0, 229, 255, 0.7), inset 0 0 25px rgba(0, 229, 255, 0.5)',
+              }}
+            />
+
+            {/* Center Core: [ RM ] with Rahul's portrait or monogram */}
+            <div
+              className="hud-panel"
+              style={{
                 position: 'relative',
-                borderRadius: 28,
+                width: 140,
+                height: 140,
+                borderRadius: '50%',
+                display: 'flex',
+                flexDirection: 'column',
+                alignItems: 'center',
+                justifyContent: 'center',
+                background: 'rgba(4, 8, 16, 0.95)',
+                border: '2px solid var(--hud-cyan)',
+                boxShadow: '0 0 30px rgba(0, 229, 255, 0.8), inset 0 0 20px rgba(0, 229, 255, 0.3)',
+                zIndex: 10,
                 overflow: 'hidden',
-                background: '#0a0e17',
-              }}>
-                <img
-                  src="/images/rahul-hero.jpg"
-                  alt="Rahul More - Software Developer"
-                  style={{
-                    width: 'clamp(270px, 28vw, 370px)',
-                    height: 'clamp(340px, 36vw, 470px)',
-                    objectFit: 'cover',
-                    objectPosition: 'center 12%',
-                    display: 'block',
-                    filter: 'contrast(1.05) brightness(1.02)',
-                  }}
-                />
-
-                {/* Subtle top badge inside photo */}
-                <div style={{
+              }}
+            >
+              {/* Optional overlay photo with cyber treatment */}
+              <img
+                src="/images/rahul-hero.jpg"
+                alt="Rahul More"
+                style={{
                   position: 'absolute',
-                  top: 14,
-                  left: 14,
-                  padding: '5px 12px',
-                  borderRadius: 999,
-                  background: 'rgba(3, 7, 18, 0.75)',
-                  backdropFilter: 'blur(12px)',
-                  border: '1px solid rgba(255, 255, 255, 0.15)',
-                  fontSize: '0.72rem',
-                  fontWeight: 600,
-                  color: '#e2e8f0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: 6,
-                }}>
-                  <span style={{ width: 6, height: 6, borderRadius: '50%', background: '#22c55e', boxShadow: '0 0 8px #22c55e' }} />
-                  Full Stack Engineer
-                </div>
+                  inset: 0,
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  opacity: 0.28,
+                  filter: 'contrast(1.3) grayscale(0.5)',
+                }}
+              />
+              <span
+                className="font-hud"
+                style={{
+                  position: 'relative',
+                  fontSize: '1.9rem',
+                  fontWeight: 900,
+                  color: 'var(--hud-cyan)',
+                  letterSpacing: '0.12em',
+                  textShadow: '0 0 15px rgba(0, 229, 255, 0.9)',
+                }}
+              >
+                RM
+              </span>
+              <span
+                className="font-mono-hud"
+                style={{
+                  position: 'relative',
+                  fontSize: '0.62rem',
+                  color: 'var(--hud-green)',
+                  letterSpacing: '0.15em',
+                  textTransform: 'uppercase',
+                  marginTop: -2,
+                }}
+              >
+                CORE ACTIVE
+              </span>
+            </div>
 
-                {/* Bottom glass pedestal gradient */}
-                <div style={{
-                  position: 'absolute',
-                  bottom: 0,
-                  left: 0,
-                  right: 0,
-                  height: 90,
-                  background: 'linear-gradient(to top, rgba(3, 7, 18, 0.95), transparent)',
-                  display: 'flex',
-                  alignItems: 'flex-end',
-                  justifyContent: 'center',
-                  paddingBottom: 14,
-                }}>
-                  <div style={{
-                    fontSize: '0.78rem',
-                    color: '#94a3b8',
-                    fontFamily: "'JetBrains Mono', monospace",
-                    letterSpacing: '0.04em',
-                  }}>
-                    &lt;Rahul More /&gt;
-                  </div>
-                </div>
-              </div>
+            {/* Orbiting Satellite Badges (Identical to your screenshot) */}
+            {/* Top Right: Java */}
+            <div
+              className="hud-panel"
+              style={{
+                position: 'absolute',
+                top: '6%',
+                right: '-6%',
+                padding: '6px 14px',
+                borderRadius: 4,
+                border: '1px solid rgba(0, 229, 255, 0.4)',
+                background: 'rgba(6, 18, 36, 0.9)',
+              }}
+            >
+              <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
+                JAVA 21
+              </span>
+            </div>
+
+            {/* Middle Right: React 19 */}
+            <div
+              className="hud-panel"
+              style={{
+                position: 'absolute',
+                bottom: '22%',
+                right: '-8%',
+                padding: '6px 14px',
+                borderRadius: 4,
+                border: '1px solid rgba(0, 229, 255, 0.4)',
+                background: 'rgba(6, 18, 36, 0.9)',
+              }}
+            >
+              <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
+                REACT 19
+              </span>
+            </div>
+
+            {/* Middle Left: Node.js */}
+            <div
+              className="hud-panel"
+              style={{
+                position: 'absolute',
+                top: '46%',
+                left: '-12%',
+                padding: '6px 14px',
+                borderRadius: 4,
+                border: '1px solid rgba(0, 229, 255, 0.4)',
+                background: 'rgba(6, 18, 36, 0.9)',
+              }}
+            >
+              <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
+                NODE.JS
+              </span>
+            </div>
+
+            {/* Bottom: DSA / Spring Boot */}
+            <div
+              className="hud-panel"
+              style={{
+                position: 'absolute',
+                bottom: '-2%',
+                left: '26%',
+                padding: '6px 14px',
+                borderRadius: 4,
+                border: '1px solid rgba(0, 229, 255, 0.4)',
+                background: 'rgba(6, 18, 36, 0.9)',
+              }}
+            >
+              <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
+                SPRING BOOT
+              </span>
             </div>
           </div>
         </div>
       </div>
 
-      {/* Responsive adjustments */}
       <style>{`
         @media (max-width: 900px) {
           .hero-grid {
@@ -505,30 +427,9 @@ export default function Hero({ onOpenResume }) {
           .hero-grid > div:first-child {
             align-items: center;
           }
-          .hero-photo-container {
+          .hero-grid > div:last-child {
             order: -1;
-            padding: 30px 10px !important;
-          }
-          .tech-popup-card {
-            padding: 6px 10px !important;
-            font-size: 0.75rem !important;
-          }
-          .tech-popup-card-1 { right: -10px !important; top: -10px !important; }
-          .tech-popup-card-2 { left: -15px !important; top: 15px !important; }
-          .tech-popup-card-3 { right: -15px !important; bottom: 20px !important; }
-          .tech-popup-card-4 { left: -10px !important; bottom: -15px !important; }
-        }
-        @media (max-width: 520px) {
-          .tech-popup-card {
-            position: static !important;
-            animation: none !important;
-            display: inline-flex !important;
-            margin: 4px !important;
-          }
-          .hero-photo-container > div {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
+            margin-bottom: 20px;
           }
         }
       `}</style>

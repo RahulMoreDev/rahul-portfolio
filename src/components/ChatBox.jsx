@@ -1,144 +1,248 @@
 import { useState, useRef, useEffect } from 'react';
 
-const GREETINGS = [
-  "👋 Hi! I'm Rahul's portfolio assistant. How can I help you?",
-];
+const JARVIS_GREETING = "J.A.R.V.I.S. Protocol active. Welcome to Rahul More's system core. How may I assist you, sir?";
 
-const AUTO_REPLIES = {
-  skills: "💡 Rahul is skilled in React.js, Java, Spring Boot, Node.js, MySQL, MongoDB, and more!",
-  project: "🚀 Rahul has built a CRM App, Journal Management System, Student Management System, and Bank Management System.",
-  contact: "📧 You can reach Rahul at rahulmore.engineer@gmail.com or connect on LinkedIn.",
-  experience: "💼 Rahul works as a Software Developer / IT Engineer at Raveblue.",
-  education: "🎓 Rahul completed B.E. Computer Engineering from Sant Gadge Baba Amravati University with CGPA 8.0.",
-  hire: "🤝 Rahul is open to opportunities! Send an email to rahulmore.engineer@gmail.com",
-  resume: "📄 You can download Rahul's resume using the Resume button in the navbar.",
-  default: "🤔 That's a great question! You can reach Rahul directly at rahulmore.engineer@gmail.com for more details.",
+const JARVIS_REPLIES = {
+  skills: "System diagnostics report proficiency in Java, Spring Boot, React.js, Node.js, REST APIs, MySQL, and MongoDB.",
+  projects: "Rahul's active deployment files include: CRM Application, Journal Management System, Student Management System, and Bank Management System.",
+  experience: "Rahul currently engineers high-performance web applications and secure RESTful services at Raveblue.",
+  education: "Credentials verified: Bachelor of Computer Engineering from Sant Gadge Baba Amravati University with 8.0 CGPA.",
+  hire: "Rahul is fully available for full-stack and backend roles. You may dispatch an encrypted transmission to rahulmore.engineer@gmail.com.",
+  contact: "Direct comms frequency: rahulmore.engineer@gmail.com | LinkedIn: linkedin.com/in/rahul-more-3849a4377",
+  resume: "Resume protocols ready. You can trigger the 'VIEW RESUME' button in the navigation bar to inspect the ATS-standard dossier.",
+  default: "Command acknowledged. For custom inquiries or employment opportunities, direct transmission to rahulmore.engineer@gmail.com is advised.",
 };
 
-function getReply(text) {
+function getJarvisReply(text) {
   const t = text.toLowerCase();
-  if (t.includes('skill') || t.includes('tech') || t.includes('language')) return AUTO_REPLIES.skills;
-  if (t.includes('project') || t.includes('work') || t.includes('built')) return AUTO_REPLIES.project;
-  if (t.includes('contact') || t.includes('email') || t.includes('reach')) return AUTO_REPLIES.contact;
-  if (t.includes('experience') || t.includes('job') || t.includes('company')) return AUTO_REPLIES.experience;
-  if (t.includes('education') || t.includes('degree') || t.includes('university')) return AUTO_REPLIES.education;
-  if (t.includes('hire') || t.includes('available') || t.includes('freelance')) return AUTO_REPLIES.hire;
-  if (t.includes('resume') || t.includes('cv')) return AUTO_REPLIES.resume;
-  return AUTO_REPLIES.default;
+  if (t.includes('skill') || t.includes('tech') || t.includes('stack')) return JARVIS_REPLIES.skills;
+  if (t.includes('project') || t.includes('work') || t.includes('built')) return JARVIS_REPLIES.projects;
+  if (t.includes('experience') || t.includes('job') || t.includes('raveblue')) return JARVIS_REPLIES.experience;
+  if (t.includes('education') || t.includes('degree') || t.includes('cgpa')) return JARVIS_REPLIES.education;
+  if (t.includes('hire') || t.includes('available') || t.includes('recruit')) return JARVIS_REPLIES.hire;
+  if (t.includes('contact') || t.includes('email') || t.includes('reach')) return JARVIS_REPLIES.contact;
+  if (t.includes('resume') || t.includes('cv')) return JARVIS_REPLIES.resume;
+  return JARVIS_REPLIES.default;
 }
 
 export default function ChatBox() {
   const [open, setOpen] = useState(false);
-  const [messages, setMessages] = useState([{ type: 'bot', text: GREETINGS[0] }]);
+  const [messages, setMessages] = useState([{ type: 'bot', text: JARVIS_GREETING }]);
   const [input, setInput] = useState('');
-  const [typing, setTyping] = useState(false);
+  const [computing, setComputing] = useState(false);
   const bottomRef = useRef(null);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
-  }, [messages, typing]);
+  }, [messages, computing]);
 
   const send = () => {
     const txt = input.trim();
     if (!txt) return;
     setMessages((m) => [...m, { type: 'user', text: txt }]);
     setInput('');
-    setTyping(true);
+    setComputing(true);
     setTimeout(() => {
-      setTyping(false);
-      setMessages((m) => [...m, { type: 'bot', text: getReply(txt) }]);
-    }, 900);
+      setComputing(false);
+      setMessages((m) => [...m, { type: 'bot', text: getJarvisReply(txt) }]);
+    }, 800);
   };
 
   return (
-    <div className="chat-widget">
-      {/* Panel */}
-      <div className={`chat-panel ${open ? 'open' : 'closed'}`}>
-        {/* Header */}
-        <div style={{
-          padding: '16px 18px',
-          background: 'linear-gradient(135deg, rgba(99,102,241,0.2), rgba(6,182,212,0.1))',
-          borderBottom: '1px solid rgba(255,255,255,0.06)',
-          display: 'flex', alignItems: 'center', gap: '10px'
-        }}>
-          <div style={{
-            width: 36, height: 36, borderRadius: '50%',
-            background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
-            display: 'flex', alignItems: 'center', justifyContent: 'center',
-            fontSize: 16, flexShrink: 0
-          }}>🤖</div>
-          <div>
-            <div style={{ fontWeight: 600, fontSize: '0.9rem', color: '#f8fafc' }}>Portfolio Assistant</div>
-            <div style={{ fontSize: '0.72rem', color: '#86efac', display: 'flex', alignItems: 'center', gap: 5 }}>
-              <span style={{ width: 6, height: 6, background: '#22c55e', borderRadius: '50%', display: 'inline-block' }} />
-              Online
-            </div>
-          </div>
-          <button onClick={() => setOpen(false)} style={{
-            marginLeft: 'auto', background: 'none', border: 'none',
-            color: '#64748b', cursor: 'pointer', fontSize: 18, lineHeight: 1
-          }}>×</button>
-        </div>
-
-        {/* Messages */}
-        <div className="chat-messages">
-          {messages.map((m, i) => (
-            <div key={i} className={`chat-msg ${m.type}`}>{m.text}</div>
-          ))}
-          {typing && (
-            <div className="chat-msg bot" style={{ display: 'flex', gap: 4, alignItems: 'center' }}>
-              {[0, 1, 2].map(i => (
-                <span key={i} style={{
-                  width: 7, height: 7, borderRadius: '50%',
-                  background: '#6366f1', opacity: 0.7,
-                  animation: `bounce 1.2s ${i * 0.2}s ease-in-out infinite`
-                }} />
-              ))}
-              <style>{`@keyframes bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-5px)}}`}</style>
-            </div>
-          )}
-          <div ref={bottomRef} />
-        </div>
-
-        {/* Quick questions */}
-        <div style={{ padding: '8px 16px', display: 'flex', gap: 6, flexWrap: 'wrap', borderTop: '1px solid rgba(255,255,255,0.05)' }}>
-          {['Skills', 'Projects', 'Hire me'].map(q => (
-            <button key={q} onClick={() => { setInput(q); }} style={{
-              padding: '4px 10px', borderRadius: 999, fontSize: '0.72rem',
-              background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)',
-              color: '#a5b4fc', cursor: 'pointer', transition: 'all 0.2s'
-            }}>{q}</button>
-          ))}
-        </div>
-
-        {/* Input */}
-        <div style={{
-          padding: '12px 14px', borderTop: '1px solid rgba(255,255,255,0.06)',
-          display: 'flex', gap: 8
-        }}>
-          <input
-            value={input}
-            onChange={e => setInput(e.target.value)}
-            onKeyDown={e => e.key === 'Enter' && send()}
-            placeholder="Ask me anything..."
+    <div style={{ position: 'fixed', bottom: 28, right: 28, zIndex: 1000 }}>
+      {/* HUD Chat Window */}
+      {open && (
+        <div
+          className="hud-panel hud-corners"
+          style={{
+            position: 'absolute',
+            bottom: 70,
+            right: 0,
+            width: 'min(360px, 92vw)',
+            borderRadius: 8,
+            overflow: 'hidden',
+            boxShadow: '0 20px 50px rgba(0, 0, 0, 0.8), 0 0 30px rgba(0, 229, 255, 0.35)',
+            border: '1px solid var(--hud-cyan)',
+            background: 'rgba(4, 8, 16, 0.96)',
+          }}
+        >
+          {/* Header */}
+          <div
             style={{
-              flex: 1, background: 'rgba(255,255,255,0.05)', border: '1px solid rgba(255,255,255,0.1)',
-              borderRadius: 10, padding: '8px 12px', color: '#f8fafc', fontSize: '0.85rem',
-              outline: 'none', fontFamily: 'inherit'
+              padding: '12px 16px',
+              background: 'rgba(0, 229, 255, 0.08)',
+              borderBottom: '1px solid rgba(0, 229, 255, 0.2)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
             }}
-          />
-          <button onClick={send} style={{
-            width: 38, height: 38, borderRadius: 10, border: 'none', cursor: 'pointer',
-            background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
-            color: 'white', fontSize: 16, display: 'flex', alignItems: 'center', justifyContent: 'center',
-            flexShrink: 0
-          }}>➤</button>
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+              <span className="status-pip status-pip-cyan" />
+              <span className="font-hud" style={{ fontSize: '0.82rem', fontWeight: 800, color: 'var(--hud-cyan)' }}>
+                J.A.R.V.I.S. // AI_ASSISTANT
+              </span>
+            </div>
+            <button
+              onClick={() => setOpen(false)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: 'var(--hud-cyan)',
+                fontSize: 16,
+                cursor: 'pointer',
+              }}
+            >
+              ✕
+            </button>
+          </div>
+
+          {/* Messages Feed */}
+          <div
+            style={{
+              height: 270,
+              overflowY: 'auto',
+              padding: 14,
+              display: 'flex',
+              flexDirection: 'column',
+              gap: 10,
+              fontSize: '0.82rem',
+            }}
+          >
+            {messages.map((m, idx) => (
+              <div
+                key={idx}
+                className="font-mono-hud"
+                style={{
+                  alignSelf: m.type === 'user' ? 'flex-end' : 'flex-start',
+                  maxWidth: '85%',
+                  padding: '8px 12px',
+                  borderRadius: 4,
+                  background: m.type === 'user' ? 'rgba(0, 229, 255, 0.15)' : 'rgba(6, 18, 36, 0.85)',
+                  border: m.type === 'user' ? '1px solid var(--hud-cyan)' : '1px solid rgba(0, 229, 255, 0.25)',
+                  color: m.type === 'user' ? '#ffffff' : 'var(--hud-cyan)',
+                  lineHeight: 1.5,
+                }}
+              >
+                {m.type === 'bot' && <span style={{ opacity: 0.6, marginRight: 4 }}>JARVIS &gt;</span>}
+                {m.text}
+              </div>
+            ))}
+            {computing && (
+              <div
+                className="font-mono-hud"
+                style={{
+                  fontSize: '0.78rem',
+                  color: 'var(--hud-cyan)',
+                  fontStyle: 'italic',
+                }}
+              >
+                JARVIS &gt; Processing neural query...
+              </div>
+            )}
+            <div ref={bottomRef} />
+          </div>
+
+          {/* Quick Query Chips */}
+          <div
+            style={{
+              padding: '6px 12px',
+              borderTop: '1px solid rgba(0, 229, 255, 0.1)',
+              display: 'flex',
+              gap: 6,
+              flexWrap: 'wrap',
+            }}
+          >
+            {['Skills', 'Projects', 'Experience', 'Hire'].map((chip) => (
+              <button
+                key={chip}
+                onClick={() => setInput(chip)}
+                className="font-mono-hud"
+                style={{
+                  padding: '3px 8px',
+                  borderRadius: 3,
+                  fontSize: '0.68rem',
+                  background: 'rgba(0, 229, 255, 0.05)',
+                  border: '1px solid rgba(0, 229, 255, 0.2)',
+                  color: 'var(--hud-cyan)',
+                  cursor: 'pointer',
+                }}
+              >
+                [ {chip} ]
+              </button>
+            ))}
+          </div>
+
+          {/* Input Box */}
+          <div
+            style={{
+              padding: '10px 12px',
+              borderTop: '1px solid rgba(0, 229, 255, 0.15)',
+              display: 'flex',
+              gap: 8,
+            }}
+          >
+            <input
+              type="text"
+              value={input}
+              onChange={(e) => setInput(e.target.value)}
+              onKeyDown={(e) => e.key === 'Enter' && send()}
+              placeholder="Query J.A.R.V.I.S..."
+              className="font-mono-hud"
+              style={{
+                flex: 1,
+                background: 'rgba(0, 229, 255, 0.05)',
+                border: '1px solid rgba(0, 229, 255, 0.2)',
+                borderRadius: 4,
+                padding: '6px 10px',
+                color: '#ffffff',
+                fontSize: '0.8rem',
+                outline: 'none',
+              }}
+            />
+            <button
+              onClick={send}
+              className="font-hud"
+              style={{
+                padding: '6px 12px',
+                background: 'var(--hud-cyan)',
+                color: '#040810',
+                border: 'none',
+                borderRadius: 4,
+                fontWeight: 700,
+                fontSize: '0.75rem',
+                cursor: 'pointer',
+              }}
+            >
+              SEND
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Toggle Button */}
-      <button className="chat-toggle" onClick={() => setOpen(o => !o)}>
-        {open ? '✕' : '💬'}
+      <button
+        onClick={() => setOpen(!open)}
+        className="hud-panel"
+        style={{
+          width: 54,
+          height: 54,
+          borderRadius: '50%',
+          border: '2px solid var(--hud-cyan)',
+          background: 'rgba(4, 8, 16, 0.92)',
+          color: 'var(--hud-cyan)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          fontSize: '1.3rem',
+          cursor: 'pointer',
+          boxShadow: '0 0 25px rgba(0, 229, 255, 0.5), inset 0 0 15px rgba(0, 229, 255, 0.25)',
+          transition: 'all 0.25s ease',
+        }}
+        title="J.A.R.V.I.S. Core Assistant"
+        aria-label="Toggle J.A.R.V.I.S."
+      >
+        {open ? '✕' : '🤖'}
       </button>
     </div>
   );

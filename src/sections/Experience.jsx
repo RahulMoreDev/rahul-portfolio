@@ -1,114 +1,216 @@
-import { experience } from '../data/portfolioData';
+import { experience, education } from '../data/portfolioData';
 
 export default function Experience() {
   return (
-    <section id="experience" style={{ padding: '120px 24px', background: 'var(--bg-primary)', position: 'relative' }}>
-      <div style={{
-        position: 'absolute', width: 400, height: 400, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(6,182,212,0.07), transparent)',
-        bottom: 0, right: 0, filter: 'blur(80px)', pointerEvents: 'none',
-      }} />
-
-      <div style={{ maxWidth: 800, margin: '0 auto', position: 'relative', zIndex: 1 }}>
-        {/* Header */}
-        <div className="reveal" style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div className="section-label" style={{ margin: '0 auto 16px' }}>
-            <span className="dot" />
-            Experience
+    <section
+      id="experience"
+      style={{
+        padding: '120px 24px',
+        position: 'relative',
+        background: 'var(--hud-bg)',
+        borderTop: '1px solid rgba(0, 229, 255, 0.12)',
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
+        {/* Section Header: // 04 — TIMELINE */}
+        <div>
+          <div className="section-hud-tag">
+            <span>//</span> 04 — TIMELINE
           </div>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 2.8rem)', fontWeight: 800,
-            letterSpacing: '-0.02em', color: 'var(--text-primary)',
-          }}>
-            Work <span className="gradient-text-static">Experience</span>
-          </h2>
+          <h2 className="section-hud-title">EXPERIENCE &amp; LOGS</h2>
+          <div className="section-hud-divider">
+            <span className="line" />
+            <span className="dot" />
+            <span className="line-rev" />
+          </div>
         </div>
 
-        {/* Timeline */}
-        <div style={{ position: 'relative' }}>
-          {/* Vertical line */}
-          <div style={{
-            position: 'absolute', left: 17, top: 36, bottom: 0,
-            width: 2,
-            background: 'linear-gradient(to bottom, #6366f1, rgba(99,102,241,0.1))',
-          }} />
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gap: 32,
+            textAlign: 'left',
+          }}
+        >
+          {/* Column 1: Industry Mission Log (Raveblue) */}
+          <div>
+            <div
+              className="font-mono-hud"
+              style={{
+                fontSize: '0.85rem',
+                color: 'var(--hud-cyan)',
+                letterSpacing: '0.12em',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <span>[</span> MISSION LOG: INDUSTRY <span>]</span>
+            </div>
 
-          {experience.map((exp, idx) => (
-            <div key={idx} className={`reveal delay-${idx + 1}`} style={{
-              display: 'flex', gap: 24, marginBottom: 48,
-            }}>
-              {/* Dot */}
-              <div className="timeline-dot" style={{ flexShrink: 0, marginTop: 4 }}>
-                <span style={{ fontSize: 14 }}>💼</span>
-              </div>
-
-              {/* Card */}
-              <div className="glass-card" style={{ flex: 1, padding: 32 }}>
-                {/* Header */}
-                <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'space-between', gap: 12, marginBottom: 20 }}>
-                  <div>
-                    <h3 style={{ fontWeight: 700, fontSize: '1.15rem', color: 'var(--text-primary)', marginBottom: 4 }}>
-                      {exp.role}
-                    </h3>
-                    <div style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-                      <span className="gradient-text-static" style={{ fontWeight: 700, fontSize: '1rem' }}>
-                        {exp.company}
-                      </span>
-                      <span style={{
-                        padding: '3px 10px', borderRadius: 999,
-                        background: 'rgba(34,197,94,0.1)', border: '1px solid rgba(34,197,94,0.25)',
-                        color: '#86efac', fontSize: '0.72rem', fontWeight: 600,
-                      }}>{exp.type}</span>
-                    </div>
+            {experience.map((exp, i) => (
+              <div
+                key={i}
+                className="hud-panel hud-corners"
+                style={{
+                  padding: '28px',
+                  borderRadius: 8,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  gap: 16,
+                }}
+              >
+                <div>
+                  <div
+                    className="font-mono-hud"
+                    style={{
+                      fontSize: '0.72rem',
+                      color: 'var(--hud-green)',
+                      letterSpacing: '0.1em',
+                      marginBottom: 4,
+                    }}
+                  >
+                    ● CURRENT MISSION // {exp.period}
                   </div>
-                  <div style={{
-                    padding: '6px 14px', borderRadius: 8,
-                    background: 'rgba(99,102,241,0.1)', border: '1px solid rgba(99,102,241,0.2)',
-                    color: '#a5b4fc', fontSize: '0.8rem', fontWeight: 500,
-                    height: 'fit-content',
-                  }}>
-                    {exp.period}
+                  <h3
+                    className="font-hud"
+                    style={{
+                      fontSize: '1.2rem',
+                      fontWeight: 800,
+                      color: '#ffffff',
+                      letterSpacing: '0.03em',
+                      marginBottom: 2,
+                    }}
+                  >
+                    {exp.role}
+                  </h3>
+                  <div
+                    className="font-mono-hud"
+                    style={{
+                      fontSize: '0.85rem',
+                      color: 'var(--hud-cyan)',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    // {exp.company}
                   </div>
                 </div>
 
-                {/* Divider */}
-                <div style={{ height: 1, background: 'rgba(255,255,255,0.06)', marginBottom: 20 }} />
-
-                {/* Responsibilities */}
-                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: 12 }}>
-                  {exp.responsibilities.map((r, i) => (
-                    <li key={i} style={{ display: 'flex', gap: 12, alignItems: 'flex-start' }}>
-                      <div style={{
-                        width: 6, height: 6, borderRadius: '50%',
-                        background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
-                        flexShrink: 0, marginTop: 6,
-                      }} />
-                      <span style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.65 }}>
-                        {r}
-                      </span>
+                <ul
+                  style={{
+                    listStyle: 'none',
+                    padding: 0,
+                    margin: 0,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 10,
+                  }}
+                >
+                  {exp.responsibilities.map((r, idx) => (
+                    <li
+                      key={idx}
+                      style={{
+                        fontSize: '0.84rem',
+                        color: 'var(--text-secondary)',
+                        lineHeight: 1.65,
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: 10,
+                      }}
+                    >
+                      <span style={{ color: 'var(--hud-cyan)', marginTop: 2 }}>▸</span>
+                      <span>{r}</span>
                     </li>
                   ))}
                 </ul>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
 
-          {/* "Looking for" card */}
-          <div className="reveal" style={{ display: 'flex', gap: 24 }}>
-            <div style={{
-              width: 36, height: 36, borderRadius: '50%', flexShrink: 0,
-              background: 'rgba(34,197,94,0.1)', border: '2px dashed rgba(34,197,94,0.4)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              fontSize: 14, marginTop: 4,
-            }}>✨</div>
-            <div className="glass-card" style={{ flex: 1, padding: 24 }}>
-              <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
-                <div className="status-dot" />
-                <span style={{ fontWeight: 600, color: 'var(--text-primary)' }}>Open to new opportunities</span>
-              </div>
-              <p style={{ color: 'var(--text-secondary)', fontSize: '0.875rem', marginTop: 8, lineHeight: 1.65 }}>
-                Currently exploring full-time Software Developer roles. Open to remote & on-site positions.
-              </p>
+          {/* Column 2: Academic Telemetry (Education) */}
+          <div>
+            <div
+              className="font-mono-hud"
+              style={{
+                fontSize: '0.85rem',
+                color: 'var(--hud-cyan)',
+                letterSpacing: '0.12em',
+                marginBottom: 16,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
+              }}
+            >
+              <span>[</span> ARCHIVE: ACADEMIC QUALIFICATIONS <span>]</span>
+            </div>
+
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+              {education.map((edu, idx) => (
+                <div
+                  key={idx}
+                  className="hud-panel hud-corners"
+                  style={{
+                    padding: '20px 24px',
+                    borderRadius: 8,
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: 6,
+                  }}
+                >
+                  <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', flexWrap: 'wrap', gap: 6 }}>
+                    <h4
+                      className="font-hud"
+                      style={{
+                        fontSize: '0.98rem',
+                        fontWeight: 700,
+                        color: '#ffffff',
+                        letterSpacing: '0.02em',
+                        margin: 0,
+                      }}
+                    >
+                      {edu.degree}
+                    </h4>
+                    <span
+                      className="font-mono-hud"
+                      style={{
+                        fontSize: '0.74rem',
+                        color: 'var(--hud-cyan)',
+                        padding: '2px 8px',
+                        background: 'rgba(0, 229, 255, 0.08)',
+                        border: '1px solid rgba(0, 229, 255, 0.2)',
+                        borderRadius: 3,
+                        fontWeight: 700,
+                      }}
+                    >
+                      {edu.grade}
+                    </span>
+                  </div>
+
+                  <div
+                    className="font-mono-hud"
+                    style={{
+                      fontSize: '0.78rem',
+                      color: 'var(--text-secondary)',
+                      letterSpacing: '0.06em',
+                    }}
+                  >
+                    {edu.institution} &nbsp;|&nbsp; {edu.period}
+                  </div>
+
+                  <p
+                    style={{
+                      fontSize: '0.8rem',
+                      color: 'var(--text-muted)',
+                      lineHeight: 1.55,
+                      margin: '4px 0 0',
+                    }}
+                  >
+                    {edu.highlight}
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>

@@ -1,129 +1,204 @@
 import { personalInfo } from '../data/portfolioData';
 
 export default function About() {
-  return (
-    <section id="about" style={{
-      padding: '120px 24px',
-      background: 'var(--bg-secondary)',
-      position: 'relative',
-      overflow: 'hidden',
-    }}>
-      {/* Subtle orb */}
-      <div style={{
-        position: 'absolute', width: 400, height: 400,
-        borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(168,85,247,0.07), transparent)',
-        top: '10%', left: '-100px',
-        filter: 'blur(60px)', pointerEvents: 'none',
-      }} />
+  const metrics = [
+    { value: '4+', label: 'Projects Built' },
+    { value: '8.0', label: 'B.E. CGPA' },
+    { value: '10+', label: 'Technologies' },
+    { value: '1+ yrs', label: 'Industry Experience' },
+  ];
 
-      <div style={{ maxWidth: 1200, margin: '0 auto' }}>
-        {/* Section header */}
-        <div className="reveal" style={{ textAlign: 'center', marginBottom: 72 }}>
-          <div className="section-label" style={{ margin: '0 auto 16px' }}>
-            <span className="dot" />
-            About Me
+  return (
+    <section
+      id="about"
+      style={{
+        padding: '120px 24px',
+        position: 'relative',
+        background: 'rgba(4, 8, 16, 0.95)',
+        borderTop: '1px solid rgba(0, 229, 255, 0.12)',
+      }}
+    >
+      <div style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
+        {/* Section Header: // 01 — PROFILE */}
+        <div>
+          <div className="section-hud-tag">
+            <span>//</span> 01 — PROFILE
           </div>
-          <h2 style={{
-            fontSize: 'clamp(2rem, 4vw, 2.8rem)',
-            fontWeight: 800, letterSpacing: '-0.02em',
-            color: 'var(--text-primary)',
-          }}>
-            Who I <span className="gradient-text-static">Am</span>
-          </h2>
+          <h2 className="section-hud-title">ABOUT ME</h2>
+          <div className="section-hud-divider">
+            <span className="line" />
+            <span className="dot" />
+            <span className="line-rev" />
+          </div>
         </div>
 
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: '1fr 1fr',
-          gap: 60,
-          alignItems: 'center',
-        }} className="about-grid">
-          {/* Photo side */}
-          <div className="reveal-left" style={{ display: 'flex', justifyContent: 'center' }}>
-            <div style={{ position: 'relative', display: 'inline-block' }}>
-              <div style={{
-                position: 'absolute', inset: -2, borderRadius: 24,
-                background: 'linear-gradient(135deg, #6366f1, #06b6d4)',
-                zIndex: 0,
-              }} />
-              <img
-                src="/images/rahul-about.jpg"
-                alt="Rahul More"
+        {/* Content Layout (Matches your Screenshot 4) */}
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'minmax(320px, 1.35fr) minmax(280px, 0.65fr)',
+            gap: 24,
+            alignItems: 'stretch',
+            textAlign: 'left',
+          }}
+          className="about-hud-grid"
+        >
+          {/* Main Profile HUD Box */}
+          <div
+            className="hud-panel hud-corners about-bio-box"
+            style={{
+              padding: '36px 32px',
+              borderRadius: 8,
+              display: 'flex',
+              gap: 32,
+              alignItems: 'center',
+            }}
+          >
+            {/* Diamond HUD Holographic Monogram / Avatar */}
+            <div className="diamond-hud-wrap" style={{ flexShrink: 0 }}>
+              <div className="diamond-hud-ring" />
+              <div className="diamond-hud-border" />
+              <div
+                className="font-hud"
                 style={{
-                  width: 'clamp(240px, 22vw, 340px)',
-                  height: 'clamp(280px, 28vw, 420px)',
-                  objectFit: 'cover',
-                  objectPosition: 'top center',
-                  borderRadius: 22,
-                  display: 'block',
                   position: 'relative',
-                  zIndex: 1,
+                  zIndex: 2,
+                  fontSize: '2rem',
+                  fontWeight: 900,
+                  color: 'var(--hud-cyan)',
+                  letterSpacing: '0.1em',
+                  textShadow: '0 0 15px rgba(0, 229, 255, 0.9)',
                 }}
-              />
-              {/* Info card on photo */}
-              <div className="glass-card" style={{
-                position: 'absolute', bottom: -24, right: -30,
-                padding: '14px 20px', zIndex: 10,
-              }}>
-                <div style={{ fontSize: '0.72rem', color: 'var(--text-muted)', marginBottom: 4 }}>📍 Location</div>
-                <div style={{ fontWeight: 600, fontSize: '0.9rem' }}>Maharashtra, India</div>
-                <div style={{ fontSize: '0.72rem', color: '#a5b4fc', marginTop: 4 }}>Open to Remote 🌐</div>
+              >
+                RM
+              </div>
+            </div>
+
+            {/* Profile Bio */}
+            <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
+              <div>
+                <h3
+                  className="font-hud"
+                  style={{
+                    fontSize: '1.45rem',
+                    fontWeight: 800,
+                    color: '#ffffff',
+                    letterSpacing: '0.04em',
+                    marginBottom: 4,
+                  }}
+                >
+                  {personalInfo.name}
+                </h3>
+                <div
+                  className="font-mono-hud"
+                  style={{
+                    fontSize: '0.85rem',
+                    color: 'var(--hud-cyan)',
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  Full Stack Software Developer
+                </div>
+              </div>
+
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.75 }}>
+                A passionate Full Stack Developer with expertise in building scalable web applications and solving
+                complex backend problems. I specialize in bridging the gap between interactive React frontend
+                experiences and robust Java/Spring Boot &amp; Node.js backend architectures.
+              </p>
+
+              <p style={{ color: 'var(--text-secondary)', fontSize: '0.9rem', lineHeight: 1.75 }}>
+                With a strong Computer Engineering foundation (CGPA 8.0) and industry experience at Raveblue, I bring
+                ideas to life through clean RESTful APIs, normalized database designs, and maintainable software patterns.
+              </p>
+
+              {/* Tactical Chip Tags */}
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 6 }}>
+                {['Full Stack Engineer', 'Spring Boot & APIs', 'Problem Solver', 'Tech Enthusiast'].map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono-hud"
+                    style={{
+                      padding: '4px 12px',
+                      borderRadius: 4,
+                      fontSize: '0.74rem',
+                      color: 'var(--hud-cyan)',
+                      background: 'rgba(0, 229, 255, 0.08)',
+                      border: '1px solid rgba(0, 229, 255, 0.3)',
+                    }}
+                  >
+                    [ {tag} ]
+                  </span>
+                ))}
               </div>
             </div>
           </div>
 
-          {/* Text side */}
-          <div className="reveal-right" style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
-            <p style={{
-              color: 'var(--text-secondary)',
-              fontSize: 'clamp(0.95rem, 1.2vw, 1.05rem)',
-              lineHeight: 1.85,
-            }}>
-              {personalInfo.about}
-            </p>
-
-            {/* Info list */}
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
-              {[
-                { label: '🎓 Degree', value: 'B.E. Computer Engineering' },
-                { label: '🏫 University', value: 'Sant Gadge Baba Amravati University' },
-                { label: '📊 CGPA', value: '8.0 / 10' },
-                { label: '💼 Company', value: 'Raveblue' },
-                { label: '📧 Email', value: personalInfo.email },
-              ].map(item => (
-                <div key={item.label} style={{
-                  display: 'flex', alignItems: 'center', gap: 16,
-                  padding: '12px 16px',
-                  background: 'rgba(255,255,255,0.03)',
-                  borderRadius: 10,
-                  border: '1px solid rgba(255,255,255,0.06)',
-                }}>
-                  <span style={{ fontSize: '0.82rem', color: 'var(--text-muted)', minWidth: 130 }}>{item.label}</span>
-                  <span style={{ fontWeight: 600, fontSize: '0.9rem', color: 'var(--text-primary)' }}>{item.value}</span>
+          {/* Right Metrics Cards (4 Square HUD metric boxes from reference) */}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: '1fr 1fr',
+              gap: 16,
+            }}
+          >
+            {metrics.map((m) => (
+              <div
+                key={m.label}
+                className="hud-panel hud-corners"
+                style={{
+                  padding: '24px 16px',
+                  borderRadius: 8,
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textAlign: 'center',
+                  gap: 8,
+                }}
+              >
+                <div
+                  className="font-hud"
+                  style={{
+                    fontSize: 'clamp(1.8rem, 2.8vw, 2.4rem)',
+                    fontWeight: 900,
+                    color: 'var(--hud-cyan)',
+                    letterSpacing: '0.04em',
+                    textShadow: '0 0 20px rgba(0, 229, 255, 0.6)',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: 4,
+                  }}
+                >
+                  <span style={{ fontSize: '1rem', color: 'rgba(0, 229, 255, 0.6)' }}>⬡</span>
+                  <span>{m.value}</span>
                 </div>
-              ))}
-            </div>
-
-            {/* CTA */}
-            <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap' }}>
-              <a href={personalInfo.github} target="_blank" rel="noopener noreferrer"
-                className="btn-primary" style={{ textDecoration: 'none', display: 'inline-block' }}>
-                GitHub Profile
-              </a>
-              <a href={personalInfo.linkedin} target="_blank" rel="noopener noreferrer"
-                className="btn-outline" style={{ textDecoration: 'none', display: 'inline-block' }}>
-                LinkedIn
-              </a>
-            </div>
+                <div
+                  className="font-mono-hud"
+                  style={{
+                    fontSize: '0.76rem',
+                    color: 'var(--text-secondary)',
+                    letterSpacing: '0.08em',
+                    textTransform: 'uppercase',
+                  }}
+                >
+                  {m.label}
+                </div>
+              </div>
+            ))}
           </div>
         </div>
       </div>
 
       <style>{`
-        @media (max-width: 768px) {
-          .about-grid { grid-template-columns: 1fr !important; text-align: center; }
-          .about-grid > div:first-child { order: -1; }
+        @media (max-width: 900px) {
+          .about-hud-grid {
+            grid-template-columns: 1fr !important;
+          }
+          .about-bio-box {
+            flex-direction: column !important;
+            text-align: center !important;
+          }
         }
       `}</style>
     </section>

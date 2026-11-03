@@ -1,55 +1,55 @@
 import { useState } from 'react';
 
-// Layout
+// HUD Components
 import Navbar from './components/Navbar';
-import CursorGlow from './components/CursorGlow';
+import MouseGlow from './components/MouseGlow';
+import ParticleCanvas from './components/ParticleCanvas';
 import ChatBox from './components/ChatBox';
 import ResumeModal from './components/ResumeModal';
 
-// Sections
+// J.A.R.V.I.S. HUD Sections
 import Hero from './sections/Hero';
 import About from './sections/About';
 import Skills from './sections/Skills';
 import Projects from './sections/Projects';
 import Experience from './sections/Experience';
-import Education from './sections/Education';
 import Contact from './sections/Contact';
 import Footer from './sections/Footer';
-
-// Scroll hook
-import useScrollReveal from './hooks/useScrollReveal';
 
 export default function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
 
-  // Activate scroll reveal animations
-  useScrollReveal();
-
   return (
     <>
-      {/* Cursor glow (desktop only) */}
-      <CursorGlow />
+      {/* 1. CRT Scanline Overlay */}
+      <div className="scanline-overlay" aria-hidden="true" />
 
-      {/* Sticky Navbar */}
+      {/* 2. Interactive Spotlight Glow following Mouse */}
+      <MouseGlow />
+
+      {/* 3. HTML5 Particle Network Canvas */}
+      <ParticleCanvas />
+
+      {/* 4. Top J.A.R.V.I.S. Monogram Navbar */}
       <Navbar onOpenResume={() => setResumeOpen(true)} />
 
-      {/* Sections */}
-      <main>
+      {/* 5. Main Cyber-HUD Dossier Content */}
+      <main style={{ position: 'relative', zIndex: 2 }}>
         <Hero onOpenResume={() => setResumeOpen(true)} />
         <About />
         <Skills />
         <Projects />
         <Experience />
-        <Education />
         <Contact />
       </main>
 
+      {/* 6. Footer System Telemetry */}
       <Footer />
 
-      {/* Floating Chat */}
+      {/* 7. Floating J.A.R.V.I.S. AI Core */}
       <ChatBox />
 
-      {/* Resume Modal */}
+      {/* 8. Full Document ATS-Standard Resume Modal */}
       {resumeOpen && (
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
       )}
