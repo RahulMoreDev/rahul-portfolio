@@ -7,36 +7,24 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
   const [theme, setTheme] = useState('jarvis'); // 'jarvis' | 'friday'
   const [autoCycle, setAutoCycle] = useState(true);
   const [progress, setProgress] = useState(0);
-  const [showShiftBanner, setShowShiftBanner] = useState(false);
-  const [bannerText, setBannerText] = useState('');
 
-  // Switch theme on DOM & dispatch event
-  const applyTheme = (newTheme, announce = true) => {
+  // Switch theme on DOM & dispatch event (silent, no banner toast)
+  const applyTheme = (newTheme) => {
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('hud_theme_protocol', newTheme);
 
     if (onThemeChange) onThemeChange(newTheme);
     window.dispatchEvent(new CustomEvent('jarvis-theme-changed', { detail: { theme: newTheme } }));
-
-    if (announce) {
-      setBannerText(
-        newTheme === 'friday'
-          ? 'PROTOCOL SHIFT: F.R.I.D.A.Y. CRIMSON HUD'
-          : 'PROTOCOL SHIFT: J.A.R.V.I.S. CYAN HUD'
-      );
-      setShowShiftBanner(true);
-      setTimeout(() => setShowShiftBanner(false), 1400);
-    }
   };
 
   // Load saved theme or default to jarvis
   useEffect(() => {
     const saved = localStorage.getItem('hud_theme_protocol');
     if (saved === 'friday' || saved === 'jarvis') {
-      applyTheme(saved, false);
+      applyTheme(saved);
     } else {
-      applyTheme('jarvis', false);
+      applyTheme('jarvis');
     }
   }, []);
 
@@ -55,7 +43,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
         if (prev >= 100) {
           setTheme((currentTheme) => {
             const nextTheme = currentTheme === 'jarvis' ? 'friday' : 'jarvis';
-            applyTheme(nextTheme, true);
+            applyTheme(nextTheme);
             return nextTheme;
           });
           return 0;
@@ -68,17 +56,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
   }, [autoCycle]);
 
   const togglePause = () => {
-    setAutoCycle((prev) => {
-      const nextState = !prev;
-      setBannerText(
-        nextState
-          ? 'THEME AUTO-SHIFT: RESUMED (4s CYCLE)'
-          : `THEME AUTO-SHIFT: PAUSED (LOCKED ON ${theme.toUpperCase()})`
-      );
-      setShowShiftBanner(true);
-      setTimeout(() => setShowShiftBanner(false), 1400);
-      return nextState;
-    });
+    setAutoCycle((prev) => !prev);
   };
 
   const isFriday = theme === 'friday';
@@ -92,50 +70,6 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
 
   return (
     <>
-      {/* ================= On-Screen Holographic Protocol Shift Toast ================= */}
-      {showShiftBanner && (
-        <div
-          role="status"
-          aria-live="polite"
-          className="hud-shift-toast-banner"
-          style={{
-            position: 'fixed',
-            left: '50%',
-            transform: 'translateX(-50%)',
-            zIndex: 10002,
-            padding: '6px 16px',
-            borderRadius: 20,
-            background: 'rgba(4, 8, 16, 0.94)',
-            border: `1.5px solid ${autoCycle ? accentColor : '#ffd700'}`,
-            boxShadow: `0 0 20px ${autoCycle ? glowColor : 'rgba(255, 215, 0, 0.4)'}`,
-            backdropFilter: 'blur(12px)',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 8,
-            maxWidth: '92vw',
-            pointerEvents: 'none',
-            animation: 'pulseGlow 1.4s ease-in-out infinite',
-          }}
-        >
-          <span style={{ color: autoCycle ? accentColor : '#ffd700', fontSize: '0.85rem' }}>
-            {autoCycle ? '⚡' : '⏸'}
-          </span>
-          <span
-            className="font-mono-hud"
-            style={{
-              fontSize: 'clamp(0.68rem, 2vw, 0.78rem)',
-              color: '#ffffff',
-              letterSpacing: '0.1em',
-              fontWeight: 700,
-              textShadow: `0 0 8px ${autoCycle ? accentColor : '#ffd700'}`,
-              whiteSpace: 'nowrap',
-            }}
-          >
-            {bannerText}
-          </span>
-        </div>
-      )}
-
       {/* ================= Compact Circular Theme HUD Stacked Directly Above Launcher ================= */}
       <div
         className="theme-protocol-circle-container"
@@ -256,7 +190,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  applyTheme('jarvis', true);
+                  applyTheme('jarvis');
                   setProgress(0);
                 }}
                 className="font-mono-hud"
@@ -292,7 +226,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
                 type="button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  applyTheme('friday', true);
+                  applyTheme('friday');
                   setProgress(0);
                 }}
                 className="font-mono-hud"
@@ -356,10 +290,6 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
 
       {/* Responsive positioning stacked directly above assistant dock launcher button */}
       <style>{`
-        .hud-shift-toast-banner {
-          top: 72px;
-        }
-
         /* Desktop: Assistant launcher is at right: 24px, bottom: 24px, size: 58px.
            Center X is 24 + 29 = 53px from right.
            Circular theme button is 52px -> right: 27px (27 + 26 = 53px).
@@ -377,12 +307,6 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
         }
         .theme-protocol-circle-btn:active {
           transform: scale(0.95);
-        }
-
-        @media (max-width: 768px) {
-          .hud-shift-toast-banner {
-            top: 96px !important;
-          }
         }
 
         /* Mobile (<= 520px): Assistant launcher is at right: 14px, bottom: 16px, size: 54px.
