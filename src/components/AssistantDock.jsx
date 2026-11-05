@@ -686,21 +686,6 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
         </section>
       )}
 
-      {/* Floating Callout Pill identifying it as AI Assistant */}
-      {!open && (
-        <button
-          type="button"
-          className="assistant-callout-pill"
-          onClick={() => setOpen(true)}
-          aria-label={`Open ${assistant.name} AI Assistant`}
-        >
-          <span className="assistant-callout-beacon" />
-          <span className="assistant-callout-text">
-            {activeAssistant === 'friday' ? '⚡ ASK F.R.I.D.A.Y.' : '🤖 ASK J.A.R.V.I.S.'}
-          </span>
-        </button>
-      )}
-
       {/* Floating Robotic Launcher Button */}
       <button
         type="button"

@@ -440,58 +440,6 @@
   box-shadow: 0 0 35px rgba(var(--assistant-accent-rgb), 0.75), inset 0 0 18px rgba(var(--assistant-accent-rgb), 0.3);
 }
 
-/* Floating Callout Pill identifying the assistant to every visitor */
-.assistant-callout-pill {
-  position: absolute;
-  right: 68px;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  align-items: center;
-  gap: 7px;
-  padding: 6px 13px;
-  border-radius: 20px;
-  background: rgba(4, 8, 16, 0.95);
-  border: 1.5px solid var(--assistant-accent);
-  box-shadow: 0 0 16px rgba(var(--assistant-accent-rgb), 0.35);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  color: #ffffff;
-  font-family: var(--font-mono);
-  font-size: 0.72rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  white-space: nowrap;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  user-select: none;
-  animation: callout-float 3s ease-in-out infinite;
-}
-
-.assistant-callout-pill:hover {
-  background: rgba(var(--assistant-accent-rgb), 0.15);
-  box-shadow: 0 0 22px rgba(var(--assistant-accent-rgb), 0.6);
-  transform: translateY(-50%) scale(1.04);
-}
-
-.assistant-callout-beacon {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--assistant-secondary);
-  box-shadow: 0 0 8px var(--assistant-secondary);
-  animation: callout-beacon-pulse 1.8s ease-in-out infinite;
-}
-
-.assistant-callout-text {
-  font-family: var(--font-hud);
-  font-size: 0.68rem;
-  font-weight: 800;
-  letter-spacing: 0.08em;
-  color: var(--assistant-accent);
-  text-shadow: 0 0 10px rgba(var(--assistant-accent-rgb), 0.5);
-}
-
 /* Robotic Coder Avatar in Circular Launcher */
 .assistant-launcher-avatar {
   position: relative;
@@ -572,27 +520,4 @@
   line-height: 1;
 }
 
-@keyframes callout-beacon-pulse {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50% { opacity: 0.4; transform: scale(0.85); }
-}
 
-@keyframes callout-float {
-  0%, 100% { transform: translateY(-50%) translateX(0); }
-  50% { transform: translateY(-50%) translateX(-3px); }
-}
-
-@media (max-width: 520px) {
-  .assistant-callout-pill {
-    right: 60px;
-    padding: 4px 9px;
-    gap: 5px;
-  }
-  .assistant-callout-text {
-    font-size: 0.58rem;
-  }
-  .assistant-callout-beacon {
-    width: 6px;
-    height: 6px;
-  }
-}
