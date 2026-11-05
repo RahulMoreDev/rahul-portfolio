@@ -67,19 +67,27 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
     return () => clearInterval(timer);
   }, [autoCycle]);
 
-  const toggleThemeManual = () => {
-    const nextTheme = theme === 'jarvis' ? 'friday' : 'jarvis';
-    setProgress(0);
-    applyTheme(nextTheme, true);
+  const togglePause = () => {
+    setAutoCycle((prev) => {
+      const nextState = !prev;
+      setBannerText(
+        nextState
+          ? 'THEME AUTO-SHIFT: RESUMED (4s CYCLE)'
+          : `THEME AUTO-SHIFT: PAUSED (LOCKED ON ${theme.toUpperCase()})`
+      );
+      setShowShiftBanner(true);
+      setTimeout(() => setShowShiftBanner(false), 1400);
+      return nextState;
+    });
   };
 
   const isFriday = theme === 'friday';
   const accentColor = isFriday ? '#ff2a6d' : '#00e5ff';
   const glowColor = isFriday ? 'rgba(255, 42, 109, 0.45)' : 'rgba(0, 229, 255, 0.45)';
 
-  // SVG circle calculations (diameter 46px, r = 20)
-  const radius = 20;
-  const circumference = 2 * Math.PI * radius; // ~125.66
+  // SVG circle calculations (diameter 52px, r = 23)
+  const radius = 23;
+  const circumference = 2 * Math.PI * radius; // ~144.51
   const strokeDashoffset = circumference - (circumference * progress) / 100;
 
   return (
@@ -98,8 +106,8 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
             padding: '6px 16px',
             borderRadius: 20,
             background: 'rgba(4, 8, 16, 0.94)',
-            border: `1.5px solid ${accentColor}`,
-            boxShadow: `0 0 20px ${glowColor}`,
+            border: `1.5px solid ${autoCycle ? accentColor : '#ffd700'}`,
+            boxShadow: `0 0 20px ${autoCycle ? glowColor : 'rgba(255, 215, 0, 0.4)'}`,
             backdropFilter: 'blur(12px)',
             display: 'flex',
             alignItems: 'center',
@@ -109,7 +117,9 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
             animation: 'pulseGlow 1.4s ease-in-out infinite',
           }}
         >
-          <span style={{ color: accentColor, fontSize: '0.85rem' }}>⚡</span>
+          <span style={{ color: autoCycle ? accentColor : '#ffd700', fontSize: '0.85rem' }}>
+            {autoCycle ? '⚡' : '⏸'}
+          </span>
           <span
             className="font-mono-hud"
             style={{
@@ -117,7 +127,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
               color: '#ffffff',
               letterSpacing: '0.1em',
               fontWeight: 700,
-              textShadow: `0 0 8px ${accentColor}`,
+              textShadow: `0 0 8px ${autoCycle ? accentColor : '#ffd700'}`,
               whiteSpace: 'nowrap',
             }}
           >
@@ -126,84 +136,64 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
         </div>
       )}
 
-      {/* ================= Compact Circular Theme HUD Controller Stacked Above Launcher ================= */}
+      {/* ================= Compact Circular Theme HUD Stacked Directly Above Launcher ================= */}
       <div
         className="theme-protocol-circle-container"
         style={{
           position: 'fixed',
-          zIndex: 990, // Underneath open assistant chat window (1000), but visible directly above circular launcher
+          zIndex: 990, // Unobtrusive underneath opened chat dock, right above circular launcher
           display: 'flex',
           flexDirection: 'column',
           alignItems: 'center',
-          gap: 4,
           userSelect: 'none',
         }}
       >
-        {/* Tiny Auto-cycle status pill (tap to pause/resume 4s auto-shift) */}
-        <button
-          type="button"
-          onClick={() => setAutoCycle((prev) => !prev)}
-          className="font-mono-hud theme-pill-badge"
-          style={{
-            fontSize: '0.55rem',
-            padding: '1px 6px',
-            borderRadius: 8,
-            background: 'rgba(4, 8, 16, 0.92)',
-            border: `1px solid ${autoCycle ? accentColor : 'rgba(255,255,255,0.2)'}`,
-            color: autoCycle ? accentColor : 'var(--text-muted)',
-            boxShadow: autoCycle ? `0 0 8px ${glowColor}` : 'none',
-            cursor: 'pointer',
-            display: 'flex',
-            alignItems: 'center',
-            gap: 3,
-            lineHeight: 1.3,
-            letterSpacing: '0.06em',
-            transition: 'all 0.2s ease',
-          }}
-          title={autoCycle ? 'Auto-cycling every 4s (Click to pause)' : 'Paused (Click to resume 4s auto-cycle)'}
-          aria-label={autoCycle ? 'Pause 4s auto theme cycle' : 'Resume 4s auto theme cycle'}
-        >
-          {autoCycle ? (
-            <>
-              <Pause size={7} />
-              <span>4s AUTO</span>
-            </>
-          ) : (
-            <>
-              <Play size={7} />
-              <span>PAUSED</span>
-            </>
-          )}
-        </button>
-
-        {/* Circular Theme Dial Widget */}
-        <button
-          type="button"
-          onClick={toggleThemeManual}
+        {/* Circular Theme Dial Widget with Pause Option on the Circle */}
+        <div
           className="theme-protocol-circle-btn"
-          aria-label={`Switch theme. Currently ${isFriday ? 'F.R.I.D.A.Y.' : 'J.A.R.V.I.S.'}`}
-          title={`Active: ${isFriday ? 'F.R.I.D.A.Y. (Crimson)' : 'J.A.R.V.I.S. (Cyan)'}. Click to switch theme!`}
+          onClick={togglePause}
+          role="button"
+          tabIndex={0}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+              e.preventDefault();
+              togglePause();
+            }
+          }}
+          aria-label={
+            autoCycle
+              ? `J.A.R.V.I.S. and F.R.I.D.A.Y. 4s auto theme switcher running. Click circle to pause.`
+              : `Theme auto cycle paused on ${theme.toUpperCase()}. Click circle to resume.`
+          }
+          title={
+            autoCycle
+              ? `Active: ${isFriday ? 'F.R.I.D.A.Y.' : 'J.A.R.V.I.S.'} (4s Auto-Shift ON). Click circle to PAUSE!`
+              : `PAUSED on ${isFriday ? 'F.R.I.D.A.Y.' : 'J.A.R.V.I.S.'}. Click circle to RESUME 4s Auto-Shift!`
+          }
           style={{
             position: 'relative',
-            background: 'rgba(4, 8, 16, 0.92)',
+            background: 'rgba(4, 8, 16, 0.94)',
             borderRadius: '50%',
             cursor: 'pointer',
             padding: 0,
             display: 'flex',
+            flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            border: 'none',
             outline: 'none',
-            backdropFilter: 'blur(10px)',
-            WebkitBackdropFilter: 'blur(10px)',
-            boxShadow: `0 0 16px ${glowColor}, inset 0 0 10px rgba(0,0,0,0.8)`,
-            transition: 'transform 0.16s ease, box-shadow 0.2s ease',
+            backdropFilter: 'blur(12px)',
+            WebkitBackdropFilter: 'blur(12px)',
+            border: `1px solid ${autoCycle ? 'rgba(var(--accent-rgb, 0, 229, 255), 0.35)' : 'rgba(255, 215, 0, 0.4)'}`,
+            boxShadow: autoCycle
+              ? `0 0 16px ${glowColor}, inset 0 0 12px rgba(0,0,0,0.85)`
+              : '0 0 16px rgba(255, 215, 0, 0.3), inset 0 0 12px rgba(0,0,0,0.85)',
+            transition: 'transform 0.16s ease, box-shadow 0.2s ease, border-color 0.2s ease',
           }}
         >
           {/* SVG Circular Progress Ring */}
           <svg
             className="theme-ring-svg"
-            viewBox="0 0 46 46"
+            viewBox="0 0 52 52"
             style={{
               position: 'absolute',
               top: 0,
@@ -215,111 +205,192 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
           >
             {/* Background inactive ring track */}
             <circle
-              cx="23"
-              cy="23"
+              cx="26"
+              cy="26"
               r={radius}
               fill="transparent"
-              stroke="rgba(255, 255, 255, 0.12)"
-              strokeWidth="2"
-            />
-            {/* Animated 4-second progress ring */}
-            <circle
-              cx="23"
-              cy="23"
-              r={radius}
-              fill="transparent"
-              stroke={accentColor}
+              stroke={autoCycle ? 'rgba(255, 255, 255, 0.12)' : 'rgba(255, 215, 0, 0.2)'}
               strokeWidth="2.5"
+            />
+            {/* Animated 4-second progress ring (runs when active, holds or hides when paused) */}
+            <circle
+              cx="26"
+              cy="26"
+              r={radius}
+              fill="transparent"
+              stroke={autoCycle ? accentColor : '#ffd700'}
+              strokeWidth="2.8"
               strokeDasharray={circumference}
               strokeDashoffset={autoCycle ? strokeDashoffset : 0}
               strokeLinecap="round"
-              transform="rotate(-90 23 23)"
+              transform="rotate(-90 26 26)"
               style={{
                 transition: 'stroke 0.3s ease, stroke-dashoffset 0.08s linear',
-                filter: `drop-shadow(0 0 3px ${accentColor})`,
+                filter: `drop-shadow(0 0 4px ${autoCycle ? accentColor : '#ffd700'})`,
+                opacity: autoCycle ? 1 : 0.4,
               }}
             />
           </svg>
 
-          {/* Center Holographic AI Emblem */}
+          {/* ================= Content Inside the Circle ================= */}
           <div
             style={{
               display: 'flex',
               flexDirection: 'column',
               alignItems: 'center',
               justifyContent: 'center',
-              zIndex: 1,
-              pointerEvents: 'none',
+              zIndex: 2,
+              gap: 2,
             }}
           >
-            <span
-              className="font-mono-hud"
+            {/* Top row: Interactive J and F selectors */}
+            <div
               style={{
-                fontSize: '0.85rem',
-                fontWeight: 900,
-                color: accentColor,
+                display: 'flex',
+                alignItems: 'center',
+                gap: 3,
                 lineHeight: 1,
-                textShadow: `0 0 8px ${accentColor}`,
-                letterSpacing: '-0.02em',
               }}
             >
-              {isFriday ? 'F' : 'J'}
-            </span>
-            <span
-              className="font-mono-hud"
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  applyTheme('jarvis', true);
+                  setProgress(0);
+                }}
+                className="font-mono-hud"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  fontSize: '0.74rem',
+                  fontWeight: 900,
+                  color: theme === 'jarvis' ? '#00e5ff' : 'rgba(0, 229, 255, 0.4)',
+                  textShadow: theme === 'jarvis' ? '0 0 8px #00e5ff' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.18s ease',
+                  lineHeight: 1,
+                }}
+                title="Switch to J.A.R.V.I.S. (Cyan)"
+                aria-label="Select J.A.R.V.I.S. theme"
+              >
+                J
+              </button>
+
+              <span
+                style={{
+                  fontSize: '0.55rem',
+                  color: 'rgba(255, 255, 255, 0.35)',
+                  lineHeight: 1,
+                }}
+              >
+                /
+              </span>
+
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  applyTheme('friday', true);
+                  setProgress(0);
+                }}
+                className="font-mono-hud"
+                style={{
+                  background: 'none',
+                  border: 'none',
+                  padding: 0,
+                  fontSize: '0.74rem',
+                  fontWeight: 900,
+                  color: theme === 'friday' ? '#ff2a6d' : 'rgba(255, 42, 109, 0.4)',
+                  textShadow: theme === 'friday' ? '0 0 8px #ff2a6d' : 'none',
+                  cursor: 'pointer',
+                  transition: 'all 0.18s ease',
+                  lineHeight: 1,
+                }}
+                title="Switch to F.R.I.D.A.Y. (Crimson)"
+                aria-label="Select F.R.I.D.A.Y. theme"
+              >
+                F
+              </button>
+            </div>
+
+            {/* Bottom row: PAUSE OPTION DIRECTLY ON THE CIRCLE */}
+            <div
+              className="font-mono-hud circle-pause-indicator"
               style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: 2,
                 fontSize: '0.48rem',
-                color: '#ffffff',
-                opacity: 0.85,
-                lineHeight: 1,
-                marginTop: 1,
+                fontWeight: 700,
                 letterSpacing: '0.04em',
+                color: autoCycle ? accentColor : '#ffd700',
+                background: autoCycle
+                  ? 'rgba(0, 0, 0, 0.5)'
+                  : 'rgba(255, 215, 0, 0.16)',
+                border: `1px solid ${autoCycle ? 'rgba(255, 255, 255, 0.18)' : '#ffd700'}`,
+                padding: '1px 5px',
+                borderRadius: 4,
+                lineHeight: 1.2,
+                marginTop: 1,
+                transition: 'all 0.2s ease',
               }}
             >
-              {isFriday ? 'FRI' : 'JAR'}
-            </span>
+              {autoCycle ? (
+                <>
+                  <Pause size={7} style={{ fill: accentColor }} />
+                  <span>PAUSE</span>
+                </>
+              ) : (
+                <>
+                  <Play size={7} style={{ fill: '#ffd700' }} />
+                  <span>PLAY</span>
+                </>
+              )}
+            </div>
           </div>
-        </button>
+        </div>
       </div>
 
       {/* Responsive positioning stacked directly above assistant dock launcher button */}
       <style>{`
-        /* Desktop: Assistant launcher button is at right: 24px, bottom: 24px, size: 58px.
+        /* Desktop: Assistant launcher is at right: 24px, bottom: 24px, size: 58px.
            Center X is 24 + 29 = 53px from right.
-           Circular theme button is 46px -> right: 30px (30 + 23 = 53px).
+           Circular theme button is 52px -> right: 27px (27 + 26 = 53px).
            Bottom: 90px (82px launcher top + 8px gap). */
         .theme-protocol-circle-container {
-          right: 30px;
+          right: 27px;
           bottom: 90px;
         }
         .theme-protocol-circle-btn {
-          width: 46px;
-          height: 46px;
+          width: 52px;
+          height: 52px;
         }
         .theme-protocol-circle-btn:hover {
           transform: scale(1.08);
         }
         .theme-protocol-circle-btn:active {
-          transform: scale(0.94);
+          transform: scale(0.95);
         }
 
         /* Mobile (<= 520px): Assistant launcher is at right: 14px, bottom: 16px, size: 54px.
            Center X is 14 + 27 = 41px from right.
-           Circular theme button is 42px -> right: 20px (20 + 21 = 41px).
-           Bottom: 76px (70px launcher top + 6px gap). */
+           Circular theme button is 48px -> right: 17px (17 + 24 = 41px).
+           Bottom: 78px (70px launcher top + 8px gap). */
         @media (max-width: 520px) {
           .theme-protocol-circle-container {
-            right: 20px !important;
-            bottom: 76px !important;
-            gap: 2px !important;
+            right: 17px !important;
+            bottom: 78px !important;
           }
           .theme-protocol-circle-btn {
-            width: 42px !important;
-            height: 42px !important;
+            width: 48px !important;
+            height: 48px !important;
           }
-          .theme-pill-badge {
-            font-size: 0.5rem !important;
-            padding: 1px 4px !important;
+          .circle-pause-indicator {
+            font-size: 0.44rem !important;
+            padding: 1px 3px !important;
           }
         }
       `}</style>
