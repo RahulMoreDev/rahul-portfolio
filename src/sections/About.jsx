@@ -54,23 +54,54 @@ export default function About() {
               alignItems: 'center',
             }}
           >
-            {/* Diamond HUD Holographic Monogram / Avatar */}
+            {/* Diamond HUD Holographic Photo Avatar */}
             <div className="diamond-hud-wrap" style={{ flexShrink: 0 }}>
               <div className="diamond-hud-ring" />
               <div className="diamond-hud-border" />
               <div
-                className="font-hud"
                 style={{
                   position: 'relative',
                   zIndex: 2,
-                  fontSize: '2rem',
-                  fontWeight: 900,
-                  color: 'var(--hud-cyan)',
-                  letterSpacing: '0.1em',
-                  textShadow: '0 0 15px rgba(0, 229, 255, 0.9)',
+                  width: 68,
+                  height: 68,
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '2px solid rgba(0, 229, 255, 0.5)',
+                  boxShadow: '0 0 18px rgba(0, 229, 255, 0.5)',
                 }}
               >
-                RM
+                <img
+                  src="/images/rahul-about.jpg"
+                  alt="Rahul More"
+                  style={{
+                    width: '100%',
+                    height: '100%',
+                    objectFit: 'cover',
+                    filter: 'contrast(1.08) brightness(1.05)',
+                  }}
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                    e.target.nextSibling.style.display = 'flex';
+                  }}
+                />
+                <div
+                  className="font-hud"
+                  style={{
+                    display: 'none',
+                    position: 'absolute',
+                    inset: 0,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    background: '#040810',
+                    color: 'var(--hud-cyan)',
+                    fontSize: '1.6rem',
+                    fontWeight: 900,
+                    letterSpacing: '0.1em',
+                    textShadow: '0 0 15px rgba(0, 229, 255, 0.9)',
+                  }}
+                >
+                  RM
+                </div>
               </div>
             </div>
 

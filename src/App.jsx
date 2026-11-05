@@ -4,8 +4,7 @@ import { useState } from 'react';
 import Navbar from './components/Navbar';
 import MouseGlow from './components/MouseGlow';
 import ParticleCanvas from './components/ParticleCanvas';
-import ChatBox from './components/ChatBox';
-import JarvisVoiceHUD from './components/JarvisVoiceHUD';
+import AssistantDock from './components/AssistantDock';
 import ResumeModal from './components/ResumeModal';
 
 // J.A.R.V.I.S. HUD Sections
@@ -47,16 +46,13 @@ export default function App() {
       {/* 6. Footer System Telemetry */}
       <Footer />
 
-      {/* 7. Floating J.A.R.V.I.S. AI Core */}
-      <ChatBox />
-
-      {/* 8. J.A.R.V.I.S. Authentic Voice Command HUD */}
-      <JarvisVoiceHUD
+      {/* 7. Floating J.A.R.V.I.S. / F.R.I.D.A.Y. assistant */}
+      <AssistantDock
         onOpenResume={() => setResumeOpen(true)}
         onCloseResume={() => setResumeOpen(false)}
       />
 
-      {/* 9. Full Document ATS-Standard Resume Modal */}
+      {/* 8. Full Document ATS-Standard Resume Modal */}
       {resumeOpen && (
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
       )}

@@ -8,4 +8,12 @@ export default defineConfig({
     react(),
     tailwindcss()
   ],
+  server: {
+    proxy: {
+      '/api/assistants': {
+        target: process.env.ASSISTANT_API_PROXY_TARGET || 'http://localhost:5000',
+        changeOrigin: true,
+      },
+    },
+  },
 })

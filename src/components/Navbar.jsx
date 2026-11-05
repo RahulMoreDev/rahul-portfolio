@@ -43,63 +43,142 @@ export default function Navbar({ onOpenResume }) {
           justifyContent: 'space-between',
         }}
       >
-        {/* J.A.R.V.I.S. Monogram Brand [ RM ] */}
+        {/* ═══════ Professional Coder Brand Logo ═══════ */}
         <a
           href="#home"
           style={{
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
-            gap: 12,
+            gap: 11,
           }}
         >
-          <div
-            className="font-hud"
-            style={{
-              fontSize: '1.25rem',
-              fontWeight: 900,
-              color: 'var(--hud-cyan)',
-              letterSpacing: '0.15em',
-              textShadow: '0 0 16px rgba(0, 229, 255, 0.7)',
-              display: 'flex',
-              alignItems: 'center',
-              gap: 4,
-            }}
-          >
-            <span style={{ color: 'rgba(0, 229, 255, 0.6)' }}>[</span>
-            <span>RM</span>
-            <span style={{ color: 'rgba(0, 229, 255, 0.6)' }}>]</span>
-          </div>
-
-          <div
-            className="hidden sm:flex"
-            style={{
-              flexDirection: 'column',
-              lineHeight: 1.15,
-              borderLeft: '1px solid rgba(0, 229, 255, 0.25)',
-              paddingLeft: 10,
-            }}
-          >
-            <span
-              className="font-hud"
+          {/* Circular Photo Avatar with Neon Code Ring */}
+          <div style={{ position: 'relative', width: 42, height: 42, flexShrink: 0 }}>
+            {/* Outer glowing cyan ring */}
+            <div
               style={{
-                fontSize: '0.78rem',
-                fontWeight: 700,
-                color: '#ffffff',
-                letterSpacing: '0.08em',
+                position: 'absolute',
+                inset: -2,
+                borderRadius: '50%',
+                border: '2px solid transparent',
+                background:
+                  'linear-gradient(#040810, #040810) padding-box, linear-gradient(135deg, #00e5ff 0%, #00ffaa 50%, #00e5ff 100%) border-box',
+                boxShadow: '0 0 14px rgba(0, 229, 255, 0.6)',
+              }}
+            />
+            {/* Photo */}
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                border: '2px solid #040810',
               }}
             >
-              RAHUL MORE
-            </span>
+              <img
+                src="/images/rahul-about.jpg"
+                alt="Rahul More"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'contrast(1.06) brightness(1.05)',
+                }}
+                onError={(e) => {
+                  e.target.style.display = 'none';
+                  e.target.nextSibling.style.display = 'flex';
+                }}
+              />
+              {/* Fallback monogram if image fails */}
+              <div
+                className="font-hud"
+                style={{
+                  display: 'none',
+                  position: 'absolute',
+                  inset: 0,
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  background: '#040810',
+                  color: 'var(--hud-cyan)',
+                  fontSize: '0.9rem',
+                  fontWeight: 900,
+                }}
+              >
+                RM
+              </div>
+            </div>
+
+            {/* Code Tag Badge  </> */}
             <span
               className="font-mono-hud"
               style={{
-                fontSize: '0.66rem',
+                position: 'absolute',
+                bottom: -4,
+                right: -5,
+                background: '#040810',
+                color: '#00e5ff',
+                border: '1.5px solid #00e5ff',
+                borderRadius: 4,
+                fontSize: '0.52rem',
+                fontWeight: 900,
+                padding: '1px 3px',
+                lineHeight: 1.2,
+                boxShadow: '0 0 8px rgba(0, 229, 255, 0.7)',
+                letterSpacing: '0.02em',
+              }}
+            >
+              {'</>'}
+            </span>
+          </div>
+
+          {/* Name + Coder Role */}
+          <div
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              lineHeight: 1.2,
+            }}
+          >
+            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+              <span
+                className="font-hud"
+                style={{
+                  fontSize: '0.85rem',
+                  fontWeight: 900,
+                  color: '#ffffff',
+                  letterSpacing: '0.06em',
+                }}
+              >
+                RAHUL MORE
+              </span>
+              <span
+                className="font-mono-hud"
+                style={{
+                  fontSize: '0.56rem',
+                  fontWeight: 700,
+                  color: '#00e5ff',
+                  background: 'rgba(0, 229, 255, 0.12)',
+                  border: '1px solid rgba(0, 229, 255, 0.35)',
+                  padding: '1px 5px',
+                  borderRadius: 3,
+                  letterSpacing: '0.08em',
+                }}
+              >
+                DEV
+              </span>
+            </div>
+            <span
+              className="font-mono-hud"
+              style={{
+                fontSize: '0.62rem',
                 color: 'var(--hud-cyan)',
                 letterSpacing: '0.1em',
               }}
             >
-              JARVIS // OS.v4
+              {'<FULL_STACK_ENGINEER />'}
             </span>
           </div>
         </a>
@@ -141,7 +220,7 @@ export default function Navbar({ onOpenResume }) {
           ))}
         </div>
 
-        {/* Action Button: Voice Command & Access Resume */}
+        {/* Action Buttons: Voice + Resume */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('jarvis-voice-trigger'))}

@@ -146,6 +146,34 @@ export function speakJarvis(text, onEnd) {
   }
 }
 
+export function speakFriday(text, onEnd) {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return;
+
+  try {
+    window.speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voices = window.speechSynthesis.getVoices();
+    const voice =
+      voices.find(
+        (candidate) =>
+          candidate.lang.toLowerCase().startsWith('en') &&
+          /female|samantha|karen|zira|aria|jenny/i.test(candidate.name),
+      ) || voices.find((candidate) => candidate.lang.toLowerCase().startsWith('en'));
+
+    if (voice) utterance.voice = voice;
+    utterance.pitch = 1.08;
+    utterance.rate = 1.04;
+    utterance.volume = 1;
+    if (onEnd) {
+      utterance.onend = onEnd;
+      utterance.onerror = onEnd;
+    }
+    window.speechSynthesis.speak(utterance);
+  } catch (error) {
+    console.warn('F.R.I.D.A.Y. speech synthesis error:', error);
+  }
+}
+
 /**
  * Process voice commands and return action result
  */
@@ -281,7 +309,7 @@ export function processJarvisVoiceCommand(commandText, actions = {}) {
   // 10. System Status / Diagnostics
   if (t.includes('status') || t.includes('diagnostic') || t.includes('system') || t.includes('health')) {
     return {
-      speech: "All systems online and operating at nominal efficiency, sir. React 19, Java 21, and Spring Boot pipelines fully synchronized.",
+      speech: "Portfolio assistant is online. I can navigate the portfolio or answer questions using the information published here, sir.",
       action: 'status',
     };
   }

@@ -33,23 +33,57 @@ export default function Footer() {
         >
           {/* Brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <span
-              className="font-hud"
-              style={{
-                fontSize: '1.4rem',
-                fontWeight: 900,
-                color: 'var(--hud-cyan)',
-                textShadow: '0 0 14px rgba(0, 229, 255, 0.7)',
-              }}
-            >
-              [ RM ]
-            </span>
+            {/* Mini coder photo */}
+            <div style={{ position: 'relative', width: 36, height: 36, flexShrink: 0 }}>
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: -1,
+                  borderRadius: '50%',
+                  border: '1.5px solid var(--hud-cyan)',
+                  boxShadow: '0 0 10px rgba(0, 229, 255, 0.5)',
+                }}
+              />
+              <div
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  borderRadius: '50%',
+                  overflow: 'hidden',
+                  border: '1.5px solid #040810',
+                }}
+              >
+                <img
+                  src="/images/rahul-about.jpg"
+                  alt="Rahul More"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                />
+              </div>
+              <span
+                className="font-mono-hud"
+                style={{
+                  position: 'absolute',
+                  bottom: -3,
+                  right: -4,
+                  background: '#02050b',
+                  color: '#00e5ff',
+                  border: '1px solid #00e5ff',
+                  borderRadius: 3,
+                  fontSize: '0.45rem',
+                  fontWeight: 900,
+                  padding: '0px 2px',
+                  lineHeight: 1.3,
+                }}
+              >
+                {'</>'}
+              </span>
+            </div>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span className="font-hud" style={{ fontSize: '0.85rem', fontWeight: 700, color: '#ffffff' }}>
                 RAHUL MORE
               </span>
               <span className="font-mono-hud" style={{ fontSize: '0.7rem', color: 'var(--hud-cyan)' }}>
-                JARVIS // ARCHITECTURE CORE
+                {'<FULL_STACK_ENGINEER />'}
               </span>
             </div>
           </div>

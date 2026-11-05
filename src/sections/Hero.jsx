@@ -316,7 +316,7 @@ export default function Hero({ onOpenResume }) {
                 overflow: 'hidden',
               }}
             >
-              {/* Optional overlay photo with cyber treatment */}
+              {/* Professional photo with cyber HUD overlay */}
               <img
                 src="/images/rahul-hero.jpg"
                 alt="Rahul More"
@@ -326,32 +326,49 @@ export default function Hero({ onOpenResume }) {
                   width: '100%',
                   height: '100%',
                   objectFit: 'cover',
-                  opacity: 0.28,
-                  filter: 'contrast(1.3) grayscale(0.5)',
+                  opacity: 0.55,
+                  filter: 'contrast(1.15) brightness(1.1) saturate(0.7)',
                 }}
               />
+              {/* Gradient overlay for depth */}
+              <div
+                style={{
+                  position: 'absolute',
+                  inset: 0,
+                  background: 'radial-gradient(circle, transparent 40%, rgba(4,8,16,0.7) 100%)',
+                  zIndex: 1,
+                }}
+              />
+              {/* Code Monogram overlay */}
               <span
-                className="font-hud"
+                className="font-mono-hud"
                 style={{
                   position: 'relative',
-                  fontSize: '1.9rem',
+                  zIndex: 2,
+                  fontSize: '0.7rem',
                   fontWeight: 900,
-                  color: 'var(--hud-cyan)',
+                  color: '#00e5ff',
                   letterSpacing: '0.12em',
-                  textShadow: '0 0 15px rgba(0, 229, 255, 0.9)',
+                  textShadow: '0 0 12px rgba(0, 229, 255, 0.9)',
+                  background: 'rgba(4, 8, 16, 0.65)',
+                  padding: '3px 10px',
+                  borderRadius: 3,
+                  border: '1px solid rgba(0, 229, 255, 0.4)',
                 }}
               >
-                RM
+                {'<RM />'}
               </span>
               <span
                 className="font-mono-hud"
                 style={{
                   position: 'relative',
-                  fontSize: '0.62rem',
+                  zIndex: 2,
+                  fontSize: '0.58rem',
                   color: 'var(--hud-green)',
                   letterSpacing: '0.15em',
                   textTransform: 'uppercase',
-                  marginTop: -2,
+                  marginTop: 2,
+                  textShadow: '0 0 6px rgba(0, 255, 170, 0.6)',
                 }}
               >
                 CORE ACTIVE
