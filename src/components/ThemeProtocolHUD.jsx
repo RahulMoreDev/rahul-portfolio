@@ -97,9 +97,9 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
         <div
           role="status"
           aria-live="polite"
+          className="hud-shift-toast-banner"
           style={{
             position: 'fixed',
-            top: 68,
             left: '50%',
             transform: 'translateX(-50%)',
             zIndex: 10002,
@@ -356,6 +356,10 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
 
       {/* Responsive positioning stacked directly above assistant dock launcher button */}
       <style>{`
+        .hud-shift-toast-banner {
+          top: 72px;
+        }
+
         /* Desktop: Assistant launcher is at right: 24px, bottom: 24px, size: 58px.
            Center X is 24 + 29 = 53px from right.
            Circular theme button is 52px -> right: 27px (27 + 26 = 53px).
@@ -373,6 +377,12 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
         }
         .theme-protocol-circle-btn:active {
           transform: scale(0.95);
+        }
+
+        @media (max-width: 768px) {
+          .hud-shift-toast-banner {
+            top: 96px !important;
+          }
         }
 
         /* Mobile (<= 520px): Assistant launcher is at right: 14px, bottom: 16px, size: 54px.
