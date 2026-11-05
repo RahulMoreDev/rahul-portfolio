@@ -278,6 +278,25 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
   const recognitionRef = useRef(null);
   const feedRef = useRef(null);
 
+  // Tracking refs to ensure chat is NEVER swapped while open, typing, or thinking
+  const openRef = useRef(open);
+  const inputRef = useRef(input);
+  const pendingRef = useRef(pending);
+
+  useEffect(() => {
+    openRef.current = open;
+    // Notify theme HUD to pause auto-cycle while chat is open
+    window.dispatchEvent(new CustomEvent('jarvis-assistant-dock-state', { detail: { open } }));
+  }, [open]);
+
+  useEffect(() => {
+    inputRef.current = input;
+  }, [input]);
+
+  useEffect(() => {
+    pendingRef.current = pending;
+  }, [pending]);
+
   const updateConversation = useCallback((assistantId, update) => {
     setConversations((current) => ({
       ...current,
@@ -456,6 +475,10 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
       }
     };
     const handleThemeChange = (event) => {
+      // NEVER exchange chat or switch assistant if the user has the assistant open, is typing, or assistant is replying
+      if (openRef.current || inputRef.current.trim().length > 0 || pendingRef.current) {
+        return;
+      }
       if (event.detail?.theme) {
         setActiveAssistant(event.detail.theme);
       }

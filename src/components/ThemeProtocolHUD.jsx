@@ -7,6 +7,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
   const [theme, setTheme] = useState('jarvis'); // 'jarvis' | 'friday'
   const [autoCycle, setAutoCycle] = useState(true);
   const [progress, setProgress] = useState(0);
+  const [assistantOpen, setAssistantOpen] = useState(false);
 
   // Switch theme on DOM & dispatch event (silent, no banner toast)
   const applyTheme = (newTheme) => {
@@ -17,6 +18,15 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
     if (onThemeChange) onThemeChange(newTheme);
     window.dispatchEvent(new CustomEvent('jarvis-theme-changed', { detail: { theme: newTheme } }));
   };
+
+  // Listen to assistant dock state so we never change theme while user is chatting
+  useEffect(() => {
+    const handleAssistantState = (e) => {
+      setAssistantOpen(!!e.detail?.open);
+    };
+    window.addEventListener('jarvis-assistant-dock-state', handleAssistantState);
+    return () => window.removeEventListener('jarvis-assistant-dock-state', handleAssistantState);
+  }, []);
 
   // Load saved theme or default to jarvis
   useEffect(() => {
@@ -29,8 +39,9 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
   }, []);
 
   // 4-second auto-cycle interval with smooth progress tracking
+  // Pauses automatically while user is chatting or typing anywhere
   useEffect(() => {
-    if (!autoCycle) {
+    if (!autoCycle || assistantOpen) {
       setProgress(0);
       return;
     }
@@ -39,6 +50,18 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
     const increment = 100 / ((SHIFT_INTERVAL_SECONDS * 1000) / intervalMs);
 
     const timer = setInterval(() => {
+      // Check if user is actively typing in any input field or textarea
+      const activeEl = document.activeElement;
+      const isTyping =
+        activeEl &&
+        (activeEl.tagName === 'INPUT' ||
+          activeEl.tagName === 'TEXTAREA' ||
+          activeEl.isContentEditable);
+
+      if (isTyping) {
+        return; // Don't cycle or exchange theme while typing!
+      }
+
       setProgress((prev) => {
         if (prev >= 100) {
           setTheme((currentTheme) => {
@@ -53,7 +76,7 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
     }, intervalMs);
 
     return () => clearInterval(timer);
-  }, [autoCycle]);
+  }, [autoCycle, assistantOpen]);
 
   const togglePause = () => {
     setAutoCycle((prev) => !prev);
