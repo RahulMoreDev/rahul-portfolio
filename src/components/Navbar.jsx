@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-export default function Navbar({ onOpenResume }) {
+export default function Navbar({ onOpenResume, onOpenEmail }) {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navLinks = [
@@ -11,6 +11,14 @@ export default function Navbar({ onOpenResume }) {
     { href: '#experience', label: 'Experience' },
     { href: '#contact', label: 'Contact' },
   ];
+
+  const handleOpenEmail = () => {
+    if (onOpenEmail) {
+      onOpenEmail();
+    } else {
+      window.dispatchEvent(new CustomEvent('jarvis-open-email'));
+    }
+  };
 
   return (
     <nav
@@ -23,10 +31,10 @@ export default function Navbar({ onOpenResume }) {
         left: 0,
         right: 0,
         zIndex: 500,
-        height: 68,
+        height: 64,
         display: 'flex',
         alignItems: 'center',
-        background: 'rgba(4, 8, 16, 0.88)',
+        background: 'rgba(4, 8, 16, 0.92)',
         borderBottom: '1px solid rgba(0, 229, 255, 0.18)',
         backdropFilter: 'blur(16px)',
         WebkitBackdropFilter: 'blur(16px)',
@@ -37,10 +45,11 @@ export default function Navbar({ onOpenResume }) {
           maxWidth: 1280,
           width: '100%',
           margin: '0 auto',
-          padding: '0 28px',
+          padding: '0 clamp(14px, 3vw, 28px)',
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
+          gap: 12,
         }}
       >
         {/* ═══════ Professional Coder Brand Logo ═══════ */}
@@ -50,11 +59,12 @@ export default function Navbar({ onOpenResume }) {
             textDecoration: 'none',
             display: 'flex',
             alignItems: 'center',
-            gap: 11,
+            gap: 10,
+            minWidth: 0,
           }}
         >
           {/* Circular Photo Avatar with Neon Code Ring */}
-          <div style={{ position: 'relative', width: 42, height: 42, flexShrink: 0 }}>
+          <div style={{ position: 'relative', width: 38, height: 38, flexShrink: 0 }}>
             {/* Outer glowing cyan ring */}
             <div
               style={{
@@ -103,7 +113,7 @@ export default function Navbar({ onOpenResume }) {
                   justifyContent: 'center',
                   background: '#040810',
                   color: 'var(--hud-cyan)',
-                  fontSize: '0.9rem',
+                  fontSize: '0.85rem',
                   fontWeight: 900,
                 }}
               >
@@ -116,13 +126,13 @@ export default function Navbar({ onOpenResume }) {
               className="font-mono-hud"
               style={{
                 position: 'absolute',
-                bottom: -4,
-                right: -5,
+                bottom: -3,
+                right: -4,
                 background: '#040810',
                 color: '#00e5ff',
                 border: '1.5px solid #00e5ff',
                 borderRadius: 4,
-                fontSize: '0.52rem',
+                fontSize: '0.48rem',
                 fontWeight: 900,
                 padding: '1px 3px',
                 lineHeight: 1.2,
@@ -140,16 +150,18 @@ export default function Navbar({ onOpenResume }) {
               display: 'flex',
               flexDirection: 'column',
               lineHeight: 1.2,
+              minWidth: 0,
             }}
           >
-            <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
+            <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
               <span
                 className="font-hud"
                 style={{
-                  fontSize: '0.85rem',
+                  fontSize: '0.82rem',
                   fontWeight: 900,
                   color: '#ffffff',
                   letterSpacing: '0.06em',
+                  whiteSpace: 'nowrap',
                 }}
               >
                 RAHUL MORE
@@ -157,7 +169,7 @@ export default function Navbar({ onOpenResume }) {
               <span
                 className="font-mono-hud"
                 style={{
-                  fontSize: '0.56rem',
+                  fontSize: '0.54rem',
                   fontWeight: 700,
                   color: '#00e5ff',
                   background: 'rgba(0, 229, 255, 0.12)',
@@ -171,11 +183,12 @@ export default function Navbar({ onOpenResume }) {
               </span>
             </div>
             <span
-              className="font-mono-hud"
+              className="font-mono-hud hidden xs:inline"
               style={{
-                fontSize: '0.62rem',
+                fontSize: '0.6rem',
                 color: 'var(--hud-cyan)',
-                letterSpacing: '0.1em',
+                letterSpacing: '0.08em',
+                whiteSpace: 'nowrap',
               }}
             >
               {'<FULL_STACK_ENGINEER />'}
@@ -188,7 +201,7 @@ export default function Navbar({ onOpenResume }) {
           className="hidden md:flex"
           style={{
             alignItems: 'center',
-            gap: 24,
+            gap: 22,
           }}
         >
           {navLinks.map((link) => (
@@ -220,14 +233,28 @@ export default function Navbar({ onOpenResume }) {
           ))}
         </div>
 
-        {/* Action Buttons: Voice + Resume */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
+        {/* Action Buttons: Voice + Email + Resume + Hamburger */}
+        <div style={{ display: 'flex', alignItems: 'center', gap: 8, flexShrink: 0 }}>
+          {/* Quick Email Dashboard button */}
+          <button
+            onClick={handleOpenEmail}
+            className="btn-hud-secondary hidden lg:inline-flex"
+            style={{
+              padding: '6px 12px',
+              fontSize: '0.72rem',
+            }}
+            title="Open J.A.R.V.I.S. Email Compose Dashboard"
+          >
+            <span>✉</span>
+            <span>EMAIL</span>
+          </button>
+
           <button
             onClick={() => window.dispatchEvent(new CustomEvent('jarvis-voice-trigger'))}
             className="btn-hud-secondary hidden sm:inline-flex"
             style={{
-              padding: '8px 14px',
-              fontSize: '0.75rem',
+              padding: '6px 12px',
+              fontSize: '0.72rem',
             }}
             title="Activate J.A.R.V.I.S. Voice Command System"
           >
@@ -239,11 +266,11 @@ export default function Navbar({ onOpenResume }) {
             onClick={onOpenResume}
             className="btn-hud-primary"
             style={{
-              padding: '8px 18px',
-              fontSize: '0.75rem',
+              padding: '6px 14px',
+              fontSize: '0.72rem',
             }}
           >
-            <span style={{ fontSize: '0.85rem' }}>⬡</span>
+            <span style={{ fontSize: '0.8rem' }}>⬡</span>
             <span>RESUME</span>
           </button>
 
@@ -252,13 +279,14 @@ export default function Navbar({ onOpenResume }) {
             onClick={() => setMenuOpen(!menuOpen)}
             className="md:hidden"
             style={{
-              background: 'transparent',
-              border: '1px solid rgba(0, 229, 255, 0.3)',
+              background: 'rgba(0, 229, 255, 0.08)',
+              border: '1px solid rgba(0, 229, 255, 0.35)',
               borderRadius: 6,
               color: 'var(--hud-cyan)',
               padding: '6px 10px',
               cursor: 'pointer',
-              fontSize: '1rem',
+              fontSize: '1.1rem',
+              lineHeight: 1,
             }}
             aria-label="Toggle Navigation Menu"
           >
@@ -272,15 +300,16 @@ export default function Navbar({ onOpenResume }) {
         <div
           style={{
             position: 'absolute',
-            top: 68,
+            top: 64,
             left: 0,
             right: 0,
             background: 'rgba(4, 8, 16, 0.98)',
             borderBottom: '1px solid var(--hud-border)',
-            padding: '20px 28px',
+            padding: '16px 24px',
             display: 'flex',
             flexDirection: 'column',
-            gap: 14,
+            gap: 12,
+            boxShadow: '0 20px 30px rgba(0, 0, 0, 0.7)',
           }}
         >
           {navLinks.map((link) => (
@@ -292,15 +321,52 @@ export default function Navbar({ onOpenResume }) {
               style={{
                 textDecoration: 'none',
                 color: 'var(--text-primary)',
-                fontSize: '0.9rem',
+                fontSize: '0.88rem',
                 letterSpacing: '0.12em',
                 padding: '8px 0',
                 borderBottom: '1px solid rgba(0, 229, 255, 0.08)',
+                display: 'flex',
+                alignItems: 'center',
+                gap: 8,
               }}
             >
-              // {link.label}
+              <span style={{ color: 'var(--hud-cyan)' }}>//</span>
+              <span>{link.label}</span>
             </a>
           ))}
+
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              handleOpenEmail();
+            }}
+            className="btn-hud-primary"
+            style={{
+              justifyContent: 'center',
+              marginTop: 6,
+              padding: '10px',
+              fontSize: '0.74rem',
+            }}
+          >
+            <span>✉</span>
+            <span>OPEN EMAIL COMPOSE DASHBOARD</span>
+          </button>
+
+          <button
+            onClick={() => {
+              setMenuOpen(false);
+              window.dispatchEvent(new CustomEvent('jarvis-voice-trigger'));
+            }}
+            className="btn-hud-secondary"
+            style={{
+              justifyContent: 'center',
+              padding: '10px',
+              fontSize: '0.74rem',
+            }}
+          >
+            <span>🎙️</span>
+            <span>VOICE PROTOCOL ASSISTANT</span>
+          </button>
         </div>
       )}
     </nav>

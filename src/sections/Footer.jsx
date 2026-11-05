@@ -1,16 +1,26 @@
 import { personalInfo } from '../data/portfolioData';
 
-export default function Footer() {
+export default function Footer({ onOpenEmail }) {
   const currentYear = new Date().getFullYear();
+
+  const handleEmailClick = (e) => {
+    e.preventDefault();
+    if (onOpenEmail) {
+      onOpenEmail();
+    } else {
+      window.dispatchEvent(new CustomEvent('jarvis-open-email'));
+    }
+  };
 
   return (
     <footer
       style={{
         background: '#02050b',
         borderTop: '1px solid rgba(0, 229, 255, 0.2)',
-        padding: '50px 24px 30px',
+        padding: 'clamp(36px, 6vw, 50px) clamp(16px, 4vw, 24px) clamp(24px, 4vw, 30px)',
         position: 'relative',
         zIndex: 10,
+        overflow: 'hidden',
       }}
     >
       <div
@@ -19,18 +29,10 @@ export default function Footer() {
           margin: '0 auto',
           display: 'flex',
           flexDirection: 'column',
-          gap: 28,
+          gap: 24,
         }}
       >
-        <div
-          style={{
-            display: 'flex',
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            flexWrap: 'wrap',
-            gap: 20,
-          }}
-        >
+        <div className="footer-top-row">
           {/* Brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
             {/* Mini coder photo */}
@@ -89,56 +91,51 @@ export default function Footer() {
           </div>
 
           {/* Social Links */}
-          <div style={{ display: 'flex', gap: 14 }}>
-            {[
-              { label: 'GITHUB', href: personalInfo.github },
-              { label: 'LINKEDIN', href: personalInfo.linkedin },
-              { label: 'EMAIL', href: personalInfo.emailUrl || `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}` },
-            ].map((link) => (
-              <a
-                key={link.label}
-                href={link.href}
-                target="_blank"
-                rel="noreferrer"
-                className="font-mono-hud"
-                style={{
-                  fontSize: '0.78rem',
-                  color: 'var(--text-secondary)',
-                  textDecoration: 'none',
-                  padding: '6px 12px',
-                  borderRadius: 4,
-                  background: 'rgba(0, 229, 255, 0.04)',
-                  border: '1px solid rgba(0, 229, 255, 0.2)',
-                  letterSpacing: '0.08em',
-                  transition: 'all 0.2s',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.color = 'var(--hud-cyan)';
-                  e.currentTarget.style.borderColor = 'var(--hud-cyan)';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.color = 'var(--text-secondary)';
-                  e.currentTarget.style.borderColor = 'rgba(0, 229, 255, 0.2)';
-                }}
-              >
-                // {link.label}
-              </a>
-            ))}
+          <div className="footer-links">
+            <a
+              href={personalInfo.github}
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono-hud footer-link"
+            >
+              // GITHUB
+            </a>
+            <a
+              href={personalInfo.linkedin}
+              target="_blank"
+              rel="noreferrer"
+              className="font-mono-hud footer-link"
+            >
+              // LINKEDIN
+            </a>
+            <button
+              onClick={handleEmailClick}
+              className="font-mono-hud footer-link"
+              style={{
+                cursor: 'pointer',
+                background: 'rgba(0, 229, 255, 0.08)',
+                color: 'var(--hud-cyan)',
+                borderColor: 'rgba(0, 229, 255, 0.4)',
+              }}
+              title="Open J.A.R.V.I.S. Email Compose Dashboard"
+            >
+              // EMAIL DASHBOARD ↗
+            </button>
           </div>
         </div>
 
         {/* Bottom telemetry line */}
         <div
-          className="font-mono-hud"
+          className="font-mono-hud footer-bottom-row"
           style={{
             display: 'flex',
             justifyContent: 'space-between',
             alignItems: 'center',
             flexWrap: 'wrap',
             gap: 12,
-            fontSize: '0.72rem',
+            fontSize: '0.7rem',
             color: 'var(--text-muted)',
-            paddingTop: 20,
+            paddingTop: 18,
             borderTop: '1px solid rgba(0, 229, 255, 0.08)',
           }}
         >
@@ -146,6 +143,54 @@ export default function Footer() {
           <div>HOSTED ON VERCEL // CLOUD_STATUS: ONLINE</div>
         </div>
       </div>
+
+      <style>{`
+        .footer-top-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          flex-wrap: wrap;
+          gap: 20px;
+        }
+
+        .footer-links {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+        }
+
+        .footer-link {
+          font-size: 0.74rem;
+          color: var(--text-secondary);
+          text-decoration: none;
+          padding: 6px 12px;
+          border-radius: 4px;
+          background: rgba(0, 229, 255, 0.04);
+          border: 1px solid rgba(0, 229, 255, 0.2);
+          letter-spacing: 0.08em;
+          transition: all 0.2s;
+          display: inline-flex;
+          align-items: center;
+        }
+
+        .footer-link:hover {
+          color: var(--hud-cyan) !important;
+          border-color: var(--hud-cyan) !important;
+        }
+
+        @media (max-width: 640px) {
+          .footer-top-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 16px;
+          }
+          .footer-bottom-row {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 6px;
+          }
+        }
+      `}</style>
     </footer>
   );
 }

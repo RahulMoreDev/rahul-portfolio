@@ -88,7 +88,7 @@ export default function Skills() {
     <section
       id="skills"
       style={{
-        padding: '120px 24px',
+        padding: 'clamp(60px, 10vw, 120px) clamp(16px, 4vw, 24px)',
         position: 'relative',
         background: 'var(--hud-bg)',
         borderTop: '1px solid rgba(0, 229, 255, 0.12)',
@@ -109,7 +109,7 @@ export default function Skills() {
         </div>
 
         {/* Filter Pills */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 46 }}>
+        <div className="skills-filters">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -134,14 +134,8 @@ export default function Skills() {
           ))}
         </div>
 
-        {/* Grid of Circular Neon Arc Cards (Matches Reference Screenshots 1 & 3) */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fill, minmax(260px, 1fr))',
-            gap: 22,
-          }}
-        >
+        {/* Grid of Circular Neon Arc Cards */}
+        <div className="skills-grid">
           {filteredSkills.map((skill) => {
             // SVG Arc Calculation (radius 44, circumference ≈ 276.46)
             const radius = 44;
@@ -153,7 +147,7 @@ export default function Skills() {
                 key={skill.name}
                 className="hud-panel hud-corners"
                 style={{
-                  padding: '28px 20px',
+                  padding: 'clamp(18px, 3vw, 28px) clamp(14px, 2vw, 20px)',
                   borderRadius: 8,
                   display: 'flex',
                   flexDirection: 'column',
@@ -163,12 +157,12 @@ export default function Skills() {
                 }}
               >
                 {/* Neon Circular Arc Gauge */}
-                <div style={{ position: 'relative', width: 110, height: 110 }}>
-                  <svg width="110" height="110" style={{ transform: 'rotate(-90deg)' }}>
+                <div style={{ position: 'relative', width: 100, height: 100 }}>
+                  <svg width="100" height="100" style={{ transform: 'rotate(-90deg)' }}>
                     {/* Background Track Circle */}
                     <circle
-                      cx="55"
-                      cy="55"
+                      cx="50"
+                      cy="50"
                       r={radius}
                       stroke="rgba(0, 229, 255, 0.12)"
                       strokeWidth="5"
@@ -176,8 +170,8 @@ export default function Skills() {
                     />
                     {/* Neon Glowing Arc */}
                     <circle
-                      cx="55"
-                      cy="55"
+                      cx="50"
+                      cy="50"
                       r={radius}
                       stroke="var(--hud-cyan)"
                       strokeWidth="5"
@@ -200,7 +194,7 @@ export default function Skills() {
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      fontSize: '1.75rem',
+                      fontSize: '1.5rem',
                     }}
                   >
                     {skill.icon}
@@ -212,7 +206,7 @@ export default function Skills() {
                   <h3
                     className="font-hud"
                     style={{
-                      fontSize: '1.05rem',
+                      fontSize: 'clamp(0.85rem, 1.2vw, 1.05rem)',
                       fontWeight: 700,
                       color: '#ffffff',
                       letterSpacing: '0.04em',
@@ -221,7 +215,7 @@ export default function Skills() {
                   >
                     {skill.name}
                   </h3>
-                  {/* Percentage readout (Cyan bold from screenshot) */}
+                  {/* Percentage readout */}
                   <div
                     className="font-mono-hud"
                     style={{
@@ -239,7 +233,7 @@ export default function Skills() {
                 <p
                   style={{
                     color: 'var(--text-secondary)',
-                    fontSize: '0.78rem',
+                    fontSize: '0.76rem',
                     lineHeight: 1.55,
                     margin: 0,
                   }}
@@ -251,6 +245,48 @@ export default function Skills() {
           })}
         </div>
       </div>
+
+      <style>{`
+        .skills-filters {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-bottom: 46px;
+        }
+
+        .skills-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+          gap: 22px;
+        }
+
+        @media (max-width: 768px) {
+          .skills-filters {
+            gap: 6px;
+            margin-bottom: 32px;
+          }
+          .skills-filters button {
+            padding: 5px 12px !important;
+            font-size: 0.7rem !important;
+          }
+          .skills-grid {
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+            gap: 12px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .skills-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+          }
+          .skills-filters button {
+            padding: 4px 10px !important;
+            font-size: 0.65rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

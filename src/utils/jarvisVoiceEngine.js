@@ -263,12 +263,13 @@ export function processJarvisVoiceCommand(commandText, actions = {}) {
     };
   }
 
-  // 6. Direct Email (Gmail platform compose)
-  if (t.includes('email') || t.includes('mail') || t.includes('gmail')) {
-    const gmailUrl = 'https://mail.google.com/mail/?view=cm&fs=1&to=rahulm3503@gmail.com';
-    window.open(gmailUrl, '_blank', 'noopener,noreferrer');
+  // 6. Direct Email (Dashboard compose)
+  if (t.includes('email') || t.includes('mail') || t.includes('gmail') || t.includes('compose')) {
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new CustomEvent('jarvis-open-email'));
+    }
     return {
-      speech: "Dispatching transmission line to rahulm3503@gmail.com on the Gmail platform, sir.",
+      speech: "Opening J.A.R.V.I.S. email transmission compose dashboard for rahulm3503@gmail.com, sir.",
       action: 'email',
     };
   }

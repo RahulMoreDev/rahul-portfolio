@@ -12,7 +12,7 @@ export default function About() {
     <section
       id="about"
       style={{
-        padding: '120px 24px',
+        padding: 'clamp(60px, 10vw, 120px) clamp(16px, 4vw, 24px)',
         position: 'relative',
         background: 'rgba(4, 8, 16, 0.95)',
         borderTop: '1px solid rgba(0, 229, 255, 0.12)',
@@ -32,28 +32,10 @@ export default function About() {
           </div>
         </div>
 
-        {/* Content Layout (Matches your Screenshot 4) */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'minmax(320px, 1.35fr) minmax(280px, 0.65fr)',
-            gap: 24,
-            alignItems: 'stretch',
-            textAlign: 'left',
-          }}
-          className="about-hud-grid"
-        >
+        {/* Content Layout */}
+        <div className="about-hud-grid">
           {/* Main Profile HUD Box */}
-          <div
-            className="hud-panel hud-corners about-bio-box"
-            style={{
-              padding: '36px 32px',
-              borderRadius: 8,
-              display: 'flex',
-              gap: 32,
-              alignItems: 'center',
-            }}
-          >
+          <div className="hud-panel hud-corners about-bio-box">
             {/* Diamond HUD Holographic Photo Avatar */}
             <div className="diamond-hud-wrap" style={{ flexShrink: 0 }}>
               <div className="diamond-hud-ring" />
@@ -111,7 +93,7 @@ export default function About() {
                 <h3
                   className="font-hud"
                   style={{
-                    fontSize: '1.45rem',
+                    fontSize: 'clamp(1.1rem, 2vw, 1.45rem)',
                     fontWeight: 800,
                     color: '#ffffff',
                     letterSpacing: '0.04em',
@@ -144,7 +126,7 @@ export default function About() {
               </p>
 
               {/* Tactical Chip Tags */}
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: 10, marginTop: 6 }}>
+              <div className="about-tags">
                 {['Full Stack Engineer', 'Spring Boot & APIs', 'Problem Solver', 'Tech Enthusiast'].map((tag) => (
                   <span
                     key={tag}
@@ -165,20 +147,14 @@ export default function About() {
             </div>
           </div>
 
-          {/* Right Metrics Cards (4 Square HUD metric boxes from reference) */}
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: '1fr 1fr',
-              gap: 16,
-            }}
-          >
+          {/* Right Metrics Cards (4 Square HUD metric boxes) */}
+          <div className="about-metrics-grid">
             {metrics.map((m) => (
               <div
                 key={m.label}
                 className="hud-panel hud-corners"
                 style={{
-                  padding: '24px 16px',
+                  padding: 'clamp(16px, 2vw, 24px) clamp(12px, 2vw, 16px)',
                   borderRadius: 8,
                   display: 'flex',
                   flexDirection: 'column',
@@ -191,7 +167,7 @@ export default function About() {
                 <div
                   className="font-hud"
                   style={{
-                    fontSize: 'clamp(1.8rem, 2.8vw, 2.4rem)',
+                    fontSize: 'clamp(1.4rem, 2.8vw, 2.4rem)',
                     fontWeight: 900,
                     color: 'var(--hud-cyan)',
                     letterSpacing: '0.04em',
@@ -201,13 +177,13 @@ export default function About() {
                     gap: 4,
                   }}
                 >
-                  <span style={{ fontSize: '1rem', color: 'rgba(0, 229, 255, 0.6)' }}>⬡</span>
+                  <span style={{ fontSize: '0.8rem', color: 'rgba(0, 229, 255, 0.6)' }}>⬡</span>
                   <span>{m.value}</span>
                 </div>
                 <div
                   className="font-mono-hud"
                   style={{
-                    fontSize: '0.76rem',
+                    fontSize: 'clamp(0.65rem, 1vw, 0.76rem)',
                     color: 'var(--text-secondary)',
                     letterSpacing: '0.08em',
                     textTransform: 'uppercase',
@@ -222,6 +198,35 @@ export default function About() {
       </div>
 
       <style>{`
+        .about-hud-grid {
+          display: grid;
+          grid-template-columns: 1.35fr 0.65fr;
+          gap: 24px;
+          align-items: stretch;
+          text-align: left;
+        }
+
+        .about-bio-box {
+          padding: 36px 32px;
+          border-radius: 8px;
+          display: flex;
+          gap: 32px;
+          align-items: center;
+        }
+
+        .about-metrics-grid {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 16px;
+        }
+
+        .about-tags {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+          margin-top: 6px;
+        }
+
         @media (max-width: 900px) {
           .about-hud-grid {
             grid-template-columns: 1fr !important;
@@ -229,6 +234,26 @@ export default function About() {
           .about-bio-box {
             flex-direction: column !important;
             text-align: center !important;
+            padding: 28px 20px;
+            gap: 20px;
+          }
+          .about-tags {
+            justify-content: center;
+          }
+          .about-metrics-grid {
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .about-bio-box {
+            padding: 20px 16px;
+            gap: 16px;
+          }
+          .about-tags .font-mono-hud {
+            font-size: 0.65rem;
+            padding: 3px 8px;
           }
         }
       `}</style>

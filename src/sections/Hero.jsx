@@ -9,7 +9,7 @@ const TERMINAL_COMMANDS = [
   'JARVIS > REST API Pipelines: DEPLOYED',
 ];
 
-export default function Hero({ onOpenResume }) {
+export default function Hero({ onOpenResume, onOpenEmail }) {
   const [termText, setTermText] = useState('');
   const [cmdIndex, setCmdIndex] = useState(0);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -56,21 +56,7 @@ export default function Hero({ onOpenResume }) {
         overflow: 'hidden',
       }}
     >
-      <div
-        style={{
-          maxWidth: 1280,
-          margin: '0 auto',
-          padding: '0 28px',
-          width: '100%',
-          display: 'grid',
-          gridTemplateColumns: 'minmax(320px, 1.15fr) minmax(320px, 0.85fr)',
-          gap: 60,
-          alignItems: 'center',
-          position: 'relative',
-          zIndex: 2,
-        }}
-        className="hero-grid"
-      >
+      <div className="hero-grid">
         {/* ================= LEFT: HUD Telemetry & Hero Heading ================= */}
         <div style={{ display: 'flex', flexDirection: 'column', gap: 24 }}>
           {/* System Online Badge */}
@@ -94,7 +80,7 @@ export default function Hero({ onOpenResume }) {
             <h1
               className="font-hud"
               style={{
-                fontSize: 'clamp(2.8rem, 6vw, 4.8rem)',
+                fontSize: 'clamp(2.2rem, 6vw, 4.8rem)',
                 fontWeight: 900,
                 lineHeight: 1.05,
                 color: '#ffffff',
@@ -111,8 +97,9 @@ export default function Hero({ onOpenResume }) {
 
           {/* Subtitle / Role Tag */}
           <p
+            className="hero-subtitle"
             style={{
-              fontSize: 'clamp(1rem, 1.6vw, 1.25rem)',
+              fontSize: 'clamp(0.85rem, 1.6vw, 1.25rem)',
               color: 'var(--text-secondary)',
               margin: 0,
               fontWeight: 500,
@@ -142,10 +129,13 @@ export default function Hero({ onOpenResume }) {
             <span
               className="font-mono-hud"
               style={{
-                fontSize: '0.88rem',
+                fontSize: '0.82rem',
                 color: 'var(--hud-cyan)',
                 letterSpacing: '0.05em',
                 flex: 1,
+                overflow: 'hidden',
+                whiteSpace: 'nowrap',
+                textOverflow: 'ellipsis',
               }}
             >
               {termText}
@@ -154,27 +144,34 @@ export default function Hero({ onOpenResume }) {
           </div>
 
           {/* Cyber CTA Buttons & Voice Command Trigger */}
-          <div style={{ display: 'flex', flexWrap: 'wrap', gap: 16, marginTop: 6 }}>
+          <div className="hero-buttons">
             <a href="#projects" className="btn-hud-primary">
               <span>⬡</span>
-              <span>ACCESS PROJECTS</span>
+              <span>PROJECTS</span>
             </a>
 
-            <a href="#contact" className="btn-hud-secondary">
-              <span>⬡</span>
-              <span>CONTACT SYSTEM</span>
-            </a>
+            <button
+              onClick={() => {
+                if (onOpenEmail) onOpenEmail();
+                else window.dispatchEvent(new CustomEvent('jarvis-open-email'));
+              }}
+              className="btn-hud-secondary"
+              title="Open J.A.R.V.I.S. Email Compose Dashboard"
+            >
+              <span>✉</span>
+              <span>EMAIL DASHBOARD</span>
+            </button>
 
             <button onClick={onOpenResume} className="btn-hud-secondary">
               <span>📄</span>
-              <span>VIEW RESUME</span>
+              <span>RESUME</span>
             </button>
 
             <button
               onClick={() => {
                 window.dispatchEvent(new CustomEvent('jarvis-voice-trigger'));
               }}
-              className="btn-hud-secondary"
+              className="btn-hud-secondary hero-voice-btn"
               style={{
                 borderColor: 'var(--hud-cyan)',
                 background: 'rgba(0, 229, 255, 0.08)',
@@ -183,27 +180,12 @@ export default function Hero({ onOpenResume }) {
               title="Activate J.A.R.V.I.S. Voice Command System"
             >
               <span>🎙️</span>
-              <span>VOICE PROTOCOL</span>
+              <span>VOICE</span>
             </button>
           </div>
 
           {/* System Telemetry & Status Badges */}
-          <div
-            className="font-mono-hud"
-            style={{
-              display: 'flex',
-              flexWrap: 'wrap',
-              alignItems: 'center',
-              gap: 20,
-              fontSize: '0.74rem',
-              color: 'var(--text-muted)',
-              letterSpacing: '0.12em',
-              textTransform: 'uppercase',
-              marginTop: 10,
-              paddingTop: 16,
-              borderTop: '1px solid rgba(0, 229, 255, 0.1)',
-            }}
-          >
+          <div className="hero-status">
             <div style={{ display: 'flex', alignItems: 'center', gap: 7 }}>
               <span className="status-pip status-pip-cyan" />
               <span>SYSTEM ACTIVE</span>
@@ -230,16 +212,7 @@ export default function Hero({ onOpenResume }) {
           }}
         >
           {/* Main Reactor Assembly Frame */}
-          <div
-            style={{
-              position: 'relative',
-              width: 'min(420px, 85vw)',
-              height: 'min(420px, 85vw)',
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}
-          >
+          <div className="hero-reactor">
             {/* Ambient Cyan Aura */}
             <div
               className="pulse-reactor"
@@ -375,74 +348,30 @@ export default function Hero({ onOpenResume }) {
               </span>
             </div>
 
-            {/* Orbiting Satellite Badges (Identical to your screenshot) */}
+            {/* Orbiting Satellite Badges */}
             {/* Top Right: Java */}
-            <div
-              className="hud-panel"
-              style={{
-                position: 'absolute',
-                top: '6%',
-                right: '-6%',
-                padding: '6px 14px',
-                borderRadius: 4,
-                border: '1px solid rgba(0, 229, 255, 0.4)',
-                background: 'rgba(6, 18, 36, 0.9)',
-              }}
-            >
+            <div className="hud-panel reactor-badge reactor-badge-tr">
               <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
                 JAVA 21
               </span>
             </div>
 
             {/* Middle Right: React 19 */}
-            <div
-              className="hud-panel"
-              style={{
-                position: 'absolute',
-                bottom: '22%',
-                right: '-8%',
-                padding: '6px 14px',
-                borderRadius: 4,
-                border: '1px solid rgba(0, 229, 255, 0.4)',
-                background: 'rgba(6, 18, 36, 0.9)',
-              }}
-            >
+            <div className="hud-panel reactor-badge reactor-badge-mr">
               <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
                 REACT 19
               </span>
             </div>
 
             {/* Middle Left: Node.js */}
-            <div
-              className="hud-panel"
-              style={{
-                position: 'absolute',
-                top: '46%',
-                left: '-12%',
-                padding: '6px 14px',
-                borderRadius: 4,
-                border: '1px solid rgba(0, 229, 255, 0.4)',
-                background: 'rgba(6, 18, 36, 0.9)',
-              }}
-            >
+            <div className="hud-panel reactor-badge reactor-badge-ml">
               <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
                 NODE.JS
               </span>
             </div>
 
-            {/* Bottom: DSA / Spring Boot */}
-            <div
-              className="hud-panel"
-              style={{
-                position: 'absolute',
-                bottom: '-2%',
-                left: '26%',
-                padding: '6px 14px',
-                borderRadius: 4,
-                border: '1px solid rgba(0, 229, 255, 0.4)',
-                background: 'rgba(6, 18, 36, 0.9)',
-              }}
-            >
+            {/* Bottom: Spring Boot */}
+            <div className="hud-panel reactor-badge reactor-badge-b">
               <span className="font-mono-hud" style={{ fontSize: '0.72rem', color: 'var(--hud-cyan)', letterSpacing: '0.1em' }}>
                 SPRING BOOT
               </span>
@@ -452,17 +381,140 @@ export default function Hero({ onOpenResume }) {
       </div>
 
       <style>{`
+        .hero-grid {
+          max-width: 1280px;
+          margin: 0 auto;
+          padding: 0 28px;
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1.15fr 0.85fr;
+          gap: 60px;
+          align-items: center;
+          position: relative;
+          z-index: 2;
+        }
+
+        .hero-reactor {
+          position: relative;
+          width: min(420px, 80vw);
+          height: min(420px, 80vw);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .reactor-badge {
+          position: absolute;
+          padding: 6px 14px;
+          border-radius: 4px;
+          border: 1px solid rgba(0, 229, 255, 0.4);
+          background: rgba(6, 18, 36, 0.9);
+        }
+
+        .reactor-badge-tr { top: 6%; right: -6%; }
+        .reactor-badge-mr { bottom: 22%; right: -8%; }
+        .reactor-badge-ml { top: 46%; left: -12%; }
+        .reactor-badge-b  { bottom: -2%; left: 26%; }
+
+        .hero-buttons {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 12px;
+          margin-top: 6px;
+        }
+
+        .hero-status {
+          font-family: var(--font-mono);
+          display: flex;
+          flex-wrap: wrap;
+          align-items: center;
+          gap: 20px;
+          font-size: 0.74rem;
+          color: var(--text-muted);
+          letter-spacing: 0.12em;
+          text-transform: uppercase;
+          margin-top: 10px;
+          padding-top: 16px;
+          border-top: 1px solid rgba(0, 229, 255, 0.1);
+        }
+
+        /* ====== MOBILE: ≤ 900px ====== */
         @media (max-width: 900px) {
           .hero-grid {
             grid-template-columns: 1fr !important;
             text-align: center;
+            padding: 0 20px;
+            gap: 30px;
           }
           .hero-grid > div:first-child {
             align-items: center;
           }
           .hero-grid > div:last-child {
             order: -1;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
+          }
+          .hero-reactor {
+            width: min(280px, 75vw);
+            height: min(280px, 75vw);
+          }
+          .reactor-badge {
+            padding: 4px 10px;
+          }
+          .reactor-badge .font-mono-hud {
+            font-size: 0.6rem !important;
+          }
+          .reactor-badge-tr { right: -2%; }
+          .reactor-badge-mr { right: -4%; }
+          .reactor-badge-ml { left: -6%; }
+          .reactor-badge-b  { left: 22%; }
+          .hero-buttons {
+            justify-content: center;
+            gap: 8px;
+          }
+          .hero-status {
+            justify-content: center;
+            gap: 14px;
+            font-size: 0.68rem;
+          }
+          .hero-subtitle {
+            font-size: 0.88rem !important;
+          }
+        }
+
+        /* ====== SMALL MOBILE: ≤ 480px ====== */
+        @media (max-width: 480px) {
+          .hero-grid {
+            padding: 0 16px;
+            gap: 20px;
+          }
+          .hero-reactor {
+            width: min(240px, 70vw);
+            height: min(240px, 70vw);
+          }
+          .reactor-badge {
+            padding: 3px 8px;
+          }
+          .reactor-badge .font-mono-hud {
+            font-size: 0.52rem !important;
+          }
+          .hero-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            width: 100%;
+          }
+          .hero-buttons .btn-hud-primary,
+          .hero-buttons .btn-hud-secondary {
+            justify-content: center;
+            font-size: 0.65rem;
+            padding: 10px 12px;
+          }
+          .hero-voice-btn {
+            grid-column: 1 / -1;
+          }
+          .hero-status {
+            font-size: 0.62rem;
+            gap: 10px;
           }
         }
       `}</style>

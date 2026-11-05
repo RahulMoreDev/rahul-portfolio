@@ -5,10 +5,11 @@ export default function Experience() {
     <section
       id="experience"
       style={{
-        padding: '120px 24px',
+        padding: 'clamp(60px, 10vw, 120px) clamp(16px, 4vw, 24px)',
         position: 'relative',
         background: 'var(--hud-bg)',
         borderTop: '1px solid rgba(0, 229, 255, 0.12)',
+        overflow: 'hidden',
       }}
     >
       <div style={{ maxWidth: 1200, margin: '0 auto', textAlign: 'center' }}>
@@ -25,14 +26,7 @@ export default function Experience() {
           </div>
         </div>
 
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 32,
-            textAlign: 'left',
-          }}
-        >
+        <div className="experience-grid">
           {/* Column 1: Industry Mission Log (Raveblue) */}
           <div>
             <div
@@ -55,7 +49,7 @@ export default function Experience() {
                 key={i}
                 className="hud-panel hud-corners"
                 style={{
-                  padding: '28px',
+                  padding: 'clamp(20px, 4vw, 28px)',
                   borderRadius: 8,
                   display: 'flex',
                   flexDirection: 'column',
@@ -77,7 +71,7 @@ export default function Experience() {
                   <h3
                     className="font-hud"
                     style={{
-                      fontSize: '1.2rem',
+                      fontSize: 'clamp(1.05rem, 2vw, 1.2rem)',
                       fontWeight: 800,
                       color: '#ffffff',
                       letterSpacing: '0.03em',
@@ -152,7 +146,7 @@ export default function Experience() {
                   key={idx}
                   className="hud-panel hud-corners"
                   style={{
-                    padding: '20px 24px',
+                    padding: 'clamp(16px, 3vw, 20px) clamp(16px, 3vw, 24px)',
                     borderRadius: 8,
                     display: 'flex',
                     flexDirection: 'column',
@@ -163,7 +157,7 @@ export default function Experience() {
                     <h4
                       className="font-hud"
                       style={{
-                        fontSize: '0.98rem',
+                        fontSize: 'clamp(0.88rem, 1.5vw, 0.98rem)',
                         fontWeight: 700,
                         color: '#ffffff',
                         letterSpacing: '0.02em',
@@ -175,7 +169,7 @@ export default function Experience() {
                     <span
                       className="font-mono-hud"
                       style={{
-                        fontSize: '0.74rem',
+                        fontSize: '0.72rem',
                         color: 'var(--hud-cyan)',
                         padding: '2px 8px',
                         background: 'rgba(0, 229, 255, 0.08)',
@@ -191,7 +185,7 @@ export default function Experience() {
                   <div
                     className="font-mono-hud"
                     style={{
-                      fontSize: '0.78rem',
+                      fontSize: '0.76rem',
                       color: 'var(--text-secondary)',
                       letterSpacing: '0.06em',
                     }}
@@ -201,7 +195,7 @@ export default function Experience() {
 
                   <p
                     style={{
-                      fontSize: '0.8rem',
+                      fontSize: '0.78rem',
                       color: 'var(--text-muted)',
                       lineHeight: 1.55,
                       margin: '4px 0 0',
@@ -215,6 +209,22 @@ export default function Experience() {
           </div>
         </div>
       </div>
+
+      <style>{`
+        .experience-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+          gap: 32px;
+          text-align: left;
+        }
+
+        @media (max-width: 768px) {
+          .experience-grid {
+            grid-template-columns: 1fr;
+            gap: 24px;
+          }
+        }
+      `}</style>
     </section>
   );
 }

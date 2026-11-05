@@ -15,10 +15,11 @@ export default function Projects() {
     <section
       id="projects"
       style={{
-        padding: '120px 24px',
+        padding: 'clamp(60px, 10vw, 120px) clamp(16px, 4vw, 24px)',
         position: 'relative',
         background: 'rgba(4, 8, 16, 0.95)',
         borderTop: '1px solid rgba(0, 229, 255, 0.12)',
+        overflow: 'hidden',
       }}
     >
       <div style={{ maxWidth: 1280, margin: '0 auto', textAlign: 'center' }}>
@@ -36,7 +37,7 @@ export default function Projects() {
         </div>
 
         {/* Category Filters */}
-        <div style={{ display: 'flex', justifyContent: 'center', gap: 10, flexWrap: 'wrap', marginBottom: 46 }}>
+        <div className="project-filters">
           {categories.map((cat) => (
             <button
               key={cat}
@@ -62,24 +63,17 @@ export default function Projects() {
         </div>
 
         {/* Tactical HUD Project Cards Grid */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 26,
-            textAlign: 'left',
-          }}
-        >
+        <div className="projects-grid">
           {filteredProjects.map((p, idx) => (
             <div
               key={p.id}
-              className="hud-panel hud-corners"
+              className="hud-panel hud-corners project-card"
               style={{
                 borderRadius: 8,
-                padding: '28px',
+                padding: 'clamp(20px, 4vw, 28px)',
                 display: 'flex',
                 flexDirection: 'column',
-                gap: 18,
+                gap: 16,
               }}
             >
               {/* Card Header Telemetry */}
@@ -116,7 +110,7 @@ export default function Projects() {
                 <h3
                   className="font-hud"
                   style={{
-                    fontSize: '1.25rem',
+                    fontSize: 'clamp(1.1rem, 2vw, 1.25rem)',
                     fontWeight: 800,
                     color: '#ffffff',
                     letterSpacing: '0.03em',
@@ -141,7 +135,7 @@ export default function Projects() {
               <p
                 style={{
                   color: 'var(--text-secondary)',
-                  fontSize: '0.85rem',
+                  fontSize: '0.84rem',
                   lineHeight: 1.65,
                   margin: 0,
                 }}
@@ -165,7 +159,7 @@ export default function Projects() {
                     key={i}
                     className="font-mono-hud"
                     style={{
-                      fontSize: '0.76rem',
+                      fontSize: '0.75rem',
                       color: 'var(--text-secondary)',
                       display: 'flex',
                       alignItems: 'flex-start',
@@ -240,6 +234,45 @@ export default function Projects() {
           ))}
         </div>
       </div>
+
+      <style>{`
+        .project-filters {
+          display: flex;
+          justify-content: center;
+          gap: 10px;
+          flex-wrap: wrap;
+          margin-bottom: 46px;
+        }
+
+        .projects-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr));
+          gap: 26px;
+          text-align: left;
+        }
+
+        @media (max-width: 768px) {
+          .project-filters {
+            gap: 6px;
+            margin-bottom: 30px;
+          }
+          .project-filters button {
+            padding: 5px 12px !important;
+            font-size: 0.7rem !important;
+          }
+          .projects-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+          }
+        }
+
+        @media (max-width: 480px) {
+          .project-filters button {
+            padding: 4px 10px !important;
+            font-size: 0.65rem !important;
+          }
+        }
+      `}</style>
     </section>
   );
 }

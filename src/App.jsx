@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 // HUD Components
 import Navbar from './components/Navbar';
@@ -6,6 +6,7 @@ import MouseGlow from './components/MouseGlow';
 import ParticleCanvas from './components/ParticleCanvas';
 import AssistantDock from './components/AssistantDock';
 import ResumeModal from './components/ResumeModal';
+import EmailDashboardModal from './components/EmailDashboardModal';
 
 // J.A.R.V.I.S. HUD Sections
 import Hero from './sections/Hero';
@@ -18,6 +19,14 @@ import Footer from './sections/Footer';
 
 export default function App() {
   const [resumeOpen, setResumeOpen] = useState(false);
+  const [emailOpen, setEmailOpen] = useState(false);
+
+  // Global listener so any component or voice assistant can trigger the email compose dashboard
+  useEffect(() => {
+    const handleOpenEmail = () => setEmailOpen(true);
+    window.addEventListener('jarvis-open-email', handleOpenEmail);
+    return () => window.removeEventListener('jarvis-open-email', handleOpenEmail);
+  }, []);
 
   return (
     <>
@@ -31,20 +40,26 @@ export default function App() {
       <ParticleCanvas />
 
       {/* 4. Top J.A.R.V.I.S. Monogram Navbar */}
-      <Navbar onOpenResume={() => setResumeOpen(true)} />
+      <Navbar
+        onOpenResume={() => setResumeOpen(true)}
+        onOpenEmail={() => setEmailOpen(true)}
+      />
 
       {/* 5. Main Cyber-HUD Dossier Content */}
       <main style={{ position: 'relative', zIndex: 2 }}>
-        <Hero onOpenResume={() => setResumeOpen(true)} />
+        <Hero
+          onOpenResume={() => setResumeOpen(true)}
+          onOpenEmail={() => setEmailOpen(true)}
+        />
         <About />
         <Skills />
         <Projects />
         <Experience />
-        <Contact />
+        <Contact onOpenEmail={() => setEmailOpen(true)} />
       </main>
 
       {/* 6. Footer System Telemetry */}
-      <Footer />
+      <Footer onOpenEmail={() => setEmailOpen(true)} />
 
       {/* 7. Floating J.A.R.V.I.S. / F.R.I.D.A.Y. assistant */}
       <AssistantDock
@@ -55,6 +70,11 @@ export default function App() {
       {/* 8. Full Document ATS-Standard Resume Modal */}
       {resumeOpen && (
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
+      )}
+
+      {/* 9. J.A.R.V.I.S. Email Transmission Compose Dashboard */}
+      {emailOpen && (
+        <EmailDashboardModal isOpen={emailOpen} onClose={() => setEmailOpen(false)} />
       )}
     </>
   );

@@ -208,9 +208,31 @@ export default function ResumeModal({ isOpen = true, onClose }) {
 
               {/* Contact Bar */}
               <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '14px', fontSize: '0.78rem', color: '#475569' }}>
-                <a href={personalInfo.emailUrl || `https://mail.google.com/mail/?view=cm&fs=1&to=${personalInfo.email}`} target="_blank" rel="noreferrer" style={{ color: '#2563eb', textDecoration: 'none', display: 'flex', alignItems: 'center', gap: '4px', fontWeight: 500 }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (typeof window !== 'undefined') {
+                      window.dispatchEvent(new CustomEvent('jarvis-open-email'));
+                    }
+                  }}
+                  style={{
+                    color: '#2563eb',
+                    textDecoration: 'none',
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '4px',
+                    fontWeight: 500,
+                    background: 'none',
+                    border: 'none',
+                    padding: 0,
+                    cursor: 'pointer',
+                    fontSize: 'inherit',
+                    fontFamily: 'inherit',
+                  }}
+                  title="Open J.A.R.V.I.S. Email Compose Dashboard"
+                >
                   <Mail size={13} /> {personalInfo.email}
-                </a>
+                </button>
                 <span style={{ color: '#cbd5e1' }}>•</span>
                 <span style={{ display: 'flex', alignItems: 'center', gap: '4px' }}>
                   <MapPin size={13} /> Maharashtra, India
