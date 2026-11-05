@@ -474,6 +474,14 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
     setListening(false);
     setActiveAssistant(assistantId);
     setError('');
+
+    if (voiceEnabled) {
+      if (assistantId === 'friday') {
+        speakFriday('F.R.I.D.A.Y. online. Tactical systems ready.');
+      } else {
+        speakJarvis('J.A.R.V.I.S. online. At your service, sir.');
+      }
+    }
   };
 
   const toggleListening = () => {

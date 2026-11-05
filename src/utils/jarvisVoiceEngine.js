@@ -77,45 +77,118 @@ export function playHudSound(type = 'activate') {
   }
 }
 
-/**
- * Find the best J.A.R.V.I.S.-like English voice (calm, British/articulate cadence)
- */
-export function getJarvisVoice() {
-  if (typeof window === 'undefined' || !window.speechSynthesis) return null;
-  const voices = window.speechSynthesis.getVoices();
-  if (!voices || voices.length === 0) return null;
+// Pre-warm SpeechSynthesis voices cache across platforms
+let cachedVoices = [];
+if (typeof window !== 'undefined' && window.speechSynthesis) {
+  const loadVoices = () => {
+    try {
+      cachedVoices = window.speechSynthesis.getVoices() || [];
+    } catch (e) {
+      cachedVoices = [];
+    }
+  };
+  loadVoices();
+  window.speechSynthesis.onvoiceschanged = loadVoices;
+}
 
-  // 1. Look for British English male voices (Paul Bettany J.A.R.V.I.S. profile)
-  const britishMale = voices.find(
-    (v) =>
-      v.lang.toLowerCase().includes('en-gb') &&
-      (v.name.toLowerCase().includes('male') ||
-        v.name.toLowerCase().includes('george') ||
-        v.name.toLowerCase().includes('daniel') ||
-        v.name.toLowerCase().includes('oliver'))
-  );
-  if (britishMale) return britishMale;
+// Voice tokens to distinguish between Male (Men) and Female voices
+const FEMALE_VOICE_TOKENS = [
+  'female', 'woman', 'zira', 'samantha', 'karen', 'victoria', 'aria', 'jenny',
+  'susan', 'catherine', 'hazel', 'heera', 'veena', 'fiona', 'moira', 'tessa',
+  'ava', 'emma', 'stephanie', 'lisa', 'clara', 'alice', 'salli', 'joanna',
+  'ivy', 'kendra', 'kimberly', 'amy', 'zoe', 'natasha', 'helena', '#female'
+];
 
-  // 2. Any en-GB voice
-  const britishAny = voices.find((v) => v.lang.toLowerCase().includes('en-gb'));
-  if (britishAny) return britishAny;
+const MALE_VOICE_TOKENS = [
+  'male', 'man', 'david', 'george', 'daniel', 'mark', 'oliver', 'ryan',
+  'rishi', 'alex', 'fred', 'arthur', 'guy', 'brian', 'william', 'james',
+  'matthew', 'justin', 'joey', 'russell', 'tom', 'ben', 'paul', '#male'
+];
 
-  // 3. Any English Male voice
-  const englishMale = voices.find(
-    (v) =>
-      v.lang.toLowerCase().startsWith('en') &&
-      (v.name.toLowerCase().includes('david') ||
-        v.name.toLowerCase().includes('male') ||
-        v.name.toLowerCase().includes('natural'))
-  );
-  if (englishMale) return englishMale;
+function isIdentifiedFemaleVoice(voice) {
+  if (!voice) return false;
+  const str = `${voice.name} ${voice.voiceURI}`.toLowerCase();
+  return FEMALE_VOICE_TOKENS.some((tok) => str.includes(tok));
+}
 
-  // 4. Fallback to any English voice
-  return voices.find((v) => v.lang.toLowerCase().startsWith('en')) || voices[0];
+function isIdentifiedMaleVoice(voice) {
+  if (!voice) return false;
+  const str = `${voice.name} ${voice.voiceURI}`.toLowerCase();
+  return MALE_VOICE_TOKENS.some((tok) => str.includes(tok));
+}
+
+function getAllVoices() {
+  if (typeof window === 'undefined' || !window.speechSynthesis) return [];
+  const list = window.speechSynthesis.getVoices();
+  return (list && list.length > 0) ? list : cachedVoices;
 }
 
 /**
- * Speak text in J.A.R.V.I.S. voice
+ * Find the best J.A.R.V.I.S. MALE voice (calm, British/articulate masculine cadence)
+ */
+export function getJarvisVoice() {
+  const voices = getAllVoices();
+  if (!voices || voices.length === 0) return null;
+
+  const englishVoices = voices.filter((v) => v.lang.toLowerCase().startsWith('en'));
+
+  // 1. British / UK English MALE voice (Paul Bettany J.A.R.V.I.S. signature profile)
+  const britishMale = englishVoices.find(
+    (v) =>
+      v.lang.toLowerCase().includes('gb') &&
+      isIdentifiedMaleVoice(v) &&
+      !isIdentifiedFemaleVoice(v)
+  );
+  if (britishMale) return britishMale;
+
+  // 2. Any English MALE voice (David, George, Daniel, Mark, etc.)
+  const englishMale = englishVoices.find(
+    (v) => isIdentifiedMaleVoice(v) && !isIdentifiedFemaleVoice(v)
+  );
+  if (englishMale) return englishMale;
+
+  // 3. Fallback: Any English voice that is NOT explicitly female
+  const nonFemaleEnglish = englishVoices.find((v) => !isIdentifiedFemaleVoice(v));
+  if (nonFemaleEnglish) return nonFemaleEnglish;
+
+  // 4. General fallback
+  return englishVoices[0] || voices[0];
+}
+
+/**
+ * Find the best F.R.I.D.A.Y. FEMALE voice (Irish / British feminine cadence)
+ */
+export function getFridayVoice() {
+  const voices = getAllVoices();
+  if (!voices || voices.length === 0) return null;
+
+  const englishVoices = voices.filter((v) => v.lang.toLowerCase().startsWith('en'));
+
+  // 1. Irish / British English FEMALE voice (Kerry Condon F.R.I.D.A.Y. profile: Moira, Hazel, etc.)
+  const irishOrBritishFemale = englishVoices.find(
+    (v) =>
+      (v.lang.toLowerCase().includes('ie') || v.lang.toLowerCase().includes('gb')) &&
+      isIdentifiedFemaleVoice(v) &&
+      !isIdentifiedMaleVoice(v)
+  );
+  if (irishOrBritishFemale) return irishOrBritishFemale;
+
+  // 2. Any English FEMALE voice (Samantha, Karen, Zira, Aria, Jenny, etc.)
+  const englishFemale = englishVoices.find(
+    (v) => isIdentifiedFemaleVoice(v) && !isIdentifiedMaleVoice(v)
+  );
+  if (englishFemale) return englishFemale;
+
+  // 3. Fallback: Any English voice that is NOT explicitly male
+  const nonMaleEnglish = englishVoices.find((v) => !isIdentifiedMaleVoice(v));
+  if (nonMaleEnglish) return nonMaleEnglish;
+
+  // 4. General fallback
+  return englishVoices[0] || voices[0];
+}
+
+/**
+ * Speak text in J.A.R.V.I.S. MALE voice (deep, articulate, British-inspired cadence)
  */
 export function speakJarvis(text, onEnd) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
@@ -129,9 +202,9 @@ export function speakJarvis(text, onEnd) {
       utterance.voice = voice;
     }
 
-    // Tuning for authentic J.A.R.V.I.S. cadence (smooth, measured, slightly deep)
-    utterance.pitch = 0.94;
-    utterance.rate = 1.02;
+    // Tuning for authentic J.A.R.V.I.S. MALE persona (deep, calm, measured masculine timbre)
+    utterance.pitch = 0.88;
+    utterance.rate = 1.0;
     utterance.volume = 1.0;
 
     if (onEnd) {
@@ -142,35 +215,39 @@ export function speakJarvis(text, onEnd) {
     playHudSound('beep');
     window.speechSynthesis.speak(utterance);
   } catch (e) {
-    console.warn('SpeechSynthesis error:', e);
+    console.warn('J.A.R.V.I.S. SpeechSynthesis error:', e);
   }
 }
 
+/**
+ * Speak text in F.R.I.D.A.Y. FEMALE voice (crisp, energetic feminine AI cadence)
+ */
 export function speakFriday(text, onEnd) {
   if (typeof window === 'undefined' || !window.speechSynthesis) return;
 
   try {
-    window.speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(text);
-    const voices = window.speechSynthesis.getVoices();
-    const voice =
-      voices.find(
-        (candidate) =>
-          candidate.lang.toLowerCase().startsWith('en') &&
-          /female|samantha|karen|zira|aria|jenny/i.test(candidate.name),
-      ) || voices.find((candidate) => candidate.lang.toLowerCase().startsWith('en'));
+    window.speechSynthesis.cancel(); // Stop any pending speech
 
-    if (voice) utterance.voice = voice;
-    utterance.pitch = 1.08;
-    utterance.rate = 1.04;
-    utterance.volume = 1;
+    const utterance = new SpeechSynthesisUtterance(text);
+    const voice = getFridayVoice();
+    if (voice) {
+      utterance.voice = voice;
+    }
+
+    // Tuning for authentic F.R.I.D.A.Y. FEMALE persona (bright, clear, crisp feminine timbre)
+    utterance.pitch = 1.18;
+    utterance.rate = 1.05;
+    utterance.volume = 1.0;
+
     if (onEnd) {
       utterance.onend = onEnd;
       utterance.onerror = onEnd;
     }
+
+    playHudSound('beep');
     window.speechSynthesis.speak(utterance);
   } catch (error) {
-    console.warn('F.R.I.D.A.Y. speech synthesis error:', error);
+    console.warn('F.R.I.D.A.Y. SpeechSynthesis error:', error);
   }
 }
 
