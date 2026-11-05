@@ -36,6 +36,63 @@
   color: var(--text-primary);
   box-shadow: 0 18px 56px rgba(0, 0, 0, 0.72), 0 0 28px rgba(var(--assistant-accent-rgb), 0.2);
   animation: assistant-panel-in 180ms ease-out;
+  transition: width 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              max-height 0.28s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.2s ease,
+              border-color 0.2s ease;
+}
+
+/* Auto-decrease / PIP Mini-HUD state */
+.assistant-panel.is-minimized {
+  width: min(320px, calc(100vw - 32px)) !important;
+  max-height: 58px !important;
+  cursor: pointer;
+  border-color: var(--assistant-accent);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.85), 0 0 22px rgba(var(--assistant-accent-rgb), 0.45);
+  animation: none;
+}
+
+.assistant-panel.is-minimized:hover {
+  border-color: #ffffff;
+  box-shadow: 0 12px 38px rgba(0, 0, 0, 0.92), 0 0 30px rgba(var(--assistant-accent-rgb), 0.65);
+}
+
+.assistant-panel.is-minimized .assistant-header {
+  padding: 10px 14px;
+  background: rgba(var(--assistant-accent-rgb), 0.14);
+  border-bottom: none;
+}
+
+.assistant-panel.is-minimized .assistant-switcher,
+.assistant-panel.is-minimized .assistant-waveform,
+.assistant-panel.is-minimized .assistant-feed,
+.assistant-panel.is-minimized .assistant-prompts,
+.assistant-panel.is-minimized .assistant-error,
+.assistant-panel.is-minimized .assistant-composer,
+.assistant-panel.is-minimized .assistant-privacy-note {
+  display: none !important;
+}
+
+.assistant-minimized-tag {
+  color: var(--assistant-secondary);
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  font-size: 0.62rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  animation: pulse-minimized-text 1.5s ease-in-out infinite alternate;
+}
+
+@keyframes pulse-minimized-text {
+  0% {
+    opacity: 0.75;
+    text-shadow: 0 0 4px var(--assistant-secondary);
+  }
+  100% {
+    opacity: 1;
+    text-shadow: 0 0 10px var(--assistant-secondary);
+  }
 }
 
 .assistant-header {

@@ -6,6 +6,8 @@ import {
   Volume2,
   VolumeX,
   X,
+  Minimize2,
+  Maximize2,
   User,
   Compass,
   FileText,
@@ -271,6 +273,7 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
   const [conversations, setConversations] = useState(INITIAL_CONVERSATIONS);
   const [input, setInput] = useState('');
   const [open, setOpen] = useState(false);
+  const [isMinimized, setIsMinimized] = useState(false);
   const [pending, setPending] = useState(false);
   const [listening, setListening] = useState(false);
   const [voiceEnabled, setVoiceEnabled] = useState(true);
@@ -307,6 +310,12 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
   const executeAction = useCallback(
     (action) => {
       if (!action) return;
+
+      // Automatically decrease chatbot size when navigating to sections so visitor can clearly view the section
+      if (action.type === 'scroll' || action.type === 'resume' || action.type === 'email' || action.type === 'github') {
+        setIsMinimized(true);
+      }
+
       if (action.type === 'scroll') {
         const el = document.getElementById(action.target);
         if (el) el.scrollIntoView({ behavior: 'smooth' });
@@ -345,7 +354,10 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
       // 1. Check for standard navigation commands
       if (isNavigationCommand(text)) {
         const result = processJarvisVoiceCommand(text, {
-          scrollTo: (id) => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }),
+          scrollTo: (id) => {
+            document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+            setIsMinimized(true);
+          },
           openResume: onOpenResume,
           closeResume: onCloseResume,
         });
@@ -522,9 +534,15 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
     <div className="assistant-dock" data-assistant={activeAssistant}>
       {open && (
         <section
-          className="assistant-panel"
+          className={`assistant-panel ${isMinimized ? 'is-minimized' : ''}`}
           role="dialog"
           aria-label={`${assistant.name} portfolio assistant`}
+          onMouseEnter={() => {
+            if (isMinimized) setIsMinimized(false);
+          }}
+          onClick={() => {
+            if (isMinimized) setIsMinimized(false);
+          }}
         >
           {/* Header */}
           <header className="assistant-header">
@@ -546,7 +564,11 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
                   <span className="assistant-header-badge font-mono-hud">AI BOT</span>
                 </div>
                 <span className="assistant-status">
-                  {listening ? 'LISTENING…' : pending ? 'PROCESSING…' : '🤖 AI CODER ASSISTANT · ONLINE'}
+                  {isMinimized ? (
+                    <span className="assistant-minimized-tag">HOVER TO EXPAND ⤢</span>
+                  ) : (
+                    listening ? 'LISTENING…' : pending ? 'PROCESSING…' : '🤖 AI CODER ASSISTANT · ONLINE'
+                  )}
                 </span>
               </div>
             </div>
@@ -554,7 +576,22 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
               <button
                 type="button"
                 className="assistant-icon-button"
-                onClick={() => setVoiceEnabled((enabled) => !enabled)}
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setIsMinimized((m) => !m);
+                }}
+                aria-label={isMinimized ? 'Expand assistant' : 'Minimize assistant'}
+                title={isMinimized ? 'Expand assistant' : 'Minimize assistant'}
+              >
+                {isMinimized ? <Maximize2 size={16} /> : <Minimize2 size={16} />}
+              </button>
+              <button
+                type="button"
+                className="assistant-icon-button"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  setVoiceEnabled((enabled) => !enabled);
+                }}
                 aria-label={voiceEnabled ? 'Mute spoken responses' : 'Enable spoken responses'}
                 title={voiceEnabled ? 'Mute voice responses' : 'Enable voice responses'}
               >
@@ -563,9 +600,11 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
               <button
                 type="button"
                 className="assistant-icon-button"
-                onClick={() => {
+                onClick={(e) => {
+                  e.stopPropagation();
                   recognitionRef.current?.abort();
                   setListening(false);
+                  setIsMinimized(false);
                   setOpen(false);
                 }}
                 aria-label="Close assistant"
@@ -721,12 +760,19 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
       <button
         type="button"
         className="assistant-launcher"
-        onClick={() => setOpen((isOpen) => !isOpen)}
-        aria-label={open ? 'Close AI assistant' : `Open ${assistant.name} AI assistant`}
-        aria-expanded={open}
+        onClick={() => {
+          if (open && isMinimized) {
+            setIsMinimized(false);
+          } else {
+            setOpen((isOpen) => !isOpen);
+            setIsMinimized(false);
+          }
+        }}
+        aria-label={open ? (isMinimized ? 'Expand assistant' : 'Close AI assistant') : `Open ${assistant.name} AI assistant`}
+        aria-expanded={open && !isMinimized}
         title={`${assistant.name} / F.R.I.D.A.Y. Robotic AI Assistant`}
       >
-        {open ? (
+        {open && !isMinimized ? (
           <X size={24} />
         ) : (
           <div className="assistant-launcher-avatar">
