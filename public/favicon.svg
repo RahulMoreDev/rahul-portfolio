@@ -1,56 +1,53 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" width="100" height="100">
   <defs>
-    <!-- Cyan glow filter -->
-    <filter id="jarvisGlow" x="-30%" y="-30%" width="160%" height="160%">
+    <filter id="robotGlow" x="-30%" y="-30%" width="160%" height="160%">
       <feGaussianBlur stdDeviation="2.5" result="blur" />
       <feMerge>
         <feMergeNode in="blur" />
         <feMergeNode in="SourceGraphic" />
       </feMerge>
     </filter>
-    <radialGradient id="reactorCore" cx="50%" cy="50%" r="50%">
-      <stop offset="0%" stop-color="#ffffff" />
-      <stop offset="35%" stop-color="#00e5ff" />
-      <stop offset="80%" stop-color="#005577" />
-      <stop offset="100%" stop-color="#040810" />
-    </radialGradient>
-    <linearGradient id="coilGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-      <stop offset="0%" stop-color="#00e5ff" />
-      <stop offset="50%" stop-color="#ffffff" />
-      <stop offset="100%" stop-color="#0077aa" />
+    <linearGradient id="armorGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0c2038" />
+      <stop offset="60%" stop-color="#071322" />
+      <stop offset="100%" stop-color="#030810" />
+    </linearGradient>
+    <linearGradient id="visorGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#00a8bd" />
+      <stop offset="50%" stop-color="#00e5ff" />
+      <stop offset="100%" stop-color="#00ffc4" />
     </linearGradient>
   </defs>
 
-  <!-- Deep Obsidian Base -->
-  <circle cx="50" cy="50" r="48" fill="#040810" stroke="#00e5ff" stroke-width="2" />
+  <!-- Deep Obsidian Outer Circle -->
+  <circle cx="50" cy="50" r="48" fill="#040810" stroke="#00e5ff" stroke-width="2.5" filter="url(#robotGlow)" />
   
   <!-- Outer Telemetry Ring -->
-  <circle cx="50" cy="50" r="45" fill="none" stroke="#00e5ff" stroke-width="1.2" stroke-dasharray="8 4 2 4" opacity="0.8" />
-  <circle cx="50" cy="50" r="41" fill="none" stroke="#00e5ff" stroke-width="0.8" opacity="0.4" />
+  <circle cx="50" cy="50" r="44" fill="none" stroke="#00e5ff" stroke-width="1" stroke-dasharray="8 4 2 4" opacity="0.6" />
 
-  <!-- 10 Arc Reactor Energy Coils -->
-  <g stroke="#00e5ff" stroke-width="1.2" opacity="0.95">
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(36 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(72 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(108 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(144 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(180 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(216 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(252 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(288 50 50)" />
-    <rect x="47" y="9" width="6" height="9" rx="1.5" fill="url(#coilGrad)" transform="rotate(324 50 50)" />
-  </g>
+  <!-- Robot Head Helmet -->
+  <path d="M 30,36 C 30,22 70,22 70,36 L 73,56 C 73,68 62,75 50,75 C 38,75 27,68 27,56 Z" fill="url(#armorGrad)" stroke="#00e5ff" stroke-width="1.8" />
 
-  <!-- Middle Retaining Ring -->
-  <circle cx="50" cy="50" r="28" fill="none" stroke="#00e5ff" stroke-width="2.5" filter="url(#jarvisGlow)" />
-  <circle cx="50" cy="50" r="23" fill="none" stroke="#00e5ff" stroke-width="1" stroke-dasharray="6 3" opacity="0.75" />
+  <!-- Top Cyber Antenna / Head Crest -->
+  <polygon points="46,14 54,14 52,23 48,23" fill="#00e5ff" filter="url(#robotGlow)" />
+  <circle cx="50" cy="13" r="2.5" fill="#ffffff" filter="url(#robotGlow)" />
 
-  <!-- Inner Triangular Reactor Core Structure -->
-  <polygon points="50,29 68,61 32,61" fill="none" stroke="#00e5ff" stroke-width="2" stroke-linejoin="round" opacity="0.9" />
-  <polygon points="50,34 64,58 36,58" fill="rgba(0, 229, 255, 0.15)" stroke="#ffffff" stroke-width="1" stroke-linejoin="round" />
+  <!-- Cyber Ear Transducers -->
+  <rect x="22" y="38" width="6" height="18" rx="2" fill="#0c2038" stroke="#00e5ff" stroke-width="1.5" />
+  <rect x="72" y="38" width="6" height="18" rx="2" fill="#0c2038" stroke="#00e5ff" stroke-width="1.5" />
+  <line x1="24" y1="47" x2="26" y2="47" stroke="#00e5ff" stroke-width="1.5" />
+  <line x1="74" y1="47" x2="76" y2="47" stroke="#00e5ff" stroke-width="1.5" />
 
-  <!-- Center Hologram Power Node -->
-  <circle cx="50" cy="50" r="11" fill="url(#reactorCore)" filter="url(#jarvisGlow)" />
-  <circle cx="50" cy="50" r="4.5" fill="#ffffff" />
+  <!-- Robotic Visor -->
+  <rect x="33" y="38" width="34" height="14" rx="4" fill="url(#visorGrad)" stroke="#ffffff" stroke-width="1" filter="url(#robotGlow)" />
+
+  <!-- Glowing Digital Eye Code Brackets </ > inside visor -->
+  <text x="50" y="49" text-anchor="middle" font-family="monospace" font-weight="900" font-size="10" fill="#040810" letter-spacing="1.5">&lt;/&gt;</text>
+
+  <!-- Robot Face Plates & Mouth Grille -->
+  <path d="M 40,60 L 60,60 L 56,68 L 44,68 Z" fill="#071322" stroke="#00e5ff" stroke-width="1" />
+  <line x1="44" y1="64" x2="56" y2="64" stroke="#00e5ff" stroke-width="1.2" stroke-dasharray="2 1.5" opacity="0.85" />
+
+  <!-- Forehead Arc Sensor Dot -->
+  <circle cx="50" cy="28" r="2.2" fill="#00e5ff" filter="url(#robotGlow)" />
 </svg>
