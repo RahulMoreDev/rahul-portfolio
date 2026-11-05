@@ -134,8 +134,8 @@ export default function Navbar({ onOpenResume, onOpenEmail }) {
               }}
             >
               <img
-                src="/images/rahul-about.jpg"
-                alt="Rahul More"
+                src="/images/rahul-logo.jpg"
+                alt="Rahul More Logo"
                 style={{
                   width: '100%',
                   height: '100%',
