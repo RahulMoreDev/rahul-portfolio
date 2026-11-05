@@ -112,58 +112,19 @@ export default function Navbar({ onOpenResume, onOpenEmail }) {
             minWidth: 0,
           }}
         >
-          {/* Avatar with Cyber Neon Ring */}
+          {/* J.A.R.V.I.S. Hologram Arc Reactor Logo */}
           <div style={{ position: 'relative', width: 34, height: 34, flexShrink: 0 }}>
-            <div
+            <img
+              src="/images/jarvis-logo.svg"
+              alt="J.A.R.V.I.S. Logo"
               style={{
-                position: 'absolute',
-                inset: -2,
-                borderRadius: '50%',
-                border: '1.5px solid var(--hud-cyan)',
-                boxShadow: '0 0 10px rgba(0, 229, 255, 0.7)',
-              }}
-            />
-            <div
-              style={{
-                position: 'relative',
                 width: '100%',
                 height: '100%',
-                borderRadius: '50%',
-                overflow: 'hidden',
-                border: '1px solid #040810',
+                objectFit: 'contain',
+                filter: 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.75))',
+                animation: 'spinClockwise 18s linear infinite',
               }}
-            >
-              <img
-                src="/images/rahul-logo.jpg"
-                alt="Rahul More Logo"
-                style={{
-                  width: '100%',
-                  height: '100%',
-                  objectFit: 'cover',
-                  filter: 'contrast(1.08) brightness(1.05)',
-                }}
-                onError={(e) => {
-                  e.target.style.display = 'none';
-                  e.target.nextSibling.style.display = 'flex';
-                }}
-              />
-              <div
-                className="font-hud"
-                style={{
-                  display: 'none',
-                  position: 'absolute',
-                  inset: 0,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  background: '#040810',
-                  color: 'var(--hud-cyan)',
-                  fontSize: '0.75rem',
-                  fontWeight: 900,
-                }}
-              >
-                RM
-              </div>
-            </div>
+            />
             <span
               className="font-mono-hud"
               style={{

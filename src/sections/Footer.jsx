@@ -35,32 +35,19 @@ export default function Footer({ onOpenEmail }) {
         <div className="footer-top-row">
           {/* Brand */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Mini coder photo */}
+            {/* J.A.R.V.I.S. Arc Reactor Logo */}
             <div style={{ position: 'relative', width: 36, height: 36, flexShrink: 0 }}>
-              <div
-                style={{
-                  position: 'absolute',
-                  inset: -1,
-                  borderRadius: '50%',
-                  border: '1.5px solid var(--hud-cyan)',
-                  boxShadow: '0 0 10px rgba(0, 229, 255, 0.5)',
-                }}
-              />
-              <div
+              <img
+                src="/images/jarvis-logo.svg"
+                alt="J.A.R.V.I.S. Logo"
                 style={{
                   width: '100%',
                   height: '100%',
-                  borderRadius: '50%',
-                  overflow: 'hidden',
-                  border: '1.5px solid #040810',
+                  objectFit: 'contain',
+                  filter: 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.7))',
+                  animation: 'spinClockwise 20s linear infinite',
                 }}
-              >
-                <img
-                  src="/images/rahul-logo.jpg"
-                  alt="Rahul More Logo"
-                  style={{ width: '100%', height: '100%', objectFit: 'cover' }}
-                />
-              </div>
+              />
               <span
                 className="font-mono-hud"
                 style={{
