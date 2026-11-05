@@ -498,13 +498,24 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
           {/* Header */}
           <header className="assistant-header">
             <div className="assistant-identity">
-              <span className="assistant-status-orb" aria-hidden="true">
-                <span />
-              </span>
+              <div className="assistant-header-robot-avatar">
+                <img
+                  src={activeAssistant === 'friday' ? '/images/robot-friday.jpg' : '/images/robot-assistant.jpg'}
+                  alt={`${assistant.name} Robot`}
+                  className="assistant-header-robot-img"
+                  onError={(e) => {
+                    e.target.style.display = 'none';
+                  }}
+                />
+                <span className="assistant-header-robot-beacon" />
+              </div>
               <div>
-                <strong>{assistant.name}</strong>
+                <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
+                  <strong>{assistant.name}</strong>
+                  <span className="assistant-header-badge font-mono-hud">AI BOT</span>
+                </div>
                 <span className="assistant-status">
-                  {listening ? 'LISTENING' : pending ? 'PROCESSING' : 'VISITOR ASSIST READY'}
+                  {listening ? 'LISTENING…' : pending ? 'PROCESSING…' : '🤖 AI CODER ASSISTANT · ONLINE'}
                 </span>
               </div>
             </div>
@@ -675,16 +686,45 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
         </section>
       )}
 
-      {/* Floating Launcher Button */}
+      {/* Floating Callout Pill identifying it as AI Assistant */}
+      {!open && (
+        <button
+          type="button"
+          className="assistant-callout-pill"
+          onClick={() => setOpen(true)}
+          aria-label={`Open ${assistant.name} AI Assistant`}
+        >
+          <span className="assistant-callout-beacon" />
+          <span className="assistant-callout-text">
+            {activeAssistant === 'friday' ? '⚡ ASK F.R.I.D.A.Y.' : '🤖 ASK J.A.R.V.I.S.'}
+          </span>
+        </button>
+      )}
+
+      {/* Floating Robotic Launcher Button */}
       <button
         type="button"
         className="assistant-launcher"
         onClick={() => setOpen((isOpen) => !isOpen)}
-        aria-label={open ? 'Close AI assistant' : 'Open AI assistant'}
+        aria-label={open ? 'Close AI assistant' : `Open ${assistant.name} AI assistant`}
         aria-expanded={open}
-        title={`${assistant.name} / F.R.I.D.A.Y. Visitor Assistant`}
+        title={`${assistant.name} / F.R.I.D.A.Y. Robotic AI Assistant`}
       >
-        {open ? <X size={22} /> : <span className="assistant-launcher-core" aria-hidden="true" />}
+        {open ? (
+          <X size={24} />
+        ) : (
+          <div className="assistant-launcher-avatar">
+            <img
+              src={activeAssistant === 'friday' ? '/images/robot-friday.jpg' : '/images/robot-assistant.jpg'}
+              alt={`${assistant.name} Robotic AI Assistant`}
+              className="assistant-robot-pic"
+              onError={(e) => {
+                e.target.style.display = 'none';
+              }}
+            />
+            <span className="assistant-robot-badge">AI</span>
+          </div>
+        )}
       </button>
     </div>
   );
