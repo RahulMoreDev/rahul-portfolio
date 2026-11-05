@@ -112,19 +112,44 @@ export default function Navbar({ onOpenResume, onOpenEmail }) {
             minWidth: 0,
           }}
         >
-          {/* J.A.R.V.I.S. Hologram Arc Reactor Logo */}
-          <div style={{ position: 'relative', width: 34, height: 34, flexShrink: 0 }}>
-            <img
-              src="/images/jarvis-logo.svg"
-              alt="J.A.R.V.I.S. Logo"
+          {/* J.A.R.V.I.S. Robotic Head Logo */}
+          <div style={{ position: 'relative', width: 35, height: 35, flexShrink: 0 }}>
+            {/* Outer Cyber Neon Ring */}
+            <div
               style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'contain',
-                filter: 'drop-shadow(0 0 8px rgba(0, 229, 255, 0.75))',
-                animation: 'spinClockwise 18s linear infinite',
+                position: 'absolute',
+                inset: -2,
+                borderRadius: '50%',
+                border: '1.5px solid var(--hud-cyan)',
+                boxShadow: '0 0 12px rgba(0, 229, 255, 0.8)',
               }}
             />
+            {/* Circular Robotic Avatar Container */}
+            <div
+              style={{
+                position: 'relative',
+                width: '100%',
+                height: '100%',
+                borderRadius: '50%',
+                overflow: 'hidden',
+                border: '1.5px solid #040810',
+                background: '#040810',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+              }}
+            >
+              <img
+                src="/images/jarvis-robot-logo.jpg"
+                alt="J.A.R.V.I.S. Robotic Logo"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  filter: 'contrast(1.1) brightness(1.05)',
+                }}
+              />
+            </div>
             <span
               className="font-mono-hud"
               style={{
