@@ -11,6 +11,16 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
 
   // Switch theme on DOM & dispatch event (silent, no banner toast)
   const applyTheme = (newTheme) => {
+    // Safety check: NEVER change or exchange theme while chatbot is open or active
+    if (
+      typeof window !== 'undefined' &&
+      (window.__JARVIS_ASSISTANT_OPEN__ ||
+        document.querySelector('.assistant-panel') ||
+        assistantOpen)
+    ) {
+      return;
+    }
+
     setTheme(newTheme);
     document.documentElement.setAttribute('data-theme', newTheme);
     localStorage.setItem('hud_theme_protocol', newTheme);
@@ -22,7 +32,11 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
   // Listen to assistant dock state so we never change theme while user is chatting
   useEffect(() => {
     const handleAssistantState = (e) => {
-      setAssistantOpen(!!e.detail?.open);
+      const isOpen = !!e.detail?.open;
+      setAssistantOpen(isOpen);
+      if (isOpen) {
+        setProgress(0);
+      }
     };
     window.addEventListener('jarvis-assistant-dock-state', handleAssistantState);
     return () => window.removeEventListener('jarvis-assistant-dock-state', handleAssistantState);
@@ -50,7 +64,18 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
     const increment = 100 / ((SHIFT_INTERVAL_SECONDS * 1000) / intervalMs);
 
     const timer = setInterval(() => {
-      // Check if user is actively typing in any input field or textarea
+      // 1. Immediately freeze if chatbot is open
+      const isChatbotOpen =
+        (typeof window !== 'undefined' && Boolean(window.__JARVIS_ASSISTANT_OPEN__)) ||
+        Boolean(document.querySelector('.assistant-panel')) ||
+        assistantOpen;
+
+      if (isChatbotOpen) {
+        setProgress(0);
+        return;
+      }
+
+      // 2. Check if user is actively typing in any input field or textarea
       const activeEl = document.activeElement;
       const isTyping =
         activeEl &&
@@ -64,6 +89,12 @@ export default function ThemeProtocolHUD({ onThemeChange }) {
 
       setProgress((prev) => {
         if (prev >= 100) {
+          if (
+            (typeof window !== 'undefined' && Boolean(window.__JARVIS_ASSISTANT_OPEN__)) ||
+            Boolean(document.querySelector('.assistant-panel'))
+          ) {
+            return 0;
+          }
           setTheme((currentTheme) => {
             const nextTheme = currentTheme === 'jarvis' ? 'friday' : 'jarvis';
             applyTheme(nextTheme);

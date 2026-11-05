@@ -286,11 +286,36 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
   const inputRef = useRef(input);
   const pendingRef = useRef(pending);
 
+  const syncDockState = useCallback((isOpen) => {
+    openRef.current = isOpen;
+    if (typeof window !== 'undefined') {
+      window.__JARVIS_ASSISTANT_OPEN__ = isOpen;
+      window.dispatchEvent(
+        new CustomEvent('jarvis-assistant-dock-state', { detail: { open: isOpen } })
+      );
+    }
+  }, []);
+
+  const handleToggleOpen = useCallback(() => {
+    setOpen((prev) => {
+      const next = !prev;
+      syncDockState(next);
+      return next;
+    });
+    setIsMinimized(false);
+  }, [syncDockState]);
+
+  const handleClose = useCallback(() => {
+    recognitionRef.current?.abort();
+    setListening(false);
+    setIsMinimized(false);
+    setOpen(false);
+    syncDockState(false);
+  }, [syncDockState]);
+
   useEffect(() => {
-    openRef.current = open;
-    // Notify theme HUD to pause auto-cycle while chat is open
-    window.dispatchEvent(new CustomEvent('jarvis-assistant-dock-state', { detail: { open } }));
-  }, [open]);
+    syncDockState(open);
+  }, [open, syncDockState]);
 
   useEffect(() => {
     inputRef.current = input;
@@ -480,20 +505,16 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
   useEffect(() => {
     const handleVoiceTrigger = (event) => {
       setOpen(true);
+      syncDockState(true);
       if (event.detail?.command) {
         void submitMessage(event.detail.command);
       } else {
         startListening();
       }
     };
-    const handleThemeChange = (event) => {
-      // NEVER exchange chat or switch assistant if the user has the assistant open, is typing, or assistant is replying
-      if (openRef.current || inputRef.current.trim().length > 0 || pendingRef.current) {
-        return;
-      }
-      if (event.detail?.theme) {
-        setActiveAssistant(event.detail.theme);
-      }
+    const handleThemeChange = () => {
+      // Do NOT switch activeAssistant or exchange chats on auto theme cycles.
+      // J.A.R.V.I.S. and F.R.I.D.A.Y. are separate dedicated AI assistants that stay on whatever assistant the user chose.
     };
     window.addEventListener('jarvis-voice-trigger', handleVoiceTrigger);
     window.addEventListener('jarvis-theme-changed', handleThemeChange);
@@ -501,7 +522,7 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
       window.removeEventListener('jarvis-voice-trigger', handleVoiceTrigger);
       window.removeEventListener('jarvis-theme-changed', handleThemeChange);
     };
-  }, [startListening, submitMessage]);
+  }, [startListening, submitMessage, syncDockState]);
 
   const selectAssistant = (assistantId) => {
     if (assistantId === activeAssistant) return;
@@ -602,10 +623,7 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
                 className="assistant-icon-button"
                 onClick={(e) => {
                   e.stopPropagation();
-                  recognitionRef.current?.abort();
-                  setListening(false);
-                  setIsMinimized(false);
-                  setOpen(false);
+                  handleClose();
                 }}
                 aria-label="Close assistant"
               >
@@ -764,8 +782,7 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
           if (open && isMinimized) {
             setIsMinimized(false);
           } else {
-            setOpen((isOpen) => !isOpen);
-            setIsMinimized(false);
+            handleToggleOpen();
           }
         }}
         aria-label={open ? (isMinimized ? 'Expand assistant' : 'Close AI assistant') : `Open ${assistant.name} AI assistant`}
