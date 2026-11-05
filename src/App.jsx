@@ -7,6 +7,7 @@ import ParticleCanvas from './components/ParticleCanvas';
 import AssistantDock from './components/AssistantDock';
 import ResumeModal from './components/ResumeModal';
 import EmailDashboardModal from './components/EmailDashboardModal';
+import ThemeProtocolHUD from './components/ThemeProtocolHUD';
 
 // J.A.R.V.I.S. HUD Sections
 import Hero from './sections/Hero';
@@ -67,12 +68,15 @@ export default function App() {
         onCloseResume={() => setResumeOpen(false)}
       />
 
-      {/* 8. Full Document ATS-Standard Resume Modal */}
+      {/* 8. On-Screen Dual Protocol Theme Controller (J.A.R.V.I.S. & F.R.I.D.A.Y.) */}
+      <ThemeProtocolHUD />
+
+      {/* 9. Full Document ATS-Standard Resume Modal */}
       {resumeOpen && (
         <ResumeModal isOpen={resumeOpen} onClose={() => setResumeOpen(false)} />
       )}
 
-      {/* 9. J.A.R.V.I.S. Email Transmission Compose Dashboard */}
+      {/* 10. J.A.R.V.I.S. Email Transmission Compose Dashboard */}
       {emailOpen && (
         <EmailDashboardModal isOpen={emailOpen} onClose={() => setEmailOpen(false)} />
       )}

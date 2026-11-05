@@ -5,7 +5,8 @@
    Electric Cyan (#00e5ff) · Deep Void (#040810) · Holographic HUD
    ============================================================ */
 
-:root {
+:root,
+[data-theme="jarvis"] {
   --hud-bg: #040810;
   --hud-bg-elevated: #061224;
   --hud-card: rgba(6, 18, 36, 0.72);
@@ -31,6 +32,32 @@
   --font-body: 'Inter', sans-serif;
 }
 
+/* ============================================================
+   F.R.I.D.A.Y. TACTICAL CRIMSON-GOLD THEME
+   Radiant Ruby (#ff2a6d) · Amber Gold (#ffb703) · Deep Obsidian (#08030c)
+   ============================================================ */
+[data-theme="friday"] {
+  --hud-bg: #08030c;
+  --hud-bg-elevated: #16061a;
+  --hud-card: rgba(22, 6, 26, 0.78);
+  --hud-card-hover: rgba(34, 10, 40, 0.90);
+
+  --hud-cyan: #ff2a6d;
+  --hud-cyan-dim: #d01a52;
+  --hud-cyan-glow: rgba(255, 42, 109, 0.45);
+  --hud-cyan-subtle: rgba(255, 42, 109, 0.12);
+
+  --hud-green: #ffb703;
+  --hud-green-glow: rgba(255, 183, 3, 0.45);
+
+  --hud-border: rgba(255, 42, 109, 0.24);
+  --hud-border-active: rgba(255, 42, 109, 0.68);
+
+  --text-primary: #fff0f5;
+  --text-secondary: #d8b4cb;
+  --text-muted: #7e5270;
+}
+
 *, *::before, *::after {
   box-sizing: border-box;
   margin: 0;
@@ -44,6 +71,7 @@ html {
   -webkit-font-smoothing: antialiased;
   overflow-x: hidden;
   max-width: 100vw;
+  scroll-padding-top: 74px;
 }
 
 body {
@@ -55,6 +83,29 @@ body {
   width: 100%;
   line-height: 1.6;
   position: relative;
+}
+
+section, [id] {
+  scroll-margin-top: 74px;
+}
+
+/* ============================================================
+   FIXED NAVBAR ENFORCEMENT ON ALL MOBILE SCREENS & SECTIONS
+   ============================================================ */
+#navbar {
+  position: fixed !important;
+  top: 0 !important;
+  left: 0 !important;
+  right: 0 !important;
+  width: 100% !important;
+  z-index: 10000 !important;
+  background: rgba(4, 8, 16, 0.96) !important;
+  border-bottom: 1.5px solid var(--hud-border-active) !important;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.85) !important;
+}
+
+[data-theme="friday"] #navbar {
+  background: rgba(8, 3, 12, 0.96) !important;
 }
 
 /* ============================================================

@@ -455,8 +455,17 @@ export default function AssistantDock({ onOpenResume, onCloseResume }) {
         startListening();
       }
     };
+    const handleThemeChange = (event) => {
+      if (event.detail?.theme) {
+        setActiveAssistant(event.detail.theme);
+      }
+    };
     window.addEventListener('jarvis-voice-trigger', handleVoiceTrigger);
-    return () => window.removeEventListener('jarvis-voice-trigger', handleVoiceTrigger);
+    window.addEventListener('jarvis-theme-changed', handleThemeChange);
+    return () => {
+      window.removeEventListener('jarvis-voice-trigger', handleVoiceTrigger);
+      window.removeEventListener('jarvis-theme-changed', handleThemeChange);
+    };
   }, [startListening, submitMessage]);
 
   const selectAssistant = (assistantId) => {

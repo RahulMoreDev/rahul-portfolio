@@ -43,12 +43,12 @@ export default function ParticleCanvas() {
         if (this.x < 0 || this.x > width) this.vx *= -1;
         if (this.y < 0 || this.y > height) this.vy *= -1;
       }
-      draw() {
+      draw(colorRgb, shadowHex) {
         ctx.beginPath();
         ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(0, 229, 255, ${this.alpha})`;
+        ctx.fillStyle = `rgba(${colorRgb}, ${this.alpha})`;
         ctx.shadowBlur = 8;
-        ctx.shadowColor = '#00e5ff';
+        ctx.shadowColor = shadowHex;
         ctx.fill();
         ctx.shadowBlur = 0;
       }
@@ -66,6 +66,10 @@ export default function ParticleCanvas() {
     function render() {
       ctx.clearRect(0, 0, width, height);
 
+      const isFriday = document.documentElement.getAttribute('data-theme') === 'friday';
+      const colorRgb = isFriday ? '255, 42, 109' : '0, 229, 255';
+      const shadowHex = isFriday ? '#ff2a6d' : '#00e5ff';
+
       // Draw connection lines
       for (let i = 0; i < particles.length; i++) {
         for (let j = i + 1; j < particles.length; j++) {
@@ -78,7 +82,7 @@ export default function ParticleCanvas() {
             ctx.beginPath();
             ctx.moveTo(particles[i].x, particles[i].y);
             ctx.lineTo(particles[j].x, particles[j].y);
-            ctx.strokeStyle = `rgba(0, 229, 255, ${lineAlpha})`;
+            ctx.strokeStyle = `rgba(${colorRgb}, ${lineAlpha})`;
             ctx.lineWidth = 0.8;
             ctx.stroke();
           }
@@ -88,7 +92,7 @@ export default function ParticleCanvas() {
       // Update & draw particles
       particles.forEach((p) => {
         p.update();
-        p.draw();
+        p.draw(colorRgb, shadowHex);
       });
 
       animationFrameId = requestAnimationFrame(render);
